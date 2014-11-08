@@ -1,4 +1,5 @@
 
 ## ensure module gets loaded
-loadModule("Annoy", TRUE)
+loadModule("AnnoyAngular", TRUE)
+loadModule("AnnoyEuclidean", TRUE)
 
