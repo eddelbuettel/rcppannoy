@@ -1,0 +1,16 @@
+Package: RcppAnnoy
+Type: Package
+Title: Rcpp Bindings for the Approximate Nearest Neighbor Library
+Version: 0.0.1
+Date: 2014-11-08
+Author: Dirk Eddelbuettel
+Maintainer: Dirk Eddelbuettel <edd@debian.org>
+Description: Annoy is a small C++ library for Approximate Nearest Neighbors
+ written with efficient memory usage as well an ability to load from / save to
+ disk. This package provides an R interface by relying on the Rcpp and BH
+ packages. See https://github.com/spotify/annoy for more on Annoy. Annoy is
+ released under the Apache License; this package is licensed under GPL-2 or
+ later just like R and Rcpp. 
+License: GPL (>= 2)
+Imports: methods, Rcpp (>= 0.11.3)
+LinkingTo: Rcpp, BH

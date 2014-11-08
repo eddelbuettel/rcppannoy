@@ -1,0 +1,3 @@
+useDynLib(RcppAnnoy)
+import(methods, Rcpp)
+exportPattern("^[[:alpha:]]+")          # export all identifiers starting with letters
