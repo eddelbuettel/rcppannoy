@@ -1,6 +1,9 @@
 \name{RcppAnnoy-package}
 \alias{RcppAnnoy-package}
 \alias{RcppAnnoy}
+\alias{Annoy}
+\alias{Rcpp_Annoy}
+\alias{Rcpp_Annoy-class}
 \docType{package}
 \title{
   Rcpp bindings for the Annoy C++ library for approximate nearest neighbors.
