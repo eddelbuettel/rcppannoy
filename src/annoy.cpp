@@ -15,9 +15,10 @@ public:
         this->add_item(item, &fv[0]);
     }
 
-    void build(int n)               { this->build(n);       }
-    void save(std::string filename) { this->save(filename); }
-    void load(std::string filename) { this->load(filename); }
+    void callBuild(int n)               { this->build(n);       }
+    void callSave(std::string filename) { this->save(filename); }
+    void callLoad(std::string filename) { this->load(filename); }
+    void callUnload()                   { this->unload();       }
 
     std::vector<int> getNNsByItem(int item, int n) {
         std::vector<int> result;
@@ -55,13 +56,12 @@ RCPP_MODULE(AnnoyAngular) {
         //.constructor("default constructor")  
         .constructor<int>("constructor with int")  
 
-        .method("addItem",        &Annoy<float, Angular<float> >::addItem,        "adds an item")
-        .method("build",          &Annoy<float, Angular<float> >::build,          "build an index")
-        .method("save",           &Annoy<float, Angular<float> >::save,           "save index to file")
-        .method("load",           &Annoy<float, Angular<float> >::load,           "load index from file")
-        //unload
+        .method("addItem",        &Annoy<float, Angular<float> >::addItem,        "add item")
+        .method("build",          &Annoy<float, Angular<float> >::callBuild,      "build an index")
+        .method("save",           &Annoy<float, Angular<float> >::callSave,       "save index to file")
+        .method("load",           &Annoy<float, Angular<float> >::callLoad,       "load index from file")
+        .method("unload",         &Annoy<float, Angular<float> >::callUnload,     "unload index")
 
-        // getDistance
         .method("getNNsByItem",   &Annoy<float, Angular<float> >::getNNsByItem,   "retrieve Nearest Neigbours given item")
         .method("getNNsByVector", &Annoy<float, Angular<float> >::getNNsByVector, "retrieve Nearest Neigbours given vector")
         .method("getItemsVector", &Annoy<float, Angular<float> >::getItemsVector, "retrieve item vector")
@@ -76,13 +76,12 @@ RCPP_MODULE(AnnoyEuclidean) {
         //.constructor("default constructor")  
         .constructor<int>("constructor with int")  
 
-        .method("addItem",        &Annoy<float, Euclidean<float> >::addItem,        "adds an item")
-        .method("build",          &Annoy<float, Euclidean<float> >::build,          "build an index")
-        .method("save",           &Annoy<float, Euclidean<float> >::save,           "save index to file")
-        .method("load",           &Annoy<float, Euclidean<float> >::load,           "load index from file")
-        //unload
+        .method("addItem",        &Annoy<float, Euclidean<float> >::addItem,        "add item")
+        .method("build",          &Annoy<float, Euclidean<float> >::callBuild,      "build an index")
+        .method("save",           &Annoy<float, Euclidean<float> >::callSave,       "save index to file")
+        .method("load",           &Annoy<float, Euclidean<float> >::callLoad,       "load index from file")
+        .method("unload",         &Annoy<float, Euclidean<float> >::callUnload,     "unload index")
 
-        // getDistance
         .method("getNNsByItem",   &Annoy<float, Euclidean<float> >::getNNsByItem,   "retrieve Nearest Neigbours given item")
         .method("getNNsByVector", &Annoy<float, Euclidean<float> >::getNNsByVector, "retrieve Nearest Neigbours given vector")
         .method("getItemsVector", &Annoy<float, Euclidean<float> >::getItemsVector, "retrieve item vector")
