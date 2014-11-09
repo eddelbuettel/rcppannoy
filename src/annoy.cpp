@@ -15,10 +15,12 @@ public:
         this->add_item(item, &fv[0]);
     }
 
-    void callBuild(int n)               { this->build(n);       }
-    void callSave(std::string filename) { this->save(filename); }
-    void callLoad(std::string filename) { this->load(filename); }
-    void callUnload()                   { this->unload();       }
+    void   callBuild(int n)               { this->build(n);                  }
+    void   callSave(std::string filename) { this->save(filename);            }
+    void   callLoad(std::string filename) { this->load(filename);            }
+    void   callUnload()                   { this->unload();                  }
+    int    getNItems()                    { return this->get_n_items();      }
+    double getDistance(int i, int j)      { return this->get_distance(i, j); }
 
     std::vector<int> getNNsByItem(int item, int n) {
         std::vector<int> result;
@@ -44,6 +46,7 @@ public:
         return dv;
     }
 
+
 };
 
 typedef Annoy<float, Angular<float> >   AnnoyAngular;
@@ -53,7 +56,6 @@ RCPP_EXPOSED_CLASS_NODECL(AnnoyAngular)
 RCPP_MODULE(AnnoyAngular) {
     Rcpp::class_<AnnoyAngular>("AnnoyAngular")   
         
-        //.constructor("default constructor")  
         .constructor<int>("constructor with int")  
 
         .method("addItem",        &Annoy<float, Angular<float> >::addItem,        "add item")
@@ -61,11 +63,11 @@ RCPP_MODULE(AnnoyAngular) {
         .method("save",           &Annoy<float, Angular<float> >::callSave,       "save index to file")
         .method("load",           &Annoy<float, Angular<float> >::callLoad,       "load index from file")
         .method("unload",         &Annoy<float, Angular<float> >::callUnload,     "unload index")
-
+        .method("getDistance",    &Annoy<float, Angular<float> >::getDistance,    "get distance between i and j")
         .method("getNNsByItem",   &Annoy<float, Angular<float> >::getNNsByItem,   "retrieve Nearest Neigbours given item")
         .method("getNNsByVector", &Annoy<float, Angular<float> >::getNNsByVector, "retrieve Nearest Neigbours given vector")
         .method("getItemsVector", &Annoy<float, Angular<float> >::getItemsVector, "retrieve item vector")
-        // getNItems
+        .method("getNItems",      &Annoy<float, Angular<float> >::getNItems,      "get N items")
         ;
 }
 
@@ -73,7 +75,6 @@ RCPP_EXPOSED_CLASS_NODECL(AnnoyEuclidean)
 RCPP_MODULE(AnnoyEuclidean) {
     Rcpp::class_<AnnoyEuclidean>("AnnoyEuclidean")   
         
-        //.constructor("default constructor")  
         .constructor<int>("constructor with int")  
 
         .method("addItem",        &Annoy<float, Euclidean<float> >::addItem,        "add item")
@@ -81,10 +82,10 @@ RCPP_MODULE(AnnoyEuclidean) {
         .method("save",           &Annoy<float, Euclidean<float> >::callSave,       "save index to file")
         .method("load",           &Annoy<float, Euclidean<float> >::callLoad,       "load index from file")
         .method("unload",         &Annoy<float, Euclidean<float> >::callUnload,     "unload index")
-
+        .method("getDistance",    &Annoy<float, Euclidean<float> >::getDistance,    "get distance between i and j")
         .method("getNNsByItem",   &Annoy<float, Euclidean<float> >::getNNsByItem,   "retrieve Nearest Neigbours given item")
         .method("getNNsByVector", &Annoy<float, Euclidean<float> >::getNNsByVector, "retrieve Nearest Neigbours given vector")
         .method("getItemsVector", &Annoy<float, Euclidean<float> >::getItemsVector, "retrieve item vector")
-        // getNItems
+        .method("getNItems",      &Annoy<float, Euclidean<float> >::getNItems,      "get N items")
         ;
 }
