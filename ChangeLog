@@ -1,3 +1,7 @@
+2014-11-09  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/annoylib.h: Updated to new version from annoy
+
 2014-11-08  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION: Initial version 0.0.1

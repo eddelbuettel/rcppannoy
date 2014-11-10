@@ -29,6 +29,7 @@
 #include <vector>
 #include <queue>
 #include <limits>
+#include <boost/version.hpp>
 #include <boost/random.hpp>
 #include <boost/random/normal_distribution.hpp>
 #include <boost/random/uniform_01.hpp>
@@ -42,20 +43,28 @@
 using namespace std;
 using namespace boost;
 
+#if BOOST_VERSION > 1004400
+#define BOOST_RANDOM boost::random
+#else
+#define BOOST_RANDOM boost
+#endif
+
 template<typename T>
 struct Randomness {
   // Just a dummy class to avoid code repetition.
   // Owned by the AnnoyIndex, passed around to the distance metrics
-  boost::random::mt19937 _rng;
-  boost::random::normal_distribution<T> _nd;
-  variate_generator<boost::random::mt19937&, 
-                    boost::random::normal_distribution<T> > _var_nor;
+
+  BOOST_RANDOM::mt19937 _rng;
+  BOOST_RANDOM::normal_distribution<T> _nd;
+  variate_generator<BOOST_RANDOM::mt19937&, 
+                    BOOST_RANDOM::normal_distribution<T> > _var_nor;
   uniform_01<T> _ud;
-  variate_generator<boost::random::mt19937&, 
+  variate_generator<BOOST_RANDOM::mt19937&, 
                     uniform_01<T> > _var_uni;
-  boost::random::bernoulli_distribution<T> _bd;
-  variate_generator<boost::random::mt19937&, 
-                    boost::random::bernoulli_distribution<T> > _var_ber;
+  BOOST_RANDOM::bernoulli_distribution<T> _bd;
+  variate_generator<BOOST_RANDOM::mt19937&, 
+                    BOOST_RANDOM::bernoulli_distribution<T> > _var_ber;
+
   Randomness() : _rng(), _nd(), _var_nor(_rng, _nd), _ud(), _var_uni(_rng, _ud), _bd(), _var_ber(_rng, _bd) {}
   inline T gaussian() {
     return _var_nor();
@@ -98,7 +107,6 @@ struct Angular {
      */
     int n_descendants;
     int children[2]; // Will possibly store more than 2
-    //T v[0]; // Hack. We just allocate as much memory as we need and let this array overflow
     T v[1]; // Hack. We just allocate as much memory as we need and let this array overflow
   };
   static inline T distance(const T* x, const T* y, int f) {
@@ -141,7 +149,6 @@ struct Euclidean {
     int n_descendants;
     T a; // need an extra constant term to determine the offset of the plane
     int children[2];
-    //T v[0];
     T v[1];
   };
   static inline T distance(const T* x, const T* y, int f) {
@@ -389,8 +396,9 @@ protected:
     m->n_descendants = indices.size();
 
     if (indices.size() <= (size_t)_K) {
-      for (size_t i = 0; i < indices.size(); i++)
-        m->children[i] = indices[i];
+      // Using std::copy instead of a loop seems to resolve issues #3 and #13,
+      // probably because gcc 4.8 goes overboard with optimizations.
+      copy(indices.begin(), indices.end(), m->children);
       return item;
     }
 
