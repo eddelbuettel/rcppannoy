@@ -1,7 +1,7 @@
 
 R version 3.1.2 (2014-10-31) -- "Pumpkin Helmet"
 Copyright (C) 2014 The R Foundation for Statistical Computing
-Platform: x86_64-pc-linux-gnu (64-bit)
+Platform: i686-pc-linux-gnu (32-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
 You are welcome to redistribute it under certain conditions.
@@ -98,7 +98,7 @@ pass 7...
 pass 8...
 pass 9...
 has 23 nodes
-[1] 0 1
+[1] 0 1 2
 > testGetNNsByItem()
 pass 0...
 pass 1...
@@ -111,18 +111,18 @@ pass 7...
 pass 8...
 pass 9...
 has 23 nodes
-[1] 0 1
-[1] 1 0
+[1] 0 1 2
+[1] 1 0 2
 > testDist()
-[1] 0.5857864
+[1] 0.5857865
 > testDist2()
-[1] 0.009727649
+[1] 0.009727607
 > testDist3()
-[1] 0.5857864
+[1] 0.5857865
 [1] 0.5857864
 > testDistDegen()
 [1] 2
 > 
 > proc.time()
    user  system elapsed 
-  0.623   0.022   0.637 
+  0.688   0.436   0.693 
