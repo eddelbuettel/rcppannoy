@@ -5,6 +5,8 @@
 	* inst/tests/runit.euclidean.R: Idem
 	* DESCRIPTION: Added Suggests: RUnit
 
+	* .travis.yml: Added to enable Travis CI
+
 2014-11-09  Dirk Eddelbuettel  <edd@debian.org>
 
 	* inst/include/annoylib.h: Updated to new version from annoy
