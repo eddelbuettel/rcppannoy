@@ -68,3 +68,24 @@ test07degen <- function() {
 
     checkEquals(a$getDistance(0, 1), 2.0, msg="distance 4", tolerance=1.0e-6)
 }
+
+test08largeIndex <- function() {
+    ## Generate pairs of random points where the pair is super close
+    f <- 10
+    a <- new(AnnoyAngular, f)
+    set.seed(123)
+    for (j in seq(0, 10000, by=2)) {
+        p <- rnorm(f)
+        f1 <- runif(1) + 1
+        f2 <- runif(1) + 1
+        x <- f1 * p + rnorm(f, 0, 1.0e-2)
+        y <- f2 * p + rnorm(f, 0, 1.0e-2)
+        a$addItem(j, x)
+        a$addItem(j+1, y)
+    }
+    a$build(10)
+    for (j in seq(0, 10000, by=2)) {
+        checkEquals(a$getNNsByItem(j,   2), c(j,   j+1), msg="getNNsByItem check1")
+        checkEquals(a$getNNsByItem(j+1, 2), c(j+1, j),   msg="getNNsByItem check1")
+    }
+}
