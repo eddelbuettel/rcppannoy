@@ -1,3 +1,10 @@
+2014-11-10  Dirk Eddelbuettel  <edd@debian.org>
+
+	* tests/runUnitTests.R: Added RUnit unit test caller
+	* inst/tests/runit.angular.R: First set of unit tests
+	* inst/tests/runit.euclidean.R: Idem
+	* DESCRIPTION: Added Suggests: RUnit
+
 2014-11-09  Dirk Eddelbuettel  <edd@debian.org>
 
 	* inst/include/annoylib.h: Updated to new version from annoy
