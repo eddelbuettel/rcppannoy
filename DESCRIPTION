@@ -15,3 +15,4 @@ License: GPL (>= 2)
 Imports: methods, Rcpp (>= 0.11.3)
 LinkingTo: Rcpp, BH
 Suggests: RUnit
+OS_type: unix
