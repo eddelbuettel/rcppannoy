@@ -1,4 +1,4 @@
-## rcppannoy
+## RcppAnnoy
 
 [![Build Status](https://travis-ci.org/eddelbuettel/rcppannoy.png)](https://travis-ci.org/eddelbuettel/rcppannoy)
 
@@ -10,7 +10,8 @@ Rcpp bindings for [Annoy](https://github.com/spotify/annoy)
 library for Approximate Nearest Neighbours with a particular focus on
 efficient memory use and the ability to load a pre-saved index.
 
-[Annoy](https://github.com/spotify/annoy) is written by Erik Bernhardsson.
+[Annoy](https://github.com/spotify/annoy) is written by 
+[Erik Bernhardsson](http://erikbern.com).
 
 ### Why this package?
 
