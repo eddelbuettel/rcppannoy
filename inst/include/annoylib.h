@@ -35,6 +35,14 @@
 #include <boost/random/uniform_01.hpp>
 #include <boost/random/bernoulli_distribution.hpp>
 
+// This allows others to supply their own logger / error printer without
+// requiring Annoy to import their headers. See RcppAnnoy for a use case.
+#ifndef __ERROR_PRINTER_OVERRIDE__
+  #define showUpdate(...) { fprintf(stderr, __VA_ARGS__ ); }
+#else
+  #define showUpdate(...) { __ERROR_PRINTER_OVERRIDE__( __VA_ARGS__ ); }
+#endif
+
 #ifndef NO_PACKED_STRUCTS
 #define PACKED_STRUCTS_EXTRA __attribute__((__packed__))
 // TODO: this is turned on by default, but may not work for all architectures! Need to investigate.
@@ -107,7 +115,7 @@ struct Angular {
      */
     int n_descendants;
     int children[2]; // Will possibly store more than 2
-    T v[1]; // Hack. We just allocate as much memory as we need and let this array overflow
+    T v[1]; // We let this one overflow intentionally. Need to allocate at least 1 to make GCC happy
   };
   static inline T distance(const T* x, const T* y, int f) {
     // want to calculate (a/|a| - b/|b|)^2
@@ -226,7 +234,8 @@ protected:
 public:
   AnnoyIndex(int f) : _random() {
     _f = f;
-    _s = sizeof(typename Distance::node) + sizeof(T) * f; // Size of each node
+    _s = sizeof(typename Distance::node) + sizeof(T) * (f - 1); // Size of each node
+    // Note that we need to subtract one because we already allocated it
     _n_items = 0;
     _n_nodes = 0;
     _nodes_size = 0;
@@ -265,8 +274,7 @@ public:
         break;
       if (q != -1 && _roots.size() >= (size_t)q)
         break;
-      //fprintf(stderr, "pass %zd...\n", _roots.size());
-      REprintf("pass %zd...\n", _roots.size());
+      showUpdate("pass %zd...\n", _roots.size());
 
       vector<int> indices;
       for (int i = 0; i < _n_items; i++)
@@ -281,8 +289,7 @@ public:
       memcpy(_get(_n_nodes + i), _get(_roots[i]), _s);
     _n_nodes += _roots.size();
 
-    //fprintf(stderr, "has %d nodes\n", _n_nodes);
-    REprintf("has %d nodes\n", _n_nodes);
+    showUpdate("has %d nodes\n", _n_nodes);
   }
 
   bool save(const string& filename) {
@@ -316,8 +323,7 @@ public:
     off_t size = _n_nodes * _s;
     munmap(_nodes, size);
     reinitialize();
-    //fprintf(stderr, "unloaded\n");
-    REprintf("unloaded\n");
+    showUpdate("unloaded\n");
   }
 
   bool load(const string& filename) {
@@ -348,8 +354,7 @@ public:
     }
     _loaded = true;
     _n_items = m;
-    //fprintf(stderr, "found %lu roots with degree %d\n", _roots.size(), m);
-    REprintf("found %lu roots with degree %d\n", _roots.size(), m);
+    showUpdate("found %lu roots with degree %d\n", _roots.size(), m);
     return true;
   }
 
@@ -445,8 +450,7 @@ protected:
     while (children_indices[0].size() == 0 || children_indices[1].size() == 0) {
       // If we didn't find a hyperplane, just randomize sides as a last option
       if (indices.size() > 100000)
-        //fprintf(stderr, "Failed splitting %lu items\n", indices.size());
-        REprintf("Failed splitting %lu items\n", indices.size());
+        showUpdate("Failed splitting %lu items\n", indices.size());
 
       children_indices[0].clear();
       children_indices[1].clear();

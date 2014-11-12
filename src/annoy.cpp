@@ -2,6 +2,8 @@
 
 #include <Rcpp.h>
 
+// define R's REprintf as the 'local' error print method for Annoy
+#define __ERROR_PRINTER_OVERRIDE__  REprintf
 #include "annoylib.h"
 
 template<typename T, typename Distance> 
