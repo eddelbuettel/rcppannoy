@@ -1,9 +1,9 @@
 
-test01setup <- function() {
+.setUp <- function() {
     suppressMessages(library(RcppAnnoy))
 }
 
-test02getNNsByVector <- function() {
+test01getNNsByVector <- function() {
     f <- 2
     a <- new(AnnoyEuclidean, f)
 
@@ -17,7 +17,7 @@ test02getNNsByVector <- function() {
                 msg="getNNsByVector check")
 }
 
-test03dist <- function() {
+test02dist <- function() {
     f <- 2
     a <- new(AnnoyEuclidean, f)
     a$addItem(0, c(0, 1))
@@ -26,7 +26,7 @@ test03dist <- function() {
     checkEquals(a$getDistance(0, 1), 1.0, msg="distance 1")#
 }
 
-test04largeIndex <- function() {
+test03largeIndex <- function() {
     ## Generate pairs of random points where the pair is super close
     f <- 10
     #q <- rnorm(f, 0, 10)
@@ -46,7 +46,7 @@ test04largeIndex <- function() {
     }
 }
 
-test05precision <- function() {
+test04precision <- function() {
 
     precision <- function(n, nTrees=10, nPoints=10000) {
         ## create random points at distance x

@@ -1,9 +1,9 @@
 
-test01setup <- function() {
+.setUup <- function() {
     suppressMessages(library(RcppAnnoy))
 }
 
-test02getNNsByVector <- function() {
+test01getNNsByVector <- function() {
     f <- 3
     a <- new(AnnoyAngular, f)
 
@@ -18,7 +18,7 @@ test02getNNsByVector <- function() {
                 msg="getNNsByVector check")
 }
 
-test03getNNsByItem <- function() {
+test02getNNsByItem <- function() {
     f <- 3
     a <- new(AnnoyAngular, f)
     a$addItem(0, c(2,1,0))
@@ -30,7 +30,7 @@ test03getNNsByItem <- function() {
     checkEquals(a$getNNsByItem(1, 3), c(1,0,2), msg="getNNsByItem check2")
 }
 
-test04dist <- function() {
+test03dist <- function() {
     f <- 2
     a <- new(AnnoyAngular, f)
     a$addItem(0, c(0, 1))
@@ -40,7 +40,7 @@ test04dist <- function() {
                 msg="distance 1", tolerance=1e-6)
 }
 
-test05dist2 <- function() {
+test04dist2 <- function() {
     f <- 2
     a <- new(AnnoyAngular, f)
     a$addItem(0, c(1000, 0))
@@ -49,7 +49,7 @@ test05dist2 <- function() {
     checkEquals(a$getDistance(0, 1), 0, msg="distance 2")
 }
 
-test06dist3 <- function() {
+test05dist3 <- function() {
     f <- 2
     a <- new(AnnoyAngular, f)
     a$addItem(0, c(97, 0))
@@ -60,7 +60,7 @@ test06dist3 <- function() {
     checkEquals(a$getDistance(0, 1), d, msg="distance 3", tolerance=1.0e-6)
 }
 
-test07degen <- function() {
+test06degen <- function() {
     f <- 2
     a <- new(AnnoyAngular, f)
     a$addItem(0, c(1, 0))
@@ -69,7 +69,7 @@ test07degen <- function() {
     checkEquals(a$getDistance(0, 1), 2.0, msg="distance 4", tolerance=1.0e-6)
 }
 
-test08largeIndex <- function() {
+test07largeIndex <- function() {
     ## Generate pairs of random points where the pair is super close
     f <- 10
     a <- new(AnnoyAngular, f)
@@ -89,3 +89,4 @@ test08largeIndex <- function() {
         checkEquals(a$getNNsByItem(j+1, 2), c(j+1, j),   msg="getNNsByItem check1")
     }
 }
+

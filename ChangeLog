@@ -1,5 +1,8 @@
 2014-11-11  Dirk Eddelbuettel  <edd@debian.org>
 
+	* inst/tests/runit.index.R: New test against binary index
+	* inst/tests/data/test.tree: Binary file used by test
+
 	* inst/tests/runit.euclidean.R: Added more tests
 
 2014-11-10  Dirk Eddelbuettel  <edd@debian.org>
