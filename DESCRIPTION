@@ -8,7 +8,8 @@ Maintainer: Dirk Eddelbuettel <edd@debian.org>
 Description: Annoy is a small C++ library for Approximate Nearest Neighbors 
  written for efficient memory usage as well an ability to load from / save to
  disk. This package provides an R interface by relying on the Rcpp and BH
- packages. See https://github.com/spotify/annoy for more on Annoy. Annoy is
+ packages, exposing the same interface as the original Python wrapper to
+ Annoy. See https://github.com/spotify/annoy for more on Annoy. Annoy is
  released under the Apache License; this package is licensed under GPL-2 or
  later just like R and Rcpp. 
 License: GPL (>= 2)
