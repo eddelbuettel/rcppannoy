@@ -49,6 +49,7 @@ public:
     void   callUnload()                   { this->unload();                  }
     int    getNItems()                    { return this->get_n_items();      }
     double getDistance(int i, int j)      { return this->get_distance(i, j); }
+    void   verbose(bool v)                { this->_verbose = v;              }
 
     std::vector<int> getNNsByItem(int item, int n) {
         std::vector<int> result;
@@ -96,6 +97,7 @@ RCPP_MODULE(AnnoyAngular) {
         .method("getNNsByVector", &Annoy<float, Angular<float> >::getNNsByVector, "retrieve Nearest Neigbours given vector")
         .method("getItemsVector", &Annoy<float, Angular<float> >::getItemsVector, "retrieve item vector")
         .method("getNItems",      &Annoy<float, Angular<float> >::getNItems,      "get N items")
+        .method("setVerbose",     &Annoy<float, Angular<float> >::verbose,        "set verbose")
         ;
 }
 
@@ -115,5 +117,7 @@ RCPP_MODULE(AnnoyEuclidean) {
         .method("getNNsByVector", &Annoy<float, Euclidean<float> >::getNNsByVector, "retrieve Nearest Neigbours given vector")
         .method("getItemsVector", &Annoy<float, Euclidean<float> >::getItemsVector, "retrieve item vector")
         .method("getNItems",      &Annoy<float, Euclidean<float> >::getNItems,      "get N items")
+        .method("setVerbose",     &Annoy<float, Euclidean<float> >::verbose,        "set verbose")
         ;
 }
+
