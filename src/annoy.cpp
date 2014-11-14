@@ -87,17 +87,17 @@ RCPP_MODULE(AnnoyAngular) {
         
         .constructor<int32_t>("constructor with integer count")  
 
-        .method("addItem",        &Annoy<int32_t, float, Angular<int32_t, float> >::addItem,         "add item")
-        .method("build",          &Annoy<int32_t, float, Angular<int32_t, float> >::callBuild,       "build an index")
-        .method("save",           &Annoy<int32_t, float, Angular<int32_t, float> >::callSave,        "save index to file")
-        .method("load",           &Annoy<int32_t, float, Angular<int32_t, float> >::callLoad,        "load index from file")
-        .method("unload",         &Annoy<int32_t, float, Angular<int32_t, float> >::callUnload,      "unload index")
-        .method("getDistance",    &Annoy<int32_t, float, Angular<int32_t, float> >::getDistance,     "get distance between i and j")
-        .method("getNNsByItem",   &Annoy<int32_t, float, Angular<int32_t, float> >::getNNsByItem,    "retrieve Nearest Neigbours given item")
-        .method("getNNsByVector", &Annoy<int32_t, float, Angular<int32_t, float> >::getNNsByVector,  "retrieve Nearest Neigbours given vector")
-        .method("getItemsVector", &Annoy<int32_t, float, Angular<int32_t, float> >::getItemsVector,  "retrieve item vector")
-        .method("getNItems",      &Annoy<int32_t, float, Angular<int32_t, float> >::getNItems,       "get N items")
-        .method("setVerbose",     &Annoy<int32_t, float, Angular<int32_t, float> >::verbose,         "set verbose")
+        .method("addItem",        &AnnoyAngular::addItem,         "add item")
+        .method("build",          &AnnoyAngular::callBuild,       "build an index")
+        .method("save",           &AnnoyAngular::callSave,        "save index to file")
+        .method("load",           &AnnoyAngular::callLoad,        "load index from file")
+        .method("unload",         &AnnoyAngular::callUnload,      "unload index")
+        .method("getDistance",    &AnnoyAngular::getDistance,     "get distance between i and j")
+        .method("getNNsByItem",   &AnnoyAngular::getNNsByItem,    "retrieve Nearest Neigbours given item")
+        .method("getNNsByVector", &AnnoyAngular::getNNsByVector,  "retrieve Nearest Neigbours given vector")
+        .method("getItemsVector", &AnnoyAngular::getItemsVector,  "retrieve item vector")
+        .method("getNItems",      &AnnoyAngular::getNItems,       "get N items")
+        .method("setVerbose",     &AnnoyAngular::verbose,         "set verbose")
         ;
 }
 
@@ -107,17 +107,17 @@ RCPP_MODULE(AnnoyEuclidean) {
         
         .constructor<int32_t>("constructor with integer count")  
 
-        .method("addItem",        &Annoy<int32_t, float, Euclidean<int32_t, float> >::addItem,        "add item")
-        .method("build",          &Annoy<int32_t, float, Euclidean<int32_t, float> >::callBuild,      "build an index")
-        .method("save",           &Annoy<int32_t, float, Euclidean<int32_t, float> >::callSave,       "save index to file")
-        .method("load",           &Annoy<int32_t, float, Euclidean<int32_t, float> >::callLoad,       "load index from file")
-        .method("unload",         &Annoy<int32_t, float, Euclidean<int32_t, float> >::callUnload,     "unload index")
-        .method("getDistance",    &Annoy<int32_t, float, Euclidean<int32_t, float> >::getDistance,    "get distance between i and j")
-        .method("getNNsByItem",   &Annoy<int32_t, float, Euclidean<int32_t, float> >::getNNsByItem,   "retrieve Nearest Neigbours given item")
-        .method("getNNsByVector", &Annoy<int32_t, float, Euclidean<int32_t, float> >::getNNsByVector, "retrieve Nearest Neigbours given vector")
-        .method("getItemsVector", &Annoy<int32_t, float, Euclidean<int32_t, float> >::getItemsVector, "retrieve item vector")
-        .method("getNItems",      &Annoy<int32_t, float, Euclidean<int32_t, float> >::getNItems,      "get N items")
-        .method("setVerbose",     &Annoy<int32_t, float, Euclidean<int32_t, float> >::verbose,        "set verbose")
+        .method("addItem",        &AnnoyEuclidean::addItem,        "add item")
+        .method("build",          &AnnoyEuclidean::callBuild,      "build an index")
+        .method("save",           &AnnoyEuclidean::callSave,       "save index to file")
+        .method("load",           &AnnoyEuclidean::callLoad,       "load index from file")
+        .method("unload",         &AnnoyEuclidean::callUnload,     "unload index")
+        .method("getDistance",    &AnnoyEuclidean::getDistance,    "get distance between i and j")
+        .method("getNNsByItem",   &AnnoyEuclidean::getNNsByItem,   "retrieve Nearest Neigbours given item")
+        .method("getNNsByVector", &AnnoyEuclidean::getNNsByVector, "retrieve Nearest Neigbours given vector")
+        .method("getItemsVector", &AnnoyEuclidean::getItemsVector, "retrieve item vector")
+        .method("getNItems",      &AnnoyEuclidean::getNItems,      "get N items")
+        .method("setVerbose",     &AnnoyEuclidean::verbose,        "set verbose")
         ;
 }
 
