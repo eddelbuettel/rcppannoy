@@ -1,3 +1,8 @@
+2014-11-14  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/annoylib.h: New upstream version with templated int
+	* src/annoy.cpp: Updated for new Annoy library 
+
 2014-11-13  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION: Version 0.0.2
