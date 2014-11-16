@@ -1,3 +1,9 @@
+2014-11-16  Quiank Kou <qkou@umail.iu.edu>
+
+	* inst/include/annoylib.h: Added Windows support for mmap
+	* inst/include/mman.h: Windows implementation of mmap
+	* src/annoy.cpp: Add two #undef needed on Windows
+
 2014-11-16  Dirk Eddelbuettel  <edd@debian.org>
 
 	* README.md: Updated to note CRAN package, possible Windows port
