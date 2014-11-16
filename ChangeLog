@@ -1,3 +1,7 @@
+2014-11-16  Dirk Eddelbuettel  <edd@debian.org>
+
+	* README.md: Updated to note CRAN package, possible Windows port
+
 2014-11-15  Dirk Eddelbuettel  <edd@debian.org>
 
 	* inst/include/annoylib.h: New upstream version
