@@ -1,4 +1,8 @@
 
+// This is from https://code.google.com/p/mman-win32/
+// 
+// Licensed under MIT
+
 #ifndef _MMAN_WIN32_H
 #define _MMAN_WIN32_H
 

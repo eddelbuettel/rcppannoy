@@ -10,7 +10,8 @@ Description: Annoy is a small C++ library for Approximate Nearest Neighbors
  disk. This package provides an R interface by relying on the Rcpp and BH
  packages, exposing the same interface as the original Python wrapper to
  Annoy. See https://github.com/spotify/annoy for more on Annoy. Annoy is
- released under Version 2.0 of the Apache License.
+ released under Version 2.0 of the Apache License. Also included is a small
+ Windows port of mmap which is release under the MIT license.
 License: GPL (>= 2)
 Imports: methods, Rcpp (>= 0.11.3)
 LinkingTo: Rcpp, BH
