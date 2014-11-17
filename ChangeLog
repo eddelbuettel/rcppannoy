@@ -1,3 +1,9 @@
+2014-11-17  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION: Version 0.0.3
+
+	* inst/include/annoylib.h: Updated to new version from Annoy
+
 2014-11-16  Quiank Kou <qkou@umail.iu.edu>
 
 	* inst/include/annoylib.h: Added Windows support for mmap

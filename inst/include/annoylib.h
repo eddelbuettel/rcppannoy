@@ -26,8 +26,6 @@
 
 #ifdef __MINGW32__
 #include "mman.h"
-#undef Realloc
-#undef Free
 #include <windows.h>
 #else
 #include <sys/mman.h>
@@ -43,10 +41,6 @@
 #include <boost/random/normal_distribution.hpp>
 #include <boost/random/uniform_01.hpp>
 #include <boost/random/bernoulli_distribution.hpp>
-
-#if defined(__MINGW32__)
-#include "mman.h"
-#endif
 
 // This allows others to supply their own logger / error printer without
 // requiring Annoy to import their headers. See RcppAnnoy for a use case.
