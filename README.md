@@ -26,11 +26,8 @@ original Python wrapper for the [Annoy](https://github.com/spotify/annoy)
 library. It also replicates all unit tests written for the Python frontend,
 including a test for efficiently `mmap`-ing a binary index file.
 
-As [Annoy](https://github.com/spotify/annoy) uses `mmap` for fast disk-access
-to stored index file, a Windows build is possible via `MapViewOfFile` (see e.g. Jeff Ryan's
-[mmap CRAN package](http://cran.r-project.org/web/packages/mmap/index.html)) but
-we have not needed that functionality.  Clean pull requests to 
-[Annoy](https://github.com/spotify/annoy) or here would be welcome.
+The package originally built on Linux and OS X, and thanks to a patch by
+[Qiang Kou](https://github.com/thirdwing) now also builds on Windows.
 
 ## Installation
 
