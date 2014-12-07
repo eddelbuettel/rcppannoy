@@ -1,3 +1,10 @@
+2014-12-07  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION: Version 0.0.4
+
+	* DESCRIPTION: Added Depends: R (>= 3.1) as need for C++11
+	prohibits deployment on R-oldrel
+
 2014-11-17  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION: Version 0.0.3
