@@ -23,7 +23,7 @@
 
 	* inst/include/annoylib.h: Updated to new version from Annoy
 
-2014-11-16  Quiank Kou <qkou@umail.iu.edu>
+2014-11-16  Qiang Kou <qkou@umail.iu.edu>
 
 	* inst/include/annoylib.h: Added Windows support for mmap
 	* inst/include/mman.h: Windows implementation of mmap
