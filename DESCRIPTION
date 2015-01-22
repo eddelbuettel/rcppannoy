@@ -2,7 +2,7 @@ Package: RcppAnnoy
 Type: Package
 Title: Rcpp Bindings for Annoy, a Library for Approximate Nearest Neighbors
 Version: 0.0.5
-Date: 2015-01-10
+Date: 2015-01-22
 Author: Dirk Eddelbuettel
 Maintainer: Dirk Eddelbuettel <edd@debian.org>
 Description: Annoy is a small C++ library for Approximate Nearest Neighbors 
