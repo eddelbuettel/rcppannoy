@@ -1,6 +1,4 @@
-## RcppAnnoy
-
-[![Build Status](https://travis-ci.org/eddelbuettel/rcppannoy.png)](https://travis-ci.org/eddelbuettel/rcppannoy)
+## RcppAnnoy [![Build Status](https://travis-ci.org/eddelbuettel/rcppannoy.png)](https://travis-ci.org/eddelbuettel/rcppannoy) [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html)
 
 Rcpp bindings for [Annoy](https://github.com/spotify/annoy)
 
