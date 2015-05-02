@@ -4,6 +4,8 @@
 
 	* src/annoy.cpp: Call save() + load() with use const char* arguments
 
+	* cleanup: Clean a bit more in src/
+
 2015-01-22  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION: Version 0.0.5
