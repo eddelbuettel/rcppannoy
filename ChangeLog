@@ -1,5 +1,7 @@
 2015-05-02  Dirk Eddelbuettel  <edd@debian.org>
 
+	* DESCRIPTION: Roll Version: and Date:
+
 	* inst/include/annoylib.h: Upgraded to Annoy 1.1.1
 
 	* src/annoy.cpp: Call save() + load() with use const char* arguments
@@ -13,7 +15,7 @@
 2015-01-21  Dirk Eddelbuettel  <edd@debian.org>
 
 	* inst/include/annoylib.h: Synced once more with upstream; this
-	version addresses the UBSAN runtime issue 
+	version addresses the UBSAN runtime issue
 
 2015-01-10  Dirk Eddelbuettel  <edd@debian.org>
 
