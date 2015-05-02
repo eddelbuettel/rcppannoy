@@ -35,6 +35,8 @@
 
 // define R's REprintf as the 'local' error print method for Annoy
 #define __ERROR_PRINTER_OVERRIDE__  REprintf
+// define R's unif_rand() as the uniform rand generator for Annoy
+#define __UNIFORM_RAND_OVERRIDE__ static_cast<long int>(unif_rand() * RAND_MAX)
 #include "annoylib.h"
 
 template<typename S, typename T, typename Distance> 
