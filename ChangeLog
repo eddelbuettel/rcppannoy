@@ -1,3 +1,9 @@
+2015-05-02  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/annoylib.h: Upgraded to Annoy 1.1.1
+
+	* src/annoy.cpp: Call save() + load() with use const char* arguments
+
 2015-01-22  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION: Version 0.0.5

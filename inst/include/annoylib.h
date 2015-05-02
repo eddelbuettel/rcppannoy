@@ -34,13 +34,9 @@
 #include <string.h>
 #include <math.h>
 #include <vector>
+#include <algorithm>
 #include <queue>
 #include <limits>
-#include <boost/version.hpp>
-#include <boost/random.hpp>
-#include <boost/random/normal_distribution.hpp>
-#include <boost/random/uniform_01.hpp>
-#include <boost/random/bernoulli_distribution.hpp>
 
 // This allows others to supply their own logger / error printer without
 // requiring Annoy to import their headers. See RcppAnnoy for a use case.
@@ -60,40 +56,41 @@ using std::string;
 using std::pair;
 using std::numeric_limits;
 using std::make_pair;
-using boost::variate_generator;
-using boost::uniform_01;
-
-#if BOOST_VERSION > 1004400
-#define BOOST_RANDOM boost::random
-#else
-#define BOOST_RANDOM boost
-#endif
 
 template<typename T>
 struct Randomness {
   // Just a dummy class to avoid code repetition.
   // Owned by the AnnoyIndex, passed around to the distance metrics
+  Randomness() : _has_X2(true) {};
+  T _X1, _X2;
+  bool _has_X2;
 
-  BOOST_RANDOM::mt19937 _rng;
-  BOOST_RANDOM::normal_distribution<T> _nd;
-  variate_generator<BOOST_RANDOM::mt19937&, 
-                    BOOST_RANDOM::normal_distribution<T> > _var_nor;
-  uniform_01<T> _ud;
-  variate_generator<BOOST_RANDOM::mt19937&, 
-                    uniform_01<T> > _var_uni;
-  BOOST_RANDOM::bernoulli_distribution<T> _bd;
-  variate_generator<BOOST_RANDOM::mt19937&, 
-                    BOOST_RANDOM::bernoulli_distribution<T> > _var_ber;
-
-  Randomness() : _rng(), _nd(), _var_nor(_rng, _nd), _ud(), _var_uni(_rng, _ud), _bd(), _var_ber(_rng, _bd) {}
   inline T gaussian() {
-    return _var_nor();
+    // Taken from http://phoxis.org/2013/05/04/generating-random-numbers-from-normal-distribution-in-c/
+    _has_X2 = !_has_X2;
+    if (_has_X2)
+      return _X2;
+
+    T W, U1, U2;
+    do {
+      U1 = -1 + ((T)rand() / RAND_MAX) * 2;
+      U2 = -1 + ((T)rand() / RAND_MAX) * 2;
+      W = U1 * U1 + U2 * U2;
+    }
+    while (W >= 1 || W == 0);
+
+    T mult = sqrt((-2 * log(W)) / W);
+    _X1 = U1 * mult;
+    _X2 = U2 * mult;
+
+    return _X1;
   }
+
   inline int flip() {
-    return _var_ber();
+    return rand() % 2;
   }
   inline T uniform(T min, T max) {
-    return _var_uni() * (max - min) + min;
+    return ((T)rand() / RAND_MAX) * (max - min) + min;
   }
 };
 
@@ -223,8 +220,26 @@ struct Euclidean {
   }
 };
 
+template<typename S, typename T>
+class AnnoyIndexInterface {
+ public:
+  virtual ~AnnoyIndexInterface() {};
+  virtual void add_item(S item, const T* w) = 0;
+  virtual void build(int q) = 0;
+  virtual bool save(const char* filename) = 0;
+  virtual void reinitialize() = 0;
+  virtual void unload() = 0;
+  virtual bool load(const char* filename) = 0;
+  virtual T get_distance(S i, S j) = 0;
+  virtual void get_nns_by_item(S item, size_t n, vector<S>* result) = 0;
+  virtual void get_nns_by_vector(const T* w, size_t n, vector<S>* result) = 0;
+  virtual S get_n_items() = 0;
+  virtual void verbose(bool v) = 0;
+  virtual void get_item(S item, vector<T>* v) = 0;
+};
+
 template<typename S, typename T, typename Distance>
-class AnnoyIndex {
+  class AnnoyIndex : public AnnoyIndexInterface<S, T> {
   /*
    * We use random projection to build a forest of binary trees of all items.
    * Basically just split the hyperspace into two sides by a hyperplane,
@@ -306,8 +321,8 @@ public:
     if (_verbose) showUpdate("has %d nodes\n", _n_nodes);
   }
 
-  bool save(const string& filename) {
-    FILE *f = fopen(filename.c_str(), "w");
+  bool save(const char* filename) {
+    FILE *f = fopen(filename, "w");
     if (f == NULL)
       return false;
 
@@ -340,8 +355,8 @@ public:
     if (_verbose) showUpdate("unloaded\n");
   }
 
-  bool load(const string& filename) {
-    int fd = open(filename.c_str(), O_RDONLY, (mode_t)0400);
+  bool load(const char* filename) {
+    int fd = open(filename, O_RDONLY, (mode_t)0400);
     if (fd == -1)
       return false;
     off_t size = lseek(fd, 0, SEEK_END);
@@ -372,7 +387,7 @@ public:
     return true;
   }
 
-  inline T get_distance(S i, S j) {
+  T get_distance(S i, S j) {
     const T* x = _get(i)->v;
     const T* y = _get(j)->v;
     return Distance::distance(x, y, _f);
@@ -391,6 +406,12 @@ public:
   }
   void verbose(bool v) {
     _verbose = v;
+  }
+
+  void get_item(S item, vector<T>* v) {
+    typename Distance::node* m = _get(item);
+    for (int z = 0; z < _f; z++)
+      v->push_back(m->v[z]);
   }
 
 protected:
@@ -530,8 +551,8 @@ protected:
       if (nd->n_descendants == 1) {
         nns.push_back(i);
       } else if (nd->n_descendants <= _K) {
-	const S* dst = nd->children;
-	nns.insert(nns.end(), nd->children, &dst[nd->n_descendants]);
+        const S* dst = nd->children;
+        nns.insert(nns.end(), nd->children, &dst[nd->n_descendants]);
       } else {
         T margin = Distance::margin(nd, v, _f);
         q.push(make_pair(+margin, nd->children[1]));
@@ -539,7 +560,7 @@ protected:
       }
     }
 
-    sort(nns.begin(), nns.end());
+    std::sort(nns.begin(), nns.end());
     vector<pair<T, S> > nns_dist;
     S last = -1;
     for (size_t i = 0; i < nns.size(); i++) {
@@ -558,3 +579,4 @@ protected:
 };
 
 #endif
+// vim: tabstop=2 shiftwidth=2
