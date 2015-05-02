@@ -1,4 +1,4 @@
-## RcppAnnoy [![Build Status](https://travis-ci.org/eddelbuettel/rcppannoy.png)](https://travis-ci.org/eddelbuettel/rcppannoy) [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html)
+## RcppAnnoy [![Build Status](https://travis-ci.org/eddelbuettel/rcppannoy.png)](https://travis-ci.org/eddelbuettel/rcppannoy) [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html) [![Downloads](http://cranlogs.r-pkg.org/badges/RcppAnnoy?color=brightgreen)](http://cran.rstudio.com/package=RcppAnnoy)
 
 Rcpp bindings for [Annoy](https://github.com/spotify/annoy)
 
@@ -17,7 +17,7 @@ It provides a nice example for Rcpp Modules and use of templates: Annoy uses
 a template data type (generally `float` for efficiency) and one of two
 distance measures.  This package shows that it is easy to wrap both.
 
-## Status
+### Status
 
 The package matches the behaviour of the original Python package in the
 original Python wrapper for the [Annoy](https://github.com/spotify/annoy)
@@ -27,15 +27,18 @@ including a test for efficiently `mmap`-ing a binary index file.
 The package originally built on Linux and OS X, and thanks to a patch by
 [Qiang Kou](https://github.com/thirdwing) now also builds on Windows.
 
-## Installation
+### Installation
 
 You can either install from source via this repo, or install
 [the CRAN package](http://cran.r-project.org/web/packages/RcppAnnoy/index.html)
 the usual way from [R](http://www.r-project.org).
 
-## Author
+### Author
 
 Dirk Eddelbuettel
 
+### License
+
+GPL (>= 2)
 
 
