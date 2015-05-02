@@ -49,8 +49,8 @@ public:
     }
 
     void   callBuild(int n)               { this->build(n);                  }
-    void   callSave(std::string filename) { this->save(filename);            }
-    void   callLoad(std::string filename) { this->load(filename);            }
+    void   callSave(std::string filename) { this->save(filename.c_str());    }
+    void   callLoad(std::string filename) { this->load(filename.c_str());    }
     void   callUnload()                   { this->unload();                  }
     int    getNItems()                    { return this->get_n_items();      }
     double getDistance(int i, int j)      { return this->get_distance(i, j); }
