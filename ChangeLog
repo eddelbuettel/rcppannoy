@@ -1,22 +1,24 @@
 2015-05-03  Dirk Eddelbuettel  <edd@debian.org>
 
-	* DESCRIPTION: Roll Version: and Date:
+	* DESCRIPTION: Version 0.0.6
 
-	* inst/include/annoylib.h: Upgraded to new version from Annoy 1.2.1
-	based on our pull request to support supplying an RNG
+	* inst/include/annoylib.h: Upgraded to new version from Annoy 1.2.2
+	based on our pull request (and fix) to support supplying an RNG
 
-	* src/annoy.cpp: Use override to supply R's own RNG instead of the
-	default of rand
+	* src/annoy.cpp: Supply R's own RNG instead of the default of rand
+
+	* .travis.yml: No longer need BH, and install Rcpp via PPA
 
 2015-05-02  Dirk Eddelbuettel  <edd@debian.org>
 
-	* DESCRIPTION: Roll Version: and Date:
-
-	* inst/include/annoylib.h: Upgraded to Annoy 1.1.1
+	* inst/include/annoylib.h: Upgraded to Annoy 1.1.1 (which no longer
+	needs Boost)
 
 	* inst/include/annoylib.h: Replace rand() with random()
 
 	* src/annoy.cpp: Call save() + load() with use const char* arguments
+
+	* DESCRIPTION: Roll Version: and Date:, remove BH dependency
 
 	* cleanup: Clean a bit more in src/
 
