@@ -1,3 +1,13 @@
+2015-05-03  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION: Roll Version: and Date:
+
+	* inst/include/annoylib.h: Upgraded to new version from Annoy 1.2.1
+	based on our pull request to support supplying an RNG
+
+	* src/annoy.cpp: Use override to supply R's own RNG instead of the
+	default of rand
+
 2015-05-02  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION: Roll Version: and Date:

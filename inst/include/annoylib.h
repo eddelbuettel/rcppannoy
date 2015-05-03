@@ -51,16 +51,15 @@
 // TODO: this is turned on by default, but may not work for all architectures! Need to investigate.
 #endif
 
-// This allows others to supply their own random number generator function 
+// This allows others to supply their own random number generator function
 // which is assumed to be uniformly distributed over over 0 .. RAND_MAX
 inline long int randomDraw() {
 #ifndef __UNIFORM_RAND_OVERRIDE__
-  // by default we use random(); if for some reason you do not have random() try rand()
-  return random() * RAND_MAX;
+  return rand() * RAND_MAX;
 #else
   return __UNIFORM_RAND_OVERRIDE__;
-}
 #endif
+}
 
 using std::vector;
 using std::string;
@@ -571,7 +570,7 @@ protected:
       }
     }
 
-    std::sort(nns.begin(), nns.end());
+    sort(nns.begin(), nns.end());
     vector<pair<T, S> > nns_dist;
     S last = -1;
     for (size_t i = 0; i < nns.size(); i++) {
