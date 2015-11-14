@@ -2,7 +2,7 @@
 //
 //  RcppAnnoy -- Rcpp bindings to Annoy library for Approximate Nearest Neighbours
 //
-//  Copyright (C) 2014 - 2015  Dirk Eddelbuettel 
+//  Copyright (C) 2014 - 2015  Dirk Eddelbuettel
 //
 //  This file is part of RcppAnnoy
 //
@@ -38,11 +38,12 @@
 // define R's unif_rand() as the uniform rand generator for Annoy
 #define __UNIFORM_RAND_OVERRIDE__ static_cast<long int>(unif_rand() * RAND_MAX)
 #include "annoylib.h"
+#include "kissrandom.h"
 
 template<typename S, typename T, typename Distance> 
-class Annoy : public AnnoyIndex<S, T, Distance > {
+class Annoy : public AnnoyIndexInterface<S, T> {
 public:
-    Annoy(int n) : AnnoyIndex<S, T, Distance>(n) {}
+    Annoy(int n) : AnnoyIndexInterface<S, T>(n) {}
 
     void addItem(S item, Rcpp::NumericVector dv) {
         std::vector<T> fv(dv.size());
@@ -56,24 +57,26 @@ public:
     void   callUnload()                   { this->unload();                  }
     int    getNItems()                    { return this->get_n_items();      }
     double getDistance(int i, int j)      { return this->get_distance(i, j); }
-    void   verbose(bool v)                { this->_verbose = v;              }
+    //void   verbose(bool v)                { this->_verbose = v;              }
 
-    std::vector<S> getNNsByItem(S item, size_t n) {
+    std::vector<S> getNNsByItem(S item, size_t n, size_t searchk) {
         std::vector<S> result;
-        this->get_nns_by_item(item, n, &result);
+        std::vector<T> distance;
+        this->get_nns_by_item(item, n, searchk, &result, &distance);
         return result;
     }
 
-    std::vector<S> getNNsByVector(std::vector<double> dv, size_t n) {
+    std::vector<S> getNNsByVector(std::vector<double> dv, size_t n, size_t searchk) {
         std::vector<T> fv(dv.size());
         std::copy(dv.begin(), dv.end(), fv.begin());
         std::vector<S> result;
-        this->get_nns_by_vector(&fv[0], n, &result);
+        std::vector<T> distance;
+        this->get_nns_by_vector(&fv[0], n, searchk, &result, &distance);
         return result;
     }
 
     Rcpp::NumericVector getItemsVector(S item) {
-        const typename Distance::node* m = this->_get(item);
+        const typename Distance::Node* m = this->_get(item);
         const T* v = m->v;
         Rcpp::NumericVector dv(this->_f);
         for (int i = 0; i < this->_f; i++) {
@@ -81,18 +84,17 @@ public:
         }
         return dv;
     }
-
-
 };
 
-typedef Annoy<int32_t, float, Angular<int32_t, float> >   AnnoyAngular;
-typedef Annoy<int32_t, float, Euclidean<int32_t, float> > AnnoyEuclidean;
+// this breaks Rcpp Modules
+typedef Annoy<int32_t, float, Angular<int32_t, float, Kiss64Random> >   AnnoyAngular;
+typedef Annoy<int32_t, float, Euclidean<int32_t, float, Kiss64Random> > AnnoyEuclidean;
 
 RCPP_EXPOSED_CLASS_NODECL(AnnoyAngular)
 RCPP_MODULE(AnnoyAngular) {
-    Rcpp::class_<AnnoyAngular>("AnnoyAngular")   
-        
-        .constructor<int32_t>("constructor with integer count")  
+    Rcpp::class_<AnnoyAngular>("AnnoyAngular")
+
+        .constructor<int32_t>("constructor with integer count")
 
         .method("addItem",        &AnnoyAngular::addItem,         "add item")
         .method("build",          &AnnoyAngular::callBuild,       "build an index")
@@ -102,17 +104,17 @@ RCPP_MODULE(AnnoyAngular) {
         .method("getDistance",    &AnnoyAngular::getDistance,     "get distance between i and j")
         .method("getNNsByItem",   &AnnoyAngular::getNNsByItem,    "retrieve Nearest Neigbours given item")
         .method("getNNsByVector", &AnnoyAngular::getNNsByVector,  "retrieve Nearest Neigbours given vector")
-        .method("getItemsVector", &AnnoyAngular::getItemsVector,  "retrieve item vector")
+        //.method("getItemsVector", &AnnoyAngular::getItemsVector,  "retrieve item vector")
         .method("getNItems",      &AnnoyAngular::getNItems,       "get N items")
-        .method("setVerbose",     &AnnoyAngular::verbose,         "set verbose")
+        //.method("setVerbose",     &AnnoyAngular::verbose,         "set verbose")
         ;
 }
 
 RCPP_EXPOSED_CLASS_NODECL(AnnoyEuclidean)
 RCPP_MODULE(AnnoyEuclidean) {
-    Rcpp::class_<AnnoyEuclidean>("AnnoyEuclidean")   
-        
-        .constructor<int32_t>("constructor with integer count")  
+    Rcpp::class_<AnnoyEuclidean>("AnnoyEuclidean")
+
+        .constructor<int32_t>("constructor with integer count")
 
         .method("addItem",        &AnnoyEuclidean::addItem,        "add item")
         .method("build",          &AnnoyEuclidean::callBuild,      "build an index")
@@ -122,9 +124,8 @@ RCPP_MODULE(AnnoyEuclidean) {
         .method("getDistance",    &AnnoyEuclidean::getDistance,    "get distance between i and j")
         .method("getNNsByItem",   &AnnoyEuclidean::getNNsByItem,   "retrieve Nearest Neigbours given item")
         .method("getNNsByVector", &AnnoyEuclidean::getNNsByVector, "retrieve Nearest Neigbours given vector")
-        .method("getItemsVector", &AnnoyEuclidean::getItemsVector, "retrieve item vector")
+        //.method("getItemsVector", &AnnoyEuclidean::getItemsVector, "retrieve item vector")
         .method("getNItems",      &AnnoyEuclidean::getNItems,      "get N items")
-        .method("setVerbose",     &AnnoyEuclidean::verbose,        "set verbose")
+        //.method("setVerbose",     &AnnoyEuclidean::verbose,        "set verbose")
         ;
 }
-
