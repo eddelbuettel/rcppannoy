@@ -6,6 +6,8 @@
 
 language: c
 
+sudo: required
+
 env:
   global:
     - _R_CHECK_FORCE_SUGGESTS_=FALSE
