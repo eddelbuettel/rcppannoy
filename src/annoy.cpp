@@ -98,8 +98,6 @@ public:
 //typedef Annoy<int32_t, float, AnnoyAngularDist>   AnnoyAngular;
 //typedef Annoy<int32_t, float, AnnoyEucledianDist> AnnoyEuclidean;
 
-template class AnnoyIndexInterface<int32_t, float>;
-
 class AnnoyBase {
 protected:
     AnnoyIndexInterface<int32_t, float> *ptr;
@@ -132,18 +130,18 @@ public:
         return result;
     }
 
-    Rcpp::NumericVector getItemsVector(int32_t item) {
+    std::vector<double> getItemsVector(int32_t item) {
         std::vector<float> fv;
         ptr->get_item(item, &fv);
-        Rcpp::NumericVector dv(fv.size());
-        for (int i = 0; i < fv.size(); i++) {
-            dv[i] = fv[i];
-        }
+        std::vector<double> dv(fv.size());
+        std::copy(fv.begin(), fv.end(), dv.begin());
         return dv;
     }
 
 };
 
+// we need to repeat the actual functions here to provide Rcpp Modules with access points
+// standard C++ inheritance does not work for the Modules interface
 class AnnoyAngular : public AnnoyBase {
 public:
     AnnoyAngular(int n) : AnnoyBase(n) {
@@ -157,13 +155,11 @@ public:
     inline int  getNItems()                                   { return AnnoyBase::getNItems();       }
     inline double getDistance(int i, int j)                   { return AnnoyBase::getDistance(i, j); }
     inline void verbose(bool v)                               { AnnoyBase::verbose(v);               }
-    inline std::vector<int32_t> getNNsByItem(int32_t item, size_t n) {
-        return AnnoyBase::getNNsByItem(item, n);
-    }
-    inline std::vector<int32_t> getNNsByVector(std::vector<double> dv, size_t n) {
-        return AnnoyBase::getNNsByVector(dv, n);
-    }
-    inline Rcpp::NumericVector getItemsVector(int32_t item)  { return AnnoyBase::getItemsVector(item); }
+    inline std::vector<int32_t> getNNsByItem(int32_t item, size_t n)
+                                                              { return AnnoyBase::getNNsByItem(item, n); }
+    inline std::vector<int32_t> getNNsByVector(std::vector<double> dv, size_t n)
+                                                              { return AnnoyBase::getNNsByVector(dv, n); }
+    inline std::vector<double> getItemsVector(int32_t item)   { return AnnoyBase::getItemsVector(item);  }
 };
 
 class AnnoyEuclidean : public AnnoyBase {
@@ -179,13 +175,11 @@ public:
     inline int  getNItems()                                   { return AnnoyBase::getNItems();       }
     inline double getDistance(int i, int j)                   { return AnnoyBase::getDistance(i, j); }
     inline void verbose(bool v)                               { AnnoyBase::verbose(v);               }
-    inline std::vector<int32_t> getNNsByItem(int32_t item, size_t n) {
-        return AnnoyBase::getNNsByItem(item, n);
-    }
-    inline std::vector<int32_t> getNNsByVector(std::vector<double> dv, size_t n) {
-        return AnnoyBase::getNNsByVector(dv, n);
-    }
-    inline Rcpp::NumericVector getItemsVector(int32_t item)  { return AnnoyBase::getItemsVector(item); }
+    inline std::vector<int32_t> getNNsByItem(int32_t item, size_t n)
+                                                              { return AnnoyBase::getNNsByItem(item, n); }
+    inline std::vector<int32_t> getNNsByVector(std::vector<double> dv, size_t n)
+                                                              { return AnnoyBase::getNNsByVector(dv, n); }
+    inline std::vector<double> getItemsVector(int32_t item)   { return AnnoyBase::getItemsVector(item);  }
 };
 
 
