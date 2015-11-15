@@ -1,5 +1,7 @@
 2015-11-15  Dirk Eddelbuettel  <edd@debian.org>
 
+	* DESCRIPTION: Version 0.0.7
+
 	* src/annoy.cpp: Changes to adapt to new Annoy interface
 
 2015-11-14  Dirk Eddelbuettel  <edd@debian.org>
