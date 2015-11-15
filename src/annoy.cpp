@@ -158,7 +158,7 @@ class AnnoyAngular {
 protected:
     AnnoyIndexInterface<int32_t, float> *ptr;
 public:
-    prevAnnoyAngular(int n) {
+    AnnoyAngular(int n) {
         ptr = new AnnoyIndex<int32_t, float, Angular, Kiss64Random>(n);
     }
     void addItem(int32_t item, Rcpp::NumericVector dv) {
