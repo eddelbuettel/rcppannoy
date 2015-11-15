@@ -1,7 +1,9 @@
+2015-11-15  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/annoy.cpp: Changes to adapt to new Annoy interface
+
 2015-11-14  Dirk Eddelbuettel  <edd@debian.org>
 
-	[ BORKED -- does not currently build ]
-	
 	* DESCRIPTION: Rolled Date and Version
 
 	* inst/include/annoylib.h: Upgraded to new version from Annoy 1.6.2

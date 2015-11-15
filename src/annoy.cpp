@@ -100,7 +100,7 @@ template class AnnoyIndexInterface<int32_t, float>;
 
 class AnnoyAngular {
 protected:    
-    AnnoyIndexInterface<int32_t, float>* ptr;
+    AnnoyIndexInterface<int32_t, float> *ptr;
 public:
     AnnoyAngular(int n) {
         ptr = new AnnoyIndex<int32_t, float, Angular, Kiss64Random>(n);
@@ -108,43 +108,42 @@ public:
     void addItem(int32_t item, Rcpp::NumericVector dv) {
         std::vector<float> fv(dv.size());
         std::copy(dv.begin(), dv.end(), fv.begin());
-        this->ptr->add_item(item, &fv[0]);
+        ptr->add_item(item, &fv[0]);
     }
-    void   callBuild(int n)               { this->ptr->build(n);                  }
-    void   callSave(std::string filename) { this->ptr->save(filename.c_str());    }
-    void   callLoad(std::string filename) { this->ptr->load(filename.c_str());    }
-    void   callUnload()                   { this->ptr->unload();                  }
-    int    getNItems()                    { return this->ptr->get_n_items();      }
-    double getDistance(int i, int j)      { return this->ptr->get_distance(i, j); }
-    //void   verbose(bool v)                { this->ptr->_verbose = v;              }
+    void   callBuild(int n)               { ptr->build(n);                  }
+    void   callSave(std::string filename) { ptr->save(filename.c_str());    }
+    void   callLoad(std::string filename) { ptr->load(filename.c_str());    }
+    void   callUnload()                   { ptr->unload();                  }
+    int    getNItems()                    { return ptr->get_n_items();      }
+    double getDistance(int i, int j)      { return ptr->get_distance(i, j); }
+    //void   verbose(bool v)                { ptr->_verbose = v;              }
 
-    std::vector<int32_t> getNNsByItem(int32_t item, size_t n, size_t searchk) {
+    std::vector<int32_t> getNNsByItem(int32_t item, size_t n) {
         std::vector<int32_t> result;
-        std::vector<float> distance;
-        this->ptr->get_nns_by_item(item, n, searchk, &result, &distance);
+        ptr->get_nns_by_item(item, n, -1, &result, NULL);
         return result;
     }
 
-    std::vector<int32_t> getNNsByVector(std::vector<double> dv, size_t n, size_t searchk) {
+    std::vector<int32_t> getNNsByVector(std::vector<double> dv, size_t n) {
         std::vector<float> fv(dv.size());
         std::copy(dv.begin(), dv.end(), fv.begin());
         std::vector<int32_t> result;
-        std::vector<float> distance;
-        this->ptr->get_nns_by_vector(&fv[0], n, searchk, &result, &distance);
+        ptr->get_nns_by_vector(&fv[0], n, -1, &result, NULL);
         return result;
     }
 
-    #if 0
-    Rcpp::NumericVector getItemsVector(int32_t item) {
-        const Angular<int32_t, float, Kiss64Random>::Node* m = this->ptr->_get(item);
-        const float* v = m->v;
-        Rcpp::NumericVector dv(this->ptr->_f);
-        for (int i = 0; i < this->ptr->_f; i++) {
-            dv[i] = v[i];
-        }
-        return dv;
-    }
-    #endif
+    // -- commented as as the accessor _get is protected and not exported
+    // Rcpp::NumericVector getItemsVector(int32_t item) {
+    //     typedef Angular<int32_t, float, Kiss64Random> D;
+    //     typedef typename D::Node Node;
+    //     const Node* m = ptr->_get(item);
+    //     const float* v = m->v;
+    //     Rcpp::NumericVector dv(ptr->_f);
+    //     for (int i = 0; i < ptr->_f; i++) {
+    //         dv[i] = v[i];
+    //     }
+    //     return dv;
+    // }
     
 };
 
@@ -168,40 +167,36 @@ public:
     double getDistance(int i, int j)      { return this->ptr->get_distance(i, j); }
     //void   verbose(bool v)                { this->ptr->_verbose = v;              }
 
-    std::vector<int32_t> getNNsByItem(int32_t item, size_t n, size_t searchk) {
+    std::vector<int32_t> getNNsByItem(int32_t item, size_t n) {
         std::vector<int32_t> result;
-        std::vector<float> distance;
-        this->ptr->get_nns_by_item(item, n, searchk, &result, &distance);
+        this->ptr->get_nns_by_item(item, n, -1, &result, NULL);
         return result;
     }
 
-    std::vector<int32_t> getNNsByVector(std::vector<double> dv, size_t n, size_t searchk) {
+    std::vector<int32_t> getNNsByVector(std::vector<double> dv, size_t n) {
         std::vector<float> fv(dv.size());
         std::copy(dv.begin(), dv.end(), fv.begin());
         std::vector<int32_t> result;
-        std::vector<float> distance;
-        this->ptr->get_nns_by_vector(&fv[0], n, searchk, &result, &distance);
+        this->ptr->get_nns_by_vector(&fv[0], n, -1, &result, NULL);
         return result;
     }
 
-    #if 0
-    Rcpp::NumericVector getItemsVector(int32_t item) {
-        const Euclidean<int32_t, float, Kiss64Random>::Node* m = this->ptr->_get(item);
-        const float* v = m->v;
-        Rcpp::NumericVector dv(this->ptr->_f);
-        for (int i = 0; i < this->ptr->_f; i++) {
-            dv[i] = v[i];
-        }
-        return dv;
-    }
-    #endif
+    // -- commented as as the accessor _get is protected and not exported
+    // Rcpp::NumericVector getItemsVector(int32_t item) {
+    //     const Euclidean<int32_t, float, Kiss64Random>::Node* m = this->ptr->_get(item);
+    //     const float* v = m->v;
+    //     Rcpp::NumericVector dv(this->ptr->_f);
+    //     for (int i = 0; i < this->ptr->_f; i++) {
+    //         dv[i] = v[i];
+    //     }
+    //     return dv;
+    // }
     
 };
 
 
 //typedef AnnoyAngularClass<int32_t, float>   AnnoyAngular;
 //typedef AnnoyEuclideanClass<int32_t, float> AnnoyEuclidean;
-
 
 //RCPP_EXPOSED_CLASS_NODECL(AnnoyAngular)
 RCPP_MODULE(AnnoyAngular) {
