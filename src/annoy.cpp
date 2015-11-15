@@ -1,8 +1,8 @@
-// -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; indent-tabs-mode: nil; -*-
+ // -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; indent-tabs-mode: nil; -*-
 //
 //  RcppAnnoy -- Rcpp bindings to Annoy library for Approximate Nearest Neighbours
 //
-//  Copyright (C) 2014 - 2015  Dirk Eddelbuettel 
+//  Copyright (C) 2014 - 2015  Dirk Eddelbuettel
 //
 //  This file is part of RcppAnnoy
 //
@@ -35,64 +35,112 @@
 
 // define R's REprintf as the 'local' error print method for Annoy
 #define __ERROR_PRINTER_OVERRIDE__  REprintf
-// define R's unif_rand() as the uniform rand generator for Annoy
-#define __UNIFORM_RAND_OVERRIDE__ static_cast<long int>(unif_rand() * RAND_MAX)
+
 #include "annoylib.h"
+#include "kissrandom.h"
 
-template<typename S, typename T, typename Distance> 
-class Annoy : public AnnoyIndex<S, T, Distance > {
+// this breaks Rcpp Modules as we can not have nested (ie two-level) templates :-/
+//typedef Annoy<int32_t, float, Angular<int32_t, float, Kiss64Random> >   AnnoyAngular;
+//typedef Annoy<int32_t, float, Euclidean<int32_t, float, Kiss64Random> > AnnoyEuclidean;
+
+// this does too
+//typedef Angular<int32_t, float, Kiss64Random>     AnnoyAngularDist;
+//typedef Euclidean<int32_t, float, Kiss64Random>   AnnoyEucledianDist;
+//typedef Annoy<int32_t, float, AnnoyAngularDist>   AnnoyAngular;
+//typedef Annoy<int32_t, float, AnnoyEucledianDist> AnnoyEuclidean;
+
+class AnnoyBase {
+protected:
+    AnnoyIndexInterface<int32_t, float> *ptr;
 public:
-    Annoy(int n) : AnnoyIndex<S, T, Distance>(n) {}
-
-    void addItem(S item, Rcpp::NumericVector dv) {
-        std::vector<T> fv(dv.size());
+    AnnoyBase(int n) { ptr = nullptr; }
+    void addItem(int32_t item, Rcpp::NumericVector dv) {
+        std::vector<float> fv(dv.size());
         std::copy(dv.begin(), dv.end(), fv.begin());
-        this->add_item(item, &fv[0]);
+        ptr->add_item(item, &fv[0]);
     }
+    void   callBuild(int n)               { ptr->build(n);                  }
+    void   callSave(std::string filename) { ptr->save(filename.c_str());    }
+    void   callLoad(std::string filename) { ptr->load(filename.c_str());    }
+    void   callUnload()                   { ptr->unload();                  }
+    int    getNItems()                    { return ptr->get_n_items();      }
+    double getDistance(int i, int j)      { return ptr->get_distance(i, j); }
+    void   verbose(bool v)                { ptr->verbose(v);                }
 
-    void   callBuild(int n)               { this->build(n);                  }
-    void   callSave(std::string filename) { this->save(filename.c_str());    }
-    void   callLoad(std::string filename) { this->load(filename.c_str());    }
-    void   callUnload()                   { this->unload();                  }
-    int    getNItems()                    { return this->get_n_items();      }
-    double getDistance(int i, int j)      { return this->get_distance(i, j); }
-    void   verbose(bool v)                { this->_verbose = v;              }
-
-    std::vector<S> getNNsByItem(S item, size_t n) {
-        std::vector<S> result;
-        this->get_nns_by_item(item, n, &result);
+    std::vector<int32_t> getNNsByItem(int32_t item, size_t n) {
+        std::vector<int32_t> result;
+        ptr->get_nns_by_item(item, n, -1, &result, NULL);
         return result;
     }
 
-    std::vector<S> getNNsByVector(std::vector<double> dv, size_t n) {
-        std::vector<T> fv(dv.size());
+    std::vector<int32_t> getNNsByVector(std::vector<double> dv, size_t n) {
+        std::vector<float> fv(dv.size());
         std::copy(dv.begin(), dv.end(), fv.begin());
-        std::vector<S> result;
-        this->get_nns_by_vector(&fv[0], n, &result);
+        std::vector<int32_t> result;
+        ptr->get_nns_by_vector(&fv[0], n, -1, &result, NULL);
         return result;
     }
 
-    Rcpp::NumericVector getItemsVector(S item) {
-        const typename Distance::node* m = this->_get(item);
-        const T* v = m->v;
-        Rcpp::NumericVector dv(this->_f);
-        for (int i = 0; i < this->_f; i++) {
-            dv[i] = v[i];
-        }
+    std::vector<double> getItemsVector(int32_t item) {
+        std::vector<float> fv;
+        ptr->get_item(item, &fv);
+        std::vector<double> dv(fv.size());
+        std::copy(fv.begin(), fv.end(), dv.begin());
         return dv;
     }
 
-
 };
 
-typedef Annoy<int32_t, float, Angular<int32_t, float> >   AnnoyAngular;
-typedef Annoy<int32_t, float, Euclidean<int32_t, float> > AnnoyEuclidean;
+// we need to repeat the actual functions here to provide Rcpp Modules with access points
+// standard C++ inheritance does not work for the Modules interface
+class AnnoyAngular : public AnnoyBase {
+public:
+    AnnoyAngular(int n) : AnnoyBase(n) {
+        ptr = new AnnoyIndex<int32_t, float, Angular, Kiss64Random>(n);
+    }
+    inline void addItem(int32_t item, Rcpp::NumericVector dv) { AnnoyBase::addItem(item, dv);  }
+    inline void callBuild(int n)                              { AnnoyBase::callBuild(n);       }
+    inline void callSave(std::string filename)                { AnnoyBase::callSave(filename); }
+    inline void callLoad(std::string filename)                { AnnoyBase::callLoad(filename); }
+    inline void callUnload()                                  { AnnoyBase::callUnload();       }
+    inline int  getNItems()                                   { return AnnoyBase::getNItems();       }
+    inline double getDistance(int i, int j)                   { return AnnoyBase::getDistance(i, j); }
+    inline void verbose(bool v)                               { AnnoyBase::verbose(v);               }
+    inline std::vector<int32_t> getNNsByItem(int32_t item, size_t n)
+                                                              { return AnnoyBase::getNNsByItem(item, n); }
+    inline std::vector<int32_t> getNNsByVector(std::vector<double> dv, size_t n)
+                                                              { return AnnoyBase::getNNsByVector(dv, n); }
+    inline std::vector<double> getItemsVector(int32_t item)   { return AnnoyBase::getItemsVector(item);  }
+};
 
-RCPP_EXPOSED_CLASS_NODECL(AnnoyAngular)
+class AnnoyEuclidean : public AnnoyBase {
+public:
+    AnnoyEuclidean(int n) : AnnoyBase(n) {
+        ptr = new AnnoyIndex<int32_t, float, Euclidean, Kiss64Random>(n);
+    }
+    inline void addItem(int32_t item, Rcpp::NumericVector dv) { AnnoyBase::addItem(item, dv);  }
+    inline void callBuild(int n)                              { AnnoyBase::callBuild(n);       }
+    inline void callSave(std::string filename)                { AnnoyBase::callSave(filename); }
+    inline void callLoad(std::string filename)                { AnnoyBase::callLoad(filename); }
+    inline void callUnload()                                  { AnnoyBase::callUnload();       }
+    inline int  getNItems()                                   { return AnnoyBase::getNItems();       }
+    inline double getDistance(int i, int j)                   { return AnnoyBase::getDistance(i, j); }
+    inline void verbose(bool v)                               { AnnoyBase::verbose(v);               }
+    inline std::vector<int32_t> getNNsByItem(int32_t item, size_t n)
+                                                              { return AnnoyBase::getNNsByItem(item, n); }
+    inline std::vector<int32_t> getNNsByVector(std::vector<double> dv, size_t n)
+                                                              { return AnnoyBase::getNNsByVector(dv, n); }
+    inline std::vector<double> getItemsVector(int32_t item)   { return AnnoyBase::getItemsVector(item);  }
+};
+
+
+
+
+//RCPP_EXPOSED_CLASS_NODECL(AnnoyAngular)
 RCPP_MODULE(AnnoyAngular) {
-    Rcpp::class_<AnnoyAngular>("AnnoyAngular")   
-        
-        .constructor<int32_t>("constructor with integer count")  
+    Rcpp::class_<AnnoyAngular>("AnnoyAngular")
+
+        .constructor<int32_t>("constructor with integer count")
 
         .method("addItem",        &AnnoyAngular::addItem,         "add item")
         .method("build",          &AnnoyAngular::callBuild,       "build an index")
@@ -110,9 +158,9 @@ RCPP_MODULE(AnnoyAngular) {
 
 RCPP_EXPOSED_CLASS_NODECL(AnnoyEuclidean)
 RCPP_MODULE(AnnoyEuclidean) {
-    Rcpp::class_<AnnoyEuclidean>("AnnoyEuclidean")   
-        
-        .constructor<int32_t>("constructor with integer count")  
+    Rcpp::class_<AnnoyEuclidean>("AnnoyEuclidean")
+
+        .constructor<int32_t>("constructor with integer count")
 
         .method("addItem",        &AnnoyEuclidean::addItem,        "add item")
         .method("build",          &AnnoyEuclidean::callBuild,      "build an index")
@@ -127,4 +175,3 @@ RCPP_MODULE(AnnoyEuclidean) {
         .method("setVerbose",     &AnnoyEuclidean::verbose,        "set verbose")
         ;
 }
-
