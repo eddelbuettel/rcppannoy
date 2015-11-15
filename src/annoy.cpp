@@ -40,6 +40,7 @@
 #include "kissrandom.h"
 
 #if 0
+// -- this is previous interface to Annoy 1.3.1 or earlier with just ONE layer of templates
 template<typename S, typename T, typename Distance>
 class Annoy : public AnnoyIndexInterface<S, T> {
 public:
@@ -97,7 +98,6 @@ public:
 //typedef Annoy<int32_t, float, AnnoyAngularDist>   AnnoyAngular;
 //typedef Annoy<int32_t, float, AnnoyEucledianDist> AnnoyEuclidean;
 
-#if 0
 template class AnnoyIndexInterface<int32_t, float>;
 
 class AnnoyBase {
@@ -144,16 +144,53 @@ public:
 
 };
 
-class doesNotWorkBelowAnnoyAngular : public AnnoyBase {
+class AnnoyAngular : public AnnoyBase {
 public:
-    doesNotWorkBelowAnnoyAngular(int n) : AnnoyBase(n) {
+    AnnoyAngular(int n) : AnnoyBase(n) {
         ptr = new AnnoyIndex<int32_t, float, Angular, Kiss64Random>(n);
     }
+    inline void addItem(int32_t item, Rcpp::NumericVector dv) { AnnoyBase::addItem(item, dv);  }
+    inline void callBuild(int n)                              { AnnoyBase::callBuild(n);       }
+    inline void callSave(std::string filename)                { AnnoyBase::callSave(filename); }
+    inline void callLoad(std::string filename)                { AnnoyBase::callLoad(filename); }
+    inline void callUnload()                                  { AnnoyBase::callUnload();       }
+    inline int  getNItems()                                   { return AnnoyBase::getNItems();       }
+    inline double getDistance(int i, int j)                   { return AnnoyBase::getDistance(i, j); }
+    inline void verbose(bool v)                               { AnnoyBase::verbose(v);               }
+    inline std::vector<int32_t> getNNsByItem(int32_t item, size_t n) {
+        return AnnoyBase::getNNsByItem(item, n);
+    }
+    inline std::vector<int32_t> getNNsByVector(std::vector<double> dv, size_t n) {
+        return AnnoyBase::getNNsByVector(dv, n);
+    }
+    inline Rcpp::NumericVector getItemsVector(int32_t item)  { return AnnoyBase::getItemsVector(item); }
 };
-#endif
+
+class AnnoyEuclidean : public AnnoyBase {
+public:
+    AnnoyEuclidean(int n) : AnnoyBase(n) {
+        ptr = new AnnoyIndex<int32_t, float, Euclidean, Kiss64Random>(n);
+    }
+    inline void addItem(int32_t item, Rcpp::NumericVector dv) { AnnoyBase::addItem(item, dv);  }
+    inline void callBuild(int n)                              { AnnoyBase::callBuild(n);       }
+    inline void callSave(std::string filename)                { AnnoyBase::callSave(filename); }
+    inline void callLoad(std::string filename)                { AnnoyBase::callLoad(filename); }
+    inline void callUnload()                                  { AnnoyBase::callUnload();       }
+    inline int  getNItems()                                   { return AnnoyBase::getNItems();       }
+    inline double getDistance(int i, int j)                   { return AnnoyBase::getDistance(i, j); }
+    inline void verbose(bool v)                               { AnnoyBase::verbose(v);               }
+    inline std::vector<int32_t> getNNsByItem(int32_t item, size_t n) {
+        return AnnoyBase::getNNsByItem(item, n);
+    }
+    inline std::vector<int32_t> getNNsByVector(std::vector<double> dv, size_t n) {
+        return AnnoyBase::getNNsByVector(dv, n);
+    }
+    inline Rcpp::NumericVector getItemsVector(int32_t item)  { return AnnoyBase::getItemsVector(item); }
+};
 
 
-
+#if 0
+// -- older, even more verbose implementation against Annoy 1.6.2
 class AnnoyAngular {
 protected:
     AnnoyIndexInterface<int32_t, float> *ptr;
@@ -241,10 +278,8 @@ public:
     }
 
 };
+#endif
 
-
-//typedef AnnoyAngularClass<int32_t, float>   AnnoyAngular;
-//typedef AnnoyEuclideanClass<int32_t, float> AnnoyEuclidean;
 
 //RCPP_EXPOSED_CLASS_NODECL(AnnoyAngular)
 RCPP_MODULE(AnnoyAngular) {
