@@ -40,7 +40,7 @@
 #include "annoylib.h"
 #include "kissrandom.h"
 
-template<typename S, typename T, typename Distance> 
+template<typename S, typename T, typename Distance>
 class Annoy : public AnnoyIndexInterface<S, T> {
 public:
     Annoy(int n) : AnnoyIndexInterface<S, T>(n) {}
@@ -86,11 +86,124 @@ public:
     }
 };
 
-// this breaks Rcpp Modules
-typedef Annoy<int32_t, float, Angular<int32_t, float, Kiss64Random> >   AnnoyAngular;
-typedef Annoy<int32_t, float, Euclidean<int32_t, float, Kiss64Random> > AnnoyEuclidean;
+// this breaks Rcpp Modules as we can not have nested (ie two-level) templates :-/
+//typedef Annoy<int32_t, float, Angular<int32_t, float, Kiss64Random> >   AnnoyAngular;
+//typedef Annoy<int32_t, float, Euclidean<int32_t, float, Kiss64Random> > AnnoyEuclidean;
 
-RCPP_EXPOSED_CLASS_NODECL(AnnoyAngular)
+// this does too
+//typedef Angular<int32_t, float, Kiss64Random>     AnnoyAngularDist;
+//typedef Euclidean<int32_t, float, Kiss64Random>   AnnoyEucledianDist;
+//typedef Annoy<int32_t, float, AnnoyAngularDist>   AnnoyAngular;
+//typedef Annoy<int32_t, float, AnnoyEucledianDist> AnnoyEuclidean;
+
+template class AnnoyIndexInterface<int32_t, float>;
+
+class AnnoyAngular {
+protected:    
+    AnnoyIndexInterface<int32_t, float>* ptr;
+public:
+    AnnoyAngular(int n) {
+        ptr = new AnnoyIndex<int32_t, float, Angular, Kiss64Random>(n);
+    }
+    void addItem(int32_t item, Rcpp::NumericVector dv) {
+        std::vector<float> fv(dv.size());
+        std::copy(dv.begin(), dv.end(), fv.begin());
+        this->ptr->add_item(item, &fv[0]);
+    }
+    void   callBuild(int n)               { this->ptr->build(n);                  }
+    void   callSave(std::string filename) { this->ptr->save(filename.c_str());    }
+    void   callLoad(std::string filename) { this->ptr->load(filename.c_str());    }
+    void   callUnload()                   { this->ptr->unload();                  }
+    int    getNItems()                    { return this->ptr->get_n_items();      }
+    double getDistance(int i, int j)      { return this->ptr->get_distance(i, j); }
+    //void   verbose(bool v)                { this->ptr->_verbose = v;              }
+
+    std::vector<int32_t> getNNsByItem(int32_t item, size_t n, size_t searchk) {
+        std::vector<int32_t> result;
+        std::vector<float> distance;
+        this->ptr->get_nns_by_item(item, n, searchk, &result, &distance);
+        return result;
+    }
+
+    std::vector<int32_t> getNNsByVector(std::vector<double> dv, size_t n, size_t searchk) {
+        std::vector<float> fv(dv.size());
+        std::copy(dv.begin(), dv.end(), fv.begin());
+        std::vector<int32_t> result;
+        std::vector<float> distance;
+        this->ptr->get_nns_by_vector(&fv[0], n, searchk, &result, &distance);
+        return result;
+    }
+
+    #if 0
+    Rcpp::NumericVector getItemsVector(int32_t item) {
+        const Angular<int32_t, float, Kiss64Random>::Node* m = this->ptr->_get(item);
+        const float* v = m->v;
+        Rcpp::NumericVector dv(this->ptr->_f);
+        for (int i = 0; i < this->ptr->_f; i++) {
+            dv[i] = v[i];
+        }
+        return dv;
+    }
+    #endif
+    
+};
+
+class AnnoyEuclidean {
+protected:    
+    AnnoyIndexInterface<int32_t, float>* ptr;
+public:
+    AnnoyEuclidean(int n) {
+        ptr = new AnnoyIndex<int32_t, float, Euclidean, Kiss64Random>(n);
+    }
+    void addItem(int32_t item, Rcpp::NumericVector dv) {
+        std::vector<float> fv(dv.size());
+        std::copy(dv.begin(), dv.end(), fv.begin());
+        this->ptr->add_item(item, &fv[0]);
+    }
+    void   callBuild(int n)               { this->ptr->build(n);                  }
+    void   callSave(std::string filename) { this->ptr->save(filename.c_str());    }
+    void   callLoad(std::string filename) { this->ptr->load(filename.c_str());    }
+    void   callUnload()                   { this->ptr->unload();                  }
+    int    getNItems()                    { return this->ptr->get_n_items();      }
+    double getDistance(int i, int j)      { return this->ptr->get_distance(i, j); }
+    //void   verbose(bool v)                { this->ptr->_verbose = v;              }
+
+    std::vector<int32_t> getNNsByItem(int32_t item, size_t n, size_t searchk) {
+        std::vector<int32_t> result;
+        std::vector<float> distance;
+        this->ptr->get_nns_by_item(item, n, searchk, &result, &distance);
+        return result;
+    }
+
+    std::vector<int32_t> getNNsByVector(std::vector<double> dv, size_t n, size_t searchk) {
+        std::vector<float> fv(dv.size());
+        std::copy(dv.begin(), dv.end(), fv.begin());
+        std::vector<int32_t> result;
+        std::vector<float> distance;
+        this->ptr->get_nns_by_vector(&fv[0], n, searchk, &result, &distance);
+        return result;
+    }
+
+    #if 0
+    Rcpp::NumericVector getItemsVector(int32_t item) {
+        const Euclidean<int32_t, float, Kiss64Random>::Node* m = this->ptr->_get(item);
+        const float* v = m->v;
+        Rcpp::NumericVector dv(this->ptr->_f);
+        for (int i = 0; i < this->ptr->_f; i++) {
+            dv[i] = v[i];
+        }
+        return dv;
+    }
+    #endif
+    
+};
+
+
+//typedef AnnoyAngularClass<int32_t, float>   AnnoyAngular;
+//typedef AnnoyEuclideanClass<int32_t, float> AnnoyEuclidean;
+
+
+//RCPP_EXPOSED_CLASS_NODECL(AnnoyAngular)
 RCPP_MODULE(AnnoyAngular) {
     Rcpp::class_<AnnoyAngular>("AnnoyAngular")
 
