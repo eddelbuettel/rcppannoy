@@ -39,16 +39,60 @@
 #include "annoylib.h"
 #include "kissrandom.h"
 
+template< typename S, typename T, typename Distance, typename Random >
+class Annoy
+{
+protected:
+    AnnoyIndex<S, T, Distance, Random> *ptr;
+public:
+    Annoy(int n) { ptr = new AnnoyIndex<S, T, Distance, Random>(n); }
+    void addItem(int32_t item, Rcpp::NumericVector dv) {
+        std::vector<float> fv(dv.size());
+        std::copy(dv.begin(), dv.end(), fv.begin());
+        ptr->add_item(item, &fv[0]);
+    }
+    void   callBuild(int n)               { ptr->build(n);                  }
+    void   callSave(std::string filename) { ptr->save(filename.c_str());    }
+    void   callLoad(std::string filename) { ptr->load(filename.c_str());    }
+    void   callUnload()                   { ptr->unload();                  }
+    int    getNItems()                    { return ptr->get_n_items();      }
+    double getDistance(int i, int j)      { return ptr->get_distance(i, j); }
+    void   verbose(bool v)                { ptr->verbose(v);                }
+
+    std::vector<int32_t> getNNsByItem(int32_t item, size_t n) {
+        std::vector<int32_t> result;
+        ptr->get_nns_by_item(item, n, -1, &result, NULL);
+        return result;
+    }
+
+    std::vector<int32_t> getNNsByVector(std::vector<double> dv, size_t n) {
+        std::vector<float> fv(dv.size());
+        std::copy(dv.begin(), dv.end(), fv.begin());
+        std::vector<int32_t> result;
+        ptr->get_nns_by_vector(&fv[0], n, -1, &result, NULL);
+        return result;
+    }
+
+    std::vector<double> getItemsVector(int32_t item) {
+        std::vector<float> fv;
+        ptr->get_item(item, &fv);
+        std::vector<double> dv(fv.size());
+        std::copy(fv.begin(), fv.end(), dv.begin());
+        return dv;
+    }
+
+};
+
 // this breaks Rcpp Modules as we can not have nested (ie two-level) templates :-/
-//typedef Annoy<int32_t, float, Angular<int32_t, float, Kiss64Random> >   AnnoyAngular;
-//typedef Annoy<int32_t, float, Euclidean<int32_t, float, Kiss64Random> > AnnoyEuclidean;
+typedef Annoy<int32_t, float, Angular, Kiss64Random>   AnnoyAngular;
+typedef Annoy<int32_t, float, Euclidean, Kiss64Random> AnnoyEuclidean;
 
 // this does too
 //typedef Angular<int32_t, float, Kiss64Random>     AnnoyAngularDist;
 //typedef Euclidean<int32_t, float, Kiss64Random>   AnnoyEucledianDist;
 //typedef Annoy<int32_t, float, AnnoyAngularDist>   AnnoyAngular;
 //typedef Annoy<int32_t, float, AnnoyEucledianDist> AnnoyEuclidean;
-
+/*
 class AnnoyBase {
 protected:
     AnnoyIndexInterface<int32_t, float> *ptr;
@@ -132,7 +176,7 @@ public:
                                                               { return AnnoyBase::getNNsByVector(dv, n); }
     inline std::vector<double> getItemsVector(int32_t item)   { return AnnoyBase::getItemsVector(item);  }
 };
-
+*/
 
 
 
