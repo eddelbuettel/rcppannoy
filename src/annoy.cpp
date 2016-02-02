@@ -46,6 +46,7 @@ protected:
     AnnoyIndex<S, T, Distance, Random> *ptr;
 public:
     Annoy(int n) { ptr = new AnnoyIndex<S, T, Distance, Random>(n); }
+    ~Annoy() { if (ptr != NULL) delete ptr; }
     void addItem(int32_t item, Rcpp::NumericVector dv) {
         std::vector<float> fv(dv.size());
         std::copy(dv.begin(), dv.end(), fv.begin());
