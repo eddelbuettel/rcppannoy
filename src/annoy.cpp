@@ -44,9 +44,9 @@ class Annoy
 {
 protected:
     AnnoyIndex<S, T, Distance, Random> *ptr;
-    int vector_size;
+    int vectorsz;
 public:
-    Annoy(int n) : vector_size(n) {
+    Annoy(int n) : vectorsz(n) {
         ptr = new AnnoyIndex<S, T, Distance, Random>(n);
     }
     ~Annoy() { if (ptr != NULL) delete ptr; }
@@ -69,7 +69,8 @@ public:
         return result;
     }
 
-    Rcpp::List getNNsByItemL(S item, size_t n, size_t search_k, bool include_distances) {
+    Rcpp::List getNNsByItemList(S item, size_t n,
+                                size_t search_k, bool include_distances) {
         if (include_distances) {
             std::vector<S> result;
             std::vector<T> distances;
@@ -91,9 +92,9 @@ public:
         return result;
     }
     
-    Rcpp::List getNNsByVectorL(std::vector<T> fv, size_t n,
-                               size_t search_k, bool include_distances) {
-        if (fv.size() != vector_size) {
+    Rcpp::List getNNsByVectorList(std::vector<T> fv, size_t n,
+                                  size_t search_k, bool include_distances) {
+        if (fv.size() != vectorsz) {
             Rcpp::stop("fv.size() != vector_size");
         }
         if (include_distances) {
@@ -229,10 +230,14 @@ RCPP_MODULE(AnnoyAngular) {
         .method("load",           &AnnoyAngular::callLoad,        "load index from file")
         .method("unload",         &AnnoyAngular::callUnload,      "unload index")
         .method("getDistance",    &AnnoyAngular::getDistance,     "get distance between i and j")
-        .method("getNNsByItem",   &AnnoyAngular::getNNsByItem,    "retrieve Nearest Neigbours given item")
-        .method("getNNsByItemL",  &AnnoyAngular::getNNsByItemL,   "retrieve Nearest Neigbours given item")
-        .method("getNNsByVector", &AnnoyAngular::getNNsByVector,  "retrieve Nearest Neigbours given vector")
-        .method("getNNsByVectorL",&AnnoyAngular::getNNsByVectorL, "retrieve Nearest Neigbours given vector")
+        .method("getNNsByItem",   &AnnoyAngular::getNNsByItem,
+                "retrieve Nearest Neigbours given item")
+        .method("getNNsByItemList",  &AnnoyAngular::getNNsByItemList,
+                "retrieve Nearest Neigbours given item")
+        .method("getNNsByVector", &AnnoyAngular::getNNsByVector,
+                "retrieve Nearest Neigbours given vector")
+        .method("getNNsByVectorList",  &AnnoyAngular::getNNsByVectorList,
+                "retrieve Nearest Neigbours given vector")
         .method("getItemsVector", &AnnoyAngular::getItemsVector,  "retrieve item vector")
         .method("getNItems",      &AnnoyAngular::getNItems,       "get N items")
         .method("setVerbose",     &AnnoyAngular::verbose,         "set verbose")
@@ -251,11 +256,14 @@ RCPP_MODULE(AnnoyEuclidean) {
         .method("load",           &AnnoyEuclidean::callLoad,       "load index from file")
         .method("unload",         &AnnoyEuclidean::callUnload,     "unload index")
         .method("getDistance",    &AnnoyEuclidean::getDistance,    "get distance between i and j")
-        .method("getNNsByItem",   &AnnoyEuclidean::getNNsByItem,   "retrieve Nearest Neigbours given item")
-
-        .method("getNNsByItemL",  &AnnoyEuclidean::getNNsByItemL,  "retrieve Nearest Neigbours given item")
-        .method("getNNsByVector", &AnnoyEuclidean::getNNsByVector, "retrieve Nearest Neigbours given vector")
-        .method("getNNsByVectorL",&AnnoyEuclidean::getNNsByVectorL,"retrieve Nearest Neigbours given vector")
+        .method("getNNsByItem",   &AnnoyEuclidean::getNNsByItem,
+                "retrieve Nearest Neigbours given item")
+        .method("getNNsByItemList",  &AnnoyEuclidean::getNNsByItemList,
+                "retrieve Nearest Neigbours given item")
+        .method("getNNsByVector", &AnnoyEuclidean::getNNsByVector,
+                "retrieve Nearest Neigbours given vector")
+        .method("getNNsByVectorList",&AnnoyEuclidean::getNNsByVectorList,
+                "retrieve Nearest Neigbours given vector")
         .method("getItemsVector", &AnnoyEuclidean::getItemsVector, "retrieve item vector")
         .method("getNItems",      &AnnoyEuclidean::getNItems,      "get N items")
         .method("setVerbose",     &AnnoyEuclidean::verbose,        "set verbose")
