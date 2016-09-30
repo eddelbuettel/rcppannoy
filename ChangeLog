@@ -1,8 +1,21 @@
+2016-09-29  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/NEWS.Rd: Added
+
 2016-09-28  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION (Version, Date): Roll minor version
 
 	* src/annoy.cpp (RCPP_MODULE): New List returning functions from #12
+
+2016-02-02  Michael Phan-Ba  <michael@mikepb.com>
+
+	* src/annoy.cpp: Added explicit destructor
+
+2015-11-17  Daniel C. Dillon  <dcdillon@gmail.com>
+
+	* src/annoy.cpp: Templating Annoy classes
+	* inst/include/annoylib.h: Ditto
 
 2015-11-15  Dirk Eddelbuettel  <edd@debian.org>
 
