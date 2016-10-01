@@ -1,4 +1,4 @@
-## RcppAnnoy [![Build Status](https://travis-ci.org/eddelbuettel/rcppannoy.png)](https://travis-ci.org/eddelbuettel/rcppannoy) [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html) [![CRAN](http://www.r-pkg.org/badges/version/RcppAnnoy)](http://cran.rstudio.com/package=RcppAnnoy) [![Downloads](http://cranlogs.r-pkg.org/badges/RcppAnnoy?color=brightgreen)](http://cran.rstudio.com/package=RcppAnnoy)
+## RcppAnnoy [![Build Status](https://travis-ci.org/eddelbuettel/rcppannoy.png)](https://travis-ci.org/eddelbuettel/rcppannoy) [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html) [![CRAN](http://www.r-pkg.org/badges/version/RcppAnnoy)](https://cran.r-project.org/package=RcppAnnoy) [![Downloads](http://cranlogs.r-pkg.org/badges/RcppAnnoy?color=brightgreen)](http://www.r-pkg.org/pkg/RcppAnnoy)
 
 Rcpp bindings for [Annoy](https://github.com/spotify/annoy)
 
@@ -30,8 +30,8 @@ The package originally built on Linux and OS X, and thanks to a patch by
 ### Installation
 
 You can either install from source via this repo, or install
-[the CRAN package](http://cran.r-project.org/web/packages/RcppAnnoy/index.html)
-the usual way from [R](http://www.r-project.org).
+[the CRAN package](https://cran.r-project.org/package=RcppAnnoy) the usual
+way from [R](http://www.r-project.org).
 
 ### Author
 

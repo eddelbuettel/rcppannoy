@@ -10,8 +10,8 @@
     \item Added destructor (PR \ghpr{14} by Michael Phan-Ba)
     \item Extended templatization (PR \ghpr{11} by Dan Dillon)
     \item Switched to \code{run.sh} for Travis (PR \ghpr{17})
-    \item Added test for admissible value to \code{addItem} (closes
-    issue \ghit{13})
+    \item Added test for admissible value to \code{addItem} (PR
+    \ghpr{18} closing issue \ghit{13})
   }
 }
 

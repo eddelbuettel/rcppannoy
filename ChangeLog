@@ -1,6 +1,15 @@
 2016-10-01  Dirk Eddelbuettel  <edd@debian.org>
 
+	* DESCRIPTION (Version, Date): Release 0.0.8
+
 	* .travis.yml: Switch to using run.sh for Travis CI
+
+	* README.md: More canonical URLs
+
+	* src/annoy.cpp: Use unsigned int for vector size
+
+	* src/annoy.cpp: Added index admissibility test to addItem()
+	* inst/tests/runit.index.R (test02badvalues): New test
 
 2016-09-29  Dirk Eddelbuettel  <edd@debian.org>
 
