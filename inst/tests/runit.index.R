@@ -18,4 +18,11 @@ if (.runThisTest) {
                     msg="check loaded index")
     }
 
+    test02badvalues <- function() {
+        a <- new(AnnoyEuclidean, 10)
+        v <- rnorm(10)
+        checkException(a$addItem(-2, v), msg="check negative index", silent=TRUE)
+        checkException(a$addItem(NA, v), msg="check NA index", silent=TRUE)
+    }
+    
 }
