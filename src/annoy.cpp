@@ -1,4 +1,4 @@
- // -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; indent-tabs-mode: nil; -*-
+// -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; indent-tabs-mode: nil; -*-
 //
 //  RcppAnnoy -- Rcpp bindings to Annoy library for Approximate Nearest Neighbours
 //
@@ -44,13 +44,14 @@ class Annoy
 {
 protected:
     AnnoyIndex<S, T, Distance, Random> *ptr;
-    int vectorsz;
+    unsigned int vectorsz;
 public:
     Annoy(int n) : vectorsz(n) {
         ptr = new AnnoyIndex<S, T, Distance, Random>(n);
     }
     ~Annoy() { if (ptr != NULL) delete ptr; }
     void addItem(int32_t item, Rcpp::NumericVector dv) {
+        if (item < 0) Rcpp::stop("Inadmissible item value %d", item);
         std::vector<float> fv(dv.size());
         std::copy(dv.begin(), dv.end(), fv.begin());
         ptr->add_item(item, &fv[0]);

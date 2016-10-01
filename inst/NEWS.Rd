@@ -1,14 +1,17 @@
 \name{NEWS}
 \title{News for Package \pkg{RcppAnnoy}}
-\newcommand{\ghpr}{\href{https://github.com/eddelbuettel/RcppAnnoy/pull/#1}{##1}}
-\newcommand{\ghit}{\href{https://github.com/eddelbuettel/RcppAnnoy/issues/#1}{##1}}
+\newcommand{\ghpr}{\href{https://github.com/eddelbuettel/rcppannoy/pull/#1}{##1}}
+\newcommand{\ghit}{\href{https://github.com/eddelbuettel/rcppannoy/issues/#1}{##1}}
 
-\section{Changes in version 0.0.8 (2016-xx-yy)}{
+\section{Changes in version 0.0.8 (2016-10-01)}{
   \itemize{
     \item New functions \code{getNNsByItemList} and
-    \code{getNNsByVectorList}, from a PR by Michael Phan-Ba
+    \code{getNNsByVectorList}, from by Michael Phan-Ba in \ghit{12}
     \item Added destructor (PR \ghpr{14} by Michael Phan-Ba)
     \item Extended templatization (PR \ghpr{11} by Dan Dillon)
+    \item Switched to \code{run.sh} for Travis (PR \ghpr{17})
+    \item Added test for admissible value to \code{addItem} (closes
+    issue \ghit{13})
   }
 }
 
@@ -43,7 +46,7 @@
 \section{Changes in version 0.0.3 (2014-11-17)}{
   \itemize{
     \item Synchronized with Annoy upstream changes
-    \item Windows support added (Qiang Kou in \ghpr{#2})
+    \item Windows support added (Qiang Kou in \ghpr{2})
   }
 }
 
