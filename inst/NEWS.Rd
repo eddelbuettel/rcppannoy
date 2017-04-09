@@ -3,6 +3,14 @@
 \newcommand{\ghpr}{\href{https://github.com/eddelbuettel/rcppannoy/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/eddelbuettel/rcppannoy/issues/#1}{##1}}
 
+\section{Changes in version 0.0.9 (2017-xx-yy)}{
+  \itemize{
+    \item A new file \code{init.c} was added with calls to
+    \code{R_registerRoutines()} and \code{R_useDynamicSymbols()}
+    \item Symbol registration is enabled in \code{useDynLib}
+  }
+}
+
 \section{Changes in version 0.0.8 (2016-10-01)}{
   \itemize{
     \item New functions \code{getNNsByItemList} and

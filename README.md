@@ -31,7 +31,7 @@ The package originally built on Linux and OS X, and thanks to a patch by
 
 You can either install from source via this repo, or install
 [the CRAN package](https://cran.r-project.org/package=RcppAnnoy) the usual
-way from [R](http://www.r-project.org).
+way from [R](https://www.r-project.org).
 
 ### Author
 
