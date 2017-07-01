@@ -5,6 +5,8 @@
 
 \section{Changes in version 0.0.9 (2017-xx-yy)}{
   \itemize{
+    \item Binary mode is used for \code{save} (as suggested by @khoran
+    in \ghit{21})
     \item A new file \code{init.c} was added with calls to
     \code{R_registerRoutines()} and \code{R_useDynamicSymbols()}
     \item Symbol registration is enabled in \code{useDynLib}
