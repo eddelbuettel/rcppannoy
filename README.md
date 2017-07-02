@@ -1,4 +1,4 @@
-## RcppAnnoy [![Build Status](https://travis-ci.org/eddelbuettel/rcppannoy.png)](https://travis-ci.org/eddelbuettel/rcppannoy) [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-brightgreen.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html) [![CRAN](http://www.r-pkg.org/badges/version/RcppAnnoy)](https://cran.r-project.org/package=RcppAnnoy) [![Downloads](http://cranlogs.r-pkg.org/badges/RcppAnnoy?color=brightgreen)](http://www.r-pkg.org/pkg/RcppAnnoy)
+## RcppAnnoy [![Build Status](https://travis-ci.org/eddelbuettel/rcppannoy.png)](https://travis-ci.org/eddelbuettel/rcppannoy) [![License](https://eddelbuettel.github.io/badges/GPL2+.svg)](http://www.gnu.org/licenses/gpl-2.0.html) [![CRAN](http://www.r-pkg.org/badges/version/RcppAnnoy)](https://cran.r-project.org/package=RcppAnnoy) [![Downloads](http://cranlogs.r-pkg.org/badges/RcppAnnoy?color=brightgreen)](http://www.r-pkg.org/pkg/RcppAnnoy)
 
 Rcpp bindings for [Annoy](https://github.com/spotify/annoy)
 
