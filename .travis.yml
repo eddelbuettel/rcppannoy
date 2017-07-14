@@ -11,7 +11,7 @@ env:
     - RunAllRcppAnnoyTests=yes
 
 before_install:
-  - curl -OLs http://eddelbuettel.github.io/r-travis/run.sh && chmod 0755 run.sh
+  - curl -OLs https://eddelbuettel.github.io/r-travis/run.sh && chmod 0755 run.sh
   - ./run.sh bootstrap
 
 install:
