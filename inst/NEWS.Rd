@@ -3,8 +3,10 @@
 \newcommand{\ghpr}{\href{https://github.com/eddelbuettel/rcppannoy/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/eddelbuettel/rcppannoy/issues/#1}{##1}}
 
-\section{Changes in version 0.0.9 (2017-xx-yy)}{
+\section{Changes in version 0.0.9 (2017-07-xx)}{
   \itemize{
+    \item Synchronized with Annoy upstream version 1.9.1
+    \item Minor updates in calls and tests as required by annoy 1.9.1
     \item Binary mode is used for \code{save} (as suggested by @khoran
     in \ghit{21})
     \item A new file \code{init.c} was added with calls to

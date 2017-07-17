@@ -6,6 +6,8 @@ sudo: required
 
 dist: trusty
 
+group: edge
+
 env:
   global:
     - RunAllRcppAnnoyTests=yes
