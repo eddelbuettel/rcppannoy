@@ -114,7 +114,7 @@ public:
     
     std::vector<double> getItemsVector(int32_t item) {
         std::vector<float> fv;
-        ptr->get_item(item, &fv);
+        ptr->get_item(item, &fv[0]);
         std::vector<double> dv(fv.size());
         std::copy(fv.begin(), fv.end(), dv.begin());
         return dv;
