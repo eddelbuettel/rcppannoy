@@ -1,3 +1,12 @@
+2017-07-18  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/annoy.cpp (RCPP_MODULE): New Manhattan distance module
+
+	* inst/tests/runit.manhattan.R: New test file
+
+	* R/annoy.R: Load module AnnoyManhattan
+	* src/init.c: Register module boot function
+
 2017-07-17  Dirk Eddelbuettel  <edd@debian.org>
 
 	* inst/include/annoylib.h: New upstream version annoy 1.9.1

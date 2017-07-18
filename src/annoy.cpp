@@ -125,6 +125,7 @@ public:
 // this breaks Rcpp Modules as we can not have nested (ie two-level) templates :-/
 typedef Annoy<int32_t, float, Angular, Kiss64Random>   AnnoyAngular;
 typedef Annoy<int32_t, float, Euclidean, Kiss64Random> AnnoyEuclidean;
+typedef Annoy<int32_t, float, Manhattan, Kiss64Random> AnnoyManhattan;
 
 // this does too
 //typedef Angular<int32_t, float, Kiss64Random>     AnnoyAngularDist;
@@ -268,5 +269,31 @@ RCPP_MODULE(AnnoyEuclidean) {
         .method("getItemsVector", &AnnoyEuclidean::getItemsVector, "retrieve item vector")
         .method("getNItems",      &AnnoyEuclidean::getNItems,      "get N items")
         .method("setVerbose",     &AnnoyEuclidean::verbose,        "set verbose")
+        ;
+}
+
+RCPP_EXPOSED_CLASS_NODECL(AnnoyManhattan)
+RCPP_MODULE(AnnoyManhattan) {
+    Rcpp::class_<AnnoyManhattan>("AnnoyManhattan")
+
+        .constructor<int32_t>("constructor with integer count")
+
+        .method("addItem",        &AnnoyManhattan::addItem,        "add item")
+        .method("build",          &AnnoyManhattan::callBuild,      "build an index")
+        .method("save",           &AnnoyManhattan::callSave,       "save index to file")
+        .method("load",           &AnnoyManhattan::callLoad,       "load index from file")
+        .method("unload",         &AnnoyManhattan::callUnload,     "unload index")
+        .method("getDistance",    &AnnoyManhattan::getDistance,    "get distance between i and j")
+        .method("getNNsByItem",   &AnnoyManhattan::getNNsByItem,
+                "retrieve Nearest Neigbours given item")
+        .method("getNNsByItemList",  &AnnoyManhattan::getNNsByItemList,
+                "retrieve Nearest Neigbours given item")
+        .method("getNNsByVector", &AnnoyManhattan::getNNsByVector,
+                "retrieve Nearest Neigbours given vector")
+        .method("getNNsByVectorList",&AnnoyManhattan::getNNsByVectorList,
+                "retrieve Nearest Neigbours given vector")
+        .method("getItemsVector", &AnnoyManhattan::getItemsVector, "retrieve item vector")
+        .method("getNItems",      &AnnoyManhattan::getNItems,      "get N items")
+        .method("setVerbose",     &AnnoyManhattan::verbose,        "set verbose")
         ;
 }
