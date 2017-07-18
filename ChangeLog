@@ -1,3 +1,15 @@
+2017-07-17  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/annoylib.h: New upstream version annoy 1.9.1
+	* inst/include/kissrandom.h: Idem
+
+	* src/annoy.cpp (Annoy): Update call to match updated interface
+
+	* inst/tests/runit.angular.R: Update three tests as the returned
+	distance metric is now the square root of the previous value
+
+	* .travis.yml (group): Added per Travis blog
+
 2017-07-14  Dirk Eddelbuettel  <edd@debian.org>
 
 	* .travis.yml (before_install): Use https for curl fetch
