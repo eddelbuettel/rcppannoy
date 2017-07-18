@@ -3,9 +3,11 @@
 \alias{RcppAnnoy}
 \alias{AnnoyAngular}
 \alias{AnnoyEuclidean}
+\alias{AnnoyManhattan}
 \alias{Rcpp_Annoy}
 \alias{Rcpp_AnnoyAngular-class}
 \alias{Rcpp_AnnoyEuclidean-class}
+\alias{Rcpp_AnnoyManhattan-class}
 \docType{package}
 \title{
   Rcpp bindings for the Annoy C++ library for approximate nearest neighbors.
@@ -26,8 +28,6 @@ Maintainer: Dirk Eddelbuettel <edd@debian.org>
 \references{
   \url{https://github.com/spotify/annoy}
 }
-% Optionally other standard keywords, one per line,
-% from the file KEYWORDS in the R documentation.
 \keyword{package}
 \examples{
   # Optional simple examples of the most important functions

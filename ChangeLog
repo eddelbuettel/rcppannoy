@@ -7,6 +7,8 @@
 	* R/annoy.R: Load module AnnoyManhattan
 	* src/init.c: Register module boot function
 
+	* man/RcppAnnoy-package.Rd: Aliases for AnnoyManhattan
+
 2017-07-17  Dirk Eddelbuettel  <edd@debian.org>
 
 	* inst/include/annoylib.h: New upstream version annoy 1.9.1
