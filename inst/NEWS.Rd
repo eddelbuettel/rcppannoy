@@ -7,6 +7,7 @@
   \itemize{
     \item Synchronized with Annoy upstream version 1.9.1
     \item Minor updates in calls and tests as required by annoy 1.9.1
+    \item New Manhattan distance modules along with unit test code
     \item Binary mode is used for \code{save} (as suggested by @khoran
     in \ghit{21})
     \item A new file \code{init.c} was added with calls to
