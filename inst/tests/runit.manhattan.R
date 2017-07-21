@@ -18,7 +18,21 @@ test01getNNsByVector <- function() {
     checkEquals(a$getNNsByVector(c(5,3), 3), c(2,1,0), msg="getNNsByVector check 3")
 }
 
-test02dist <- function() {
+test02getNNsByItem <- function() {
+    f <- 2
+    a <- new(AnnoyManhattan, f)
+
+    a$addItem(0, c(2, 2))
+    a$addItem(1, c(3, 2))
+    a$addItem(2, c(3, 3))
+
+    a$build(10)
+
+    checkEquals(a$getNNsByItem(0, 3), c(0, 1, 2), msg="getNNsByItem check 1")
+    checkEquals(a$getNNsByItem(2, 3), c(2, 1, 0), msg="getNNsByItem check 2")
+}
+
+test03dist <- function() {
     f <- 2
     a <- new(AnnoyManhattan, f)
     a$addItem(0, c(0, 1))
@@ -29,7 +43,7 @@ test02dist <- function() {
     checkEquals(a$getDistance(1, 2), 2.0, msg="distance 2")#
 }
 
-test03largeIndex <- function() {
+test04largeIndex <- function() {
     ## Generate pairs of random points where the pair is super close
     f <- 10
     #q <- rnorm(f, 0, 10)
@@ -49,9 +63,9 @@ test03largeIndex <- function() {
     }
 }
 
-test04precision <- function() {
+test05precision <- function() {
 
-    precision <- function(n, nTrees=10, nPoints=10000, nRounds=10) {
+    precision <- function(n, nTrees=10, nPoints=10000, nRounds=3) {
         found <- 0
         for (r in 1:nRounds) {
             ## create random points at distance x

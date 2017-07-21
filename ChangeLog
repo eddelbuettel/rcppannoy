@@ -1,3 +1,9 @@
+2017-07-21  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/tests/runit.angular.R: Additional tests from upstream
+	* inst/tests/runit.euclidean.R: Idem
+	* inst/tests/runit.manhattan.R: Idem
+
 2017-07-18  Dirk Eddelbuettel  <edd@debian.org>
 
 	* src/annoy.cpp (RCPP_MODULE): New Manhattan distance module

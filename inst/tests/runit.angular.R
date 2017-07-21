@@ -7,15 +7,15 @@ test01getNNsByVector <- function() {
     f <- 3
     a <- new(AnnoyAngular, f)
 
-    a$addItem(0, c(1,0,0))
+    a$addItem(0, c(0,0,1))
     a$addItem(1, c(0,1,0))
-    a$addItem(2, c(0,0,1))
+    a$addItem(2, c(1,0,0))
 
     a$build(10)
 
-    checkEquals(a$getNNsByVector(c(3,2,1), 3),
-                c(0,1,2),
-                msg="getNNsByVector check")
+    checkEquals(a$getNNsByVector(c(3,2,1), 3), c(2,1,0), msg="getNNsByVector check 1")
+    checkEquals(a$getNNsByVector(c(1,2,3), 3), c(0,1,2), msg="getNNsByVector check 1")
+    checkEquals(a$getNNsByVector(c(2,0,1), 3), c(2,0,1), msg="getNNsByVector check 1")
 }
 
 test02getNNsByItem <- function() {
