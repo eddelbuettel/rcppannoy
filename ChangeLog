@@ -1,3 +1,7 @@
+2017-08-31  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Release 0.0.9
+
 2017-07-21  Dirk Eddelbuettel  <edd@debian.org>
 
 	* inst/tests/runit.angular.R: Additional tests from upstream

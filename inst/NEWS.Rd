@@ -3,12 +3,12 @@
 \newcommand{\ghpr}{\href{https://github.com/eddelbuettel/rcppannoy/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/eddelbuettel/rcppannoy/issues/#1}{##1}}
 
-\section{Changes in version 0.0.9 (2017-07-xx)}{
+\section{Changes in version 0.0.9 (2017-08-31)}{
   \itemize{
     \item Synchronized with Annoy upstream version 1.9.1
     \item Minor updates in calls and tests as required by annoy 1.9.1
     \item New Manhattan distance modules along with unit test code
-    \item Additional unite tests from upstream test code carried over
+    \item Additional unit tests from upstream test code carried over
     \item Binary mode is used for \code{save} (as suggested by @khoran
     in \ghit{21})
     \item A new file \code{init.c} was added with calls to
