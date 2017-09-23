@@ -3,6 +3,12 @@
 \newcommand{\ghpr}{\href{https://github.com/eddelbuettel/rcppannoy/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/eddelbuettel/rcppannoy/issues/#1}{##1}}
 
+\section{Changes in version 0.0.10 (2017-xx-xx)}{
+  \itemize{
+    \item The \code{getItemsVector()} function no longer crashes (\ghit{24})
+  }
+}
+
 \section{Changes in version 0.0.9 (2017-08-31)}{
   \itemize{
     \item Synchronized with Annoy upstream version 1.9.1
