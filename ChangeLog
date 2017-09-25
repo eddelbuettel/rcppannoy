@@ -1,5 +1,7 @@
 2017-09-25  Dirk Eddelbuettel  <edd@debian.org>
 
+	* DESCRIPTION (Version, Date): Release 0.0.10
+
 	* inst/tests/runit.index.R (test03getVectors): New test function
 
 	* tests/doRUnit.R: Small edits and improvements
