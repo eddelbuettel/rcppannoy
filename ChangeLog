@@ -2,6 +2,8 @@
 
 	* inst/tests/runit.index.R (test03getVectors): New test function
 
+	* tests/doRUnit.R: Small edits and improvements
+
 2017-09-23  Dirk Eddelbuettel  <edd@debian.org>
 
 	* src/annoy.cpp (getItemsVector): Initialized vector (#24)

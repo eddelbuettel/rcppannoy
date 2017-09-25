@@ -25,21 +25,21 @@ if (.runThisTest) {
         checkException(a$addItem(NA, v), msg="check NA index", silent=TRUE)
     }
 
-    test03getVectors <- function() {
+    test03getItemsVectors <- function() {
         ## modeled after annoy_test.py() and its t
         i <- new(AnnoyAngular, 10)
         i$load(system.file("tests", "data", "test.tree", package="RcppAnnoy"))
 
-        u <- i$getItemVector(99)
+        u <- i$getItemsVector(99)
         i$save(tempfile())
 
-        v <- i$getItemVector(99)
+        v <- i$getItemsVector(99)
         checkEquals(u, v, msg="getItemVector comparison")
 
         j <- new(AnnoyAngular, 10)
         j$load(system.file("tests", "data", "test.tree", package="RcppAnnoy"))
 
-        w <- i$getItemVector(99)
+        w <- i$getItemsVector(99)
         checkEquals(u, w, msg="getItemVector comparison")
     }
 
