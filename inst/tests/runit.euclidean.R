@@ -84,7 +84,7 @@ test05precision <- function() {
             nns <- a$getNNsByVector(rep(0, f), n)
             checkEquals(nns, nns[order(nns)], msg="checking precision order")  # should be in order
             ## The number of gaps should be equal to the last item minus n-1
-            found <- found + length(nns[ nns < n])
+            found <- found + length(nns[ nns <= n])
         }
         return(1.0 * found / (n * nRounds))
     }

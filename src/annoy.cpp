@@ -50,9 +50,9 @@ public:
         ptr = new AnnoyIndex<S, T, Distance, Random>(n);
     }
     ~Annoy() { if (ptr != NULL) delete ptr; }
-    void addItem(int32_t item, Rcpp::NumericVector dv) {
+    void addItem(S item, Rcpp::NumericVector dv) {
         if (item < 0) Rcpp::stop("Inadmissible item value %d", item);
-        std::vector<float> fv(dv.size());
+        std::vector<T> fv(dv.size());
         std::copy(dv.begin(), dv.end(), fv.begin());
         ptr->add_item(item, &fv[0]);
     }
@@ -64,8 +64,8 @@ public:
     double getDistance(int i, int j)      { return ptr->get_distance(i, j); }
     void   verbose(bool v)                { ptr->verbose(v);                }
 
-    std::vector<int32_t> getNNsByItem(int32_t item, size_t n) {
-        std::vector<int32_t> result;
+    std::vector<S> getNNsByItem(S item, size_t n) {
+        std::vector<S> result;
         ptr->get_nns_by_item(item, n, -1, &result, NULL);
         return result;
     }
@@ -85,10 +85,10 @@ public:
         }
     }
 
-    std::vector<int32_t> getNNsByVector(std::vector<double> dv, size_t n) {
-        std::vector<float> fv(dv.size());
+    std::vector<S> getNNsByVector(std::vector<double> dv, size_t n) {
+        std::vector<T> fv(dv.size());
         std::copy(dv.begin(), dv.end(), fv.begin());
-        std::vector<int32_t> result;
+        std::vector<S> result;
         ptr->get_nns_by_vector(&fv[0], n, -1, &result, NULL);
         return result;
     }
@@ -112,8 +112,8 @@ public:
         }
     }
     
-    std::vector<double> getItemsVector(int32_t item) {
-        std::vector<float> fv(vectorsz);
+    std::vector<double> getItemsVector(S item) {
+        std::vector<T> fv(vectorsz);
         ptr->get_item(item, &fv[0]);
         std::vector<double> dv(fv.size());
         std::copy(fv.begin(), fv.end(), dv.begin());
@@ -122,9 +122,10 @@ public:
 
 };
 
-typedef Annoy<int32_t, float, Angular, Kiss64Random>   AnnoyAngular;
-typedef Annoy<int32_t, float, Euclidean, Kiss64Random> AnnoyEuclidean;
-typedef Annoy<int32_t, float, Manhattan, Kiss64Random> AnnoyManhattan;
+typedef Annoy<int32_t, float,    Angular,   Kiss64Random> AnnoyAngular;
+typedef Annoy<int32_t, float,    Euclidean, Kiss64Random> AnnoyEuclidean;
+typedef Annoy<int32_t, float,    Manhattan, Kiss64Random> AnnoyManhattan;
+typedef Annoy<int32_t, uint64_t, Hamming,   Kiss64Random> AnnoyHamming;
 
 RCPP_EXPOSED_CLASS_NODECL(AnnoyAngular)
 RCPP_MODULE(AnnoyAngular) {
@@ -201,5 +202,31 @@ RCPP_MODULE(AnnoyManhattan) {
         .method("getItemsVector", &AnnoyManhattan::getItemsVector, "retrieve item vector")
         .method("getNItems",      &AnnoyManhattan::getNItems,      "get N items")
         .method("setVerbose",     &AnnoyManhattan::verbose,        "set verbose")
+        ;
+}
+
+RCPP_EXPOSED_CLASS_NODECL(AnnoyHamming)
+RCPP_MODULE(AnnoyHamming) {
+    Rcpp::class_<AnnoyHamming>("AnnoyHamming")
+
+        .constructor<int32_t>("constructor with integer count")
+
+        .method("addItem",        &AnnoyHamming::addItem,        "add item")
+        .method("build",          &AnnoyHamming::callBuild,      "build an index")
+        .method("save",           &AnnoyHamming::callSave,       "save index to file")
+        .method("load",           &AnnoyHamming::callLoad,       "load index from file")
+        .method("unload",         &AnnoyHamming::callUnload,     "unload index")
+        .method("getDistance",    &AnnoyHamming::getDistance,    "get distance between i and j")
+        .method("getNNsByItem",   &AnnoyHamming::getNNsByItem,
+                "retrieve Nearest Neigbours given item")
+        .method("getNNsByItemList",  &AnnoyHamming::getNNsByItemList,
+                "retrieve Nearest Neigbours given item")
+        .method("getNNsByVector", &AnnoyHamming::getNNsByVector,
+                "retrieve Nearest Neigbours given vector")
+        .method("getNNsByVectorList",&AnnoyHamming::getNNsByVectorList,
+                "retrieve Nearest Neigbours given vector")
+        .method("getItemsVector", &AnnoyHamming::getItemsVector, "retrieve item vector")
+        .method("getNItems",      &AnnoyHamming::getNItems,      "get N items")
+        .method("setVerbose",     &AnnoyHamming::verbose,        "set verbose")
         ;
 }

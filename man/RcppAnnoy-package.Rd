@@ -4,10 +4,12 @@
 \alias{AnnoyAngular}
 \alias{AnnoyEuclidean}
 \alias{AnnoyManhattan}
+\alias{AnnoyHamming}
 \alias{Rcpp_Annoy}
 \alias{Rcpp_AnnoyAngular-class}
 \alias{Rcpp_AnnoyEuclidean-class}
 \alias{Rcpp_AnnoyManhattan-class}
+\alias{Rcpp_AnnoyHamming-class}
 \docType{package}
 \title{
   Rcpp bindings for the Annoy C++ library for approximate nearest neighbors.
@@ -21,9 +23,9 @@
   Details about Annoy are available at the reference listed below.
 }
 \author{
-Dirk Eddelbuettel for the R interface; Erik Bernhardsson for Annoy itself.
+  Dirk Eddelbuettel for the R interface; Erik Bernhardsson for Annoy itself.
 
-Maintainer: Dirk Eddelbuettel <edd@debian.org>
+  Maintainer: Dirk Eddelbuettel <edd@debian.org>
 }
 \references{
   \url{https://github.com/spotify/annoy}
