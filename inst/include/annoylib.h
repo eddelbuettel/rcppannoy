@@ -232,7 +232,7 @@ struct Hamming {
 
   template<typename T>
   static inline T pq_distance(T distance, T margin, int child_nr) {
-    return distance - (margin != (unsigned int) child_nr);
+    return distance - (margin != (T) child_nr);
   }
 
   template<typename T>
