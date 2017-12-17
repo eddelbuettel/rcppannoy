@@ -12,21 +12,30 @@
 // License for the specific language governing permissions and limitations under
 // the License.
 
+
 #ifndef ANNOYLIB_H
 #define ANNOYLIB_H
 
 #include <stdio.h>
 #include <string>
 #include <sys/stat.h>
+#ifndef _MSC_VER
 #include <unistd.h>
+#endif
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <fcntl.h>
 #include <stddef.h>
+#if defined(_MSC_VER) && _MSC_VER == 1500
+typedef unsigned char     uint8_t;
+typedef signed __int32    int32_t;
+#else
 #include <stdint.h>
+#endif
 
-#ifdef __MINGW32__
+#ifdef _MSC_VER
+#define NOMINMAX
 #include "mman.h"
 #include <windows.h>
 #else
@@ -40,6 +49,9 @@
 #include <queue>
 #include <limits>
 
+// Needed for Visual Studio to disable runtime checks for mempcy
+#pragma runtime_checks("s", off)
+
 // This allows others to supply their own logger / error printer without
 // requiring Annoy to import their headers. See RcppAnnoy for a use case.
 #ifndef __ERROR_PRINTER_OVERRIDE__
@@ -48,9 +60,21 @@
   #define showUpdate(...) { __ERROR_PRINTER_OVERRIDE__( __VA_ARGS__ ); }
 #endif
 
+
+#ifndef _MSC_VER
+#define popcount __builtin_popcountll
+#else
+#define popcount __popcnt64
+#endif
+
+
 #ifndef ANNOY_NODE_ATTRIBUTE
-  #define ANNOY_NODE_ATTRIBUTE __attribute__((__packed__))
-  // TODO: this is turned on by default, but may not work for all architectures! Need to investigate.
+    #ifndef _MSC_VER
+        #define ANNOY_NODE_ATTRIBUTE __attribute__((__packed__))
+        // TODO: this is turned on by default, but may not work for all architectures! Need to investigate.
+    #else
+        #define ANNOY_NODE_ATTRIBUTE
+    #endif
 #endif
 
 
@@ -89,8 +113,8 @@ inline void two_means(const vector<Node*>& nodes, int f, Random& random, bool co
   size_t i = random.index(count);
   size_t j = random.index(count-1);
   j += (j >= i); // ensure that i != j
-  std::copy(&nodes[i]->v[0], &nodes[i]->v[f], &iv[0]);
-  std::copy(&nodes[j]->v[0], &nodes[j]->v[f], &jv[0]);
+  memcpy(iv, nodes[i]->v, f * sizeof(T));
+  memcpy(jv, nodes[j]->v, f * sizeof(T));
   if (cosine) { normalize(&iv[0], f); normalize(&jv[0], f); }
 
   int ic = 1, jc = 1;
@@ -178,8 +202,99 @@ struct Angular {
     // so we have to make sure it's a positive number.
     return sqrt(std::max(distance, T(0)));
   }
+  template<typename T>
+  static inline T pq_distance(T distance, T margin, int child_nr) {
+    if (child_nr == 0)
+      margin = -margin;
+    return std::min(distance, margin);
+  }
+  template<typename T>
+  static inline T pq_initial_value() {
+    return numeric_limits<T>::infinity();
+  }
   static const char* name() {
     return "angular";
+  }
+};
+
+struct Hamming {
+
+  template<typename S, typename T>
+  struct ANNOY_NODE_ATTRIBUTE Node {
+    S n_descendants;
+    S children[2];
+    T v[1];
+  };
+
+  static const size_t max_iterations = 20;
+
+  template<typename T>
+  static inline T pq_distance(T distance, T margin, int child_nr) {
+    return distance - (margin != child_nr);
+  }
+
+  template<typename T>
+  static inline T pq_initial_value() {
+    return 0;
+  }
+  template<typename T>
+  static inline T distance(const T* x, const T* y, int f) {
+    size_t dist = 0;
+    for (size_t i = 0; i < f; i++) {
+      dist += popcount(x[i] ^ y[i]);
+    }
+    return dist;
+  }
+  template<typename S, typename T>
+  static inline bool margin(const Node<S, T>* n, const T* y, int f) {
+    static const size_t n_bits = sizeof(T) * 8;
+    T chunk = n->v[0] / n_bits;
+    return (y[chunk] & (static_cast<T>(1) << (n_bits - 1 - (n->v[0] % n_bits)))) != 0;
+  }
+  template<typename S, typename T, typename Random>
+  static inline bool side(const Node<S, T>* n, const T* y, int f, Random& random) {
+    return margin(n, y, f);
+  }
+  template<typename S, typename T, typename Random>
+  static inline void create_split(const vector<Node<S, T>*>& nodes, int f, Random& random, Node<S, T>* n) {
+    size_t cur_size = 0;
+    int i = 0;
+    for (; i < max_iterations; i++) {
+      // choose random position to split at
+      n->v[0] = random.index(f);
+      cur_size = 0;
+      for (typename vector<Node<S, T>*>::const_iterator it = nodes.begin(); it != nodes.end(); ++it) {
+        if (margin(n, (*it)->v, f)) {
+          cur_size++;
+        }
+      }
+      if (cur_size > 0 && cur_size < nodes.size()) {
+        break;
+      }
+    }
+    // brute-force search for splitting coordinate
+    if (i == max_iterations) {
+      int j = 0;
+      for (; j < f; j++) {
+        n->v[0] = j;
+        cur_size = 0;
+	for (typename vector<Node<S, T>*>::const_iterator it = nodes.begin(); it != nodes.end(); ++it) {
+          if (margin(n, (*it)->v, f)) {
+            cur_size++;
+          }
+        }
+        if (cur_size > 0 && cur_size < nodes.size()) {
+          break;
+        }
+      }
+    }
+  }
+  template<typename T>
+  static inline T normalized_distance(T distance) {
+    return distance;
+  }
+  static const char* name() {
+    return "hamming";
   }
 };
 
@@ -205,6 +320,16 @@ struct Minkowski {
       return (dot > 0);
     else
       return random.flip();
+  }
+  template<typename T>
+  static inline T pq_distance(T distance, T margin, int child_nr) {
+    if (child_nr == 0)
+      margin = -margin;
+    return std::min(distance, margin);
+  }
+  template<typename T>
+  static inline T pq_initial_value() {
+    return numeric_limits<T>::infinity();
   }
 };
 
@@ -363,8 +488,10 @@ public:
       if (_verbose) showUpdate("pass %zd...\n", _roots.size());
 
       vector<S> indices;
-      for (S i = 0; i < _n_items; i++)
-        indices.push_back(i);
+      for (S i = 0; i < _n_items; i++) {
+	if (_get(i)->n_descendants >= 1) // Issue #223
+          indices.push_back(i);
+      }
 
       _roots.push_back(_make_tree(indices));
     }
@@ -425,9 +552,11 @@ public:
   }
 
   bool load(const char* filename) {
-    _fd = open(filename, O_RDONLY, (mode_t)0400);
-    if (_fd == -1)
+    _fd = open(filename, O_RDONLY, (int)0400);
+    if (_fd == -1) {
+      _fd = 0;
       return false;
+    }
     off_t size = lseek(_fd, 0, SEEK_END);
 #ifdef MAP_POPULATE
     _nodes = (Node*)mmap(
@@ -440,6 +569,7 @@ public:
     _n_nodes = (S)(size / _s);
 
     // Find the roots by scanning the end of the file and taking the nodes with most descendants
+    _roots.clear();
     S m = -1;
     for (S i = _n_nodes - 1; i >= 0; i--) {
       S k = _get(i)->n_descendants;
@@ -482,7 +612,7 @@ public:
 
   void get_item(S item, T* v) {
     Node* m = _get(item);
-    std::copy(&m->v[0], &m->v[_f], v);
+    memcpy(v, m->v, _f * sizeof(T));
   }
 
   void set_seed(int seed) {
@@ -518,7 +648,8 @@ protected:
 
       // Using std::copy instead of a loop seems to resolve issues #3 and #13,
       // probably because gcc 4.8 goes overboard with optimizations.
-      std::copy(indices.begin(), indices.end(), m->children);
+      // Using memcpy instead of std::copy for MSVC compatibility. #235
+      memcpy(m->children, &indices[0], indices.size() * sizeof(S));
       return item;
     }
 
@@ -584,7 +715,7 @@ protected:
       search_k = n * _roots.size(); // slightly arbitrary default value
 
     for (size_t i = 0; i < _roots.size(); i++) {
-      q.push(make_pair(numeric_limits<T>::infinity(), _roots[i]));
+      q.push(make_pair(Distance::template pq_initial_value<T>(), _roots[i]));
     }
 
     vector<S> nns;
@@ -601,8 +732,8 @@ protected:
         nns.insert(nns.end(), dst, &dst[nd->n_descendants]);
       } else {
         T margin = D::margin(nd, v, _f);
-        q.push(make_pair(std::min(d, +margin), nd->children[1]));
-        q.push(make_pair(std::min(d, -margin), nd->children[0]));
+        q.push(make_pair(D::pq_distance(d, margin, 1), nd->children[1]));
+        q.push(make_pair(D::pq_distance(d, margin, 0), nd->children[0]));
       }
     }
 
