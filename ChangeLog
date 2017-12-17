@@ -10,6 +10,9 @@
 	* src/init.c: Added new Hamming distance measure (via template)
 	* src/annoy.cpp: Idem; plus more use of template type
 
+	* inst/tests/runit.hamming.R: Unit tests for 'AnnoyHamming'
+	* man/RcppAnnoy-package.Rd: Documentation alias for 'AnnoyHamming'
+
 	* .Rbuildignore: Ignore top-level *tar.gz file
 	* .gitignore: Idem
 

@@ -6,7 +6,8 @@
 \section{Changes in version 0.0.11 (2017-xx-yy)}{
   \itemize{
     \item Synchronized with Annoy upstream
-    \item Added new Hamming distance measure functionality
+    \item Added new Hamming distance measure functionality; should be
+    considered experimental as the functionality is on integer values.
   }
 }
 
