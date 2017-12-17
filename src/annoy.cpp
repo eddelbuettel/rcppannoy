@@ -50,7 +50,7 @@ public:
         ptr = new AnnoyIndex<S, T, Distance, Random>(n);
     }
     ~Annoy() { if (ptr != NULL) delete ptr; }
-    void addItem(int32_t item, Rcpp::NumericVector dv) {
+    void addItem(S item, Rcpp::NumericVector dv) {
         if (item < 0) Rcpp::stop("Inadmissible item value %d", item);
         std::vector<T> fv(dv.size());
         std::copy(dv.begin(), dv.end(), fv.begin());
@@ -64,8 +64,8 @@ public:
     double getDistance(int i, int j)      { return ptr->get_distance(i, j); }
     void   verbose(bool v)                { ptr->verbose(v);                }
 
-    std::vector<int32_t> getNNsByItem(int32_t item, size_t n) {
-        std::vector<int32_t> result;
+    std::vector<S> getNNsByItem(S item, size_t n) {
+        std::vector<S> result;
         ptr->get_nns_by_item(item, n, -1, &result, NULL);
         return result;
     }
@@ -85,10 +85,10 @@ public:
         }
     }
 
-    std::vector<int32_t> getNNsByVector(std::vector<double> dv, size_t n) {
+    std::vector<S> getNNsByVector(std::vector<double> dv, size_t n) {
         std::vector<T> fv(dv.size());
         std::copy(dv.begin(), dv.end(), fv.begin());
-        std::vector<int32_t> result;
+        std::vector<S> result;
         ptr->get_nns_by_vector(&fv[0], n, -1, &result, NULL);
         return result;
     }
@@ -112,7 +112,7 @@ public:
         }
     }
     
-    std::vector<double> getItemsVector(int32_t item) {
+    std::vector<double> getItemsVector(S item) {
         std::vector<T> fv(vectorsz);
         ptr->get_item(item, &fv[0]);
         std::vector<double> dv(fv.size());
