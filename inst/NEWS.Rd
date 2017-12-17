@@ -3,6 +3,13 @@
 \newcommand{\ghpr}{\href{https://github.com/eddelbuettel/rcppannoy/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/eddelbuettel/rcppannoy/issues/#1}{##1}}
 
+\section{Changes in version 0.0.11 (2017-xx-yy)}{
+  \itemize{
+    \item Synchronized with Annoy upstream
+    \item Added new Hamming distance measure functionality
+  }
+}
+
 \section{Changes in version 0.0.10 (2017-09-25)}{
   \itemize{
     \item The \code{getItemsVector()} function no longer crashes (\ghit{24})

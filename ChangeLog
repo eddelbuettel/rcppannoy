@@ -1,3 +1,18 @@
+2017-12-16  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/kissranom.h: New upstream version
+	* inst/include/annoylib.h: Idem; plus some small changes to avoid
+	g++ warnings, also sent upstream
+
+	* inst/tests/runit.euclidean.R: Relaxed one '<' comparison to '<='
+	* inst/tests/runit.manhattan.R: Idem
+
+	* src/init.c: Added new Hamming distance measure (via template)
+	* src/annoy.cpp: Idem; plus more use of template type
+
+	* .Rbuildignore: Ignore top-level *tar.gz file
+	* .gitignore: Idem
+
 2017-09-25  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION (Version, Date): Release 0.0.10
