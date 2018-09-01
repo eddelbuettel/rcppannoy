@@ -13,8 +13,7 @@ env:
     - R_VERSION="3.5"
 
 before_install:
-  #- curl -OLs https://eddelbuettel.github.io/r-travis/run.sh && chmod 0755 run.sh
-  - curl -OLs http://dirk.eddelbuettel.com/tmp/run.sh && chmod 0755 run.sh
+  - curl -OLs https://eddelbuettel.github.io/r-travis/run.sh && chmod 0755 run.sh
   - ./run.sh bootstrap
 
 install:
