@@ -1,3 +1,13 @@
+2018-10-06  Aaron Lun  <aaron.lun@cruk.cam.ac.uk>
+
+	* vignettes/rcppannoy.Rmd: New vignette on using Annoy from C++
+	* DESCRIPTION: Added required Suggests: and VignetteBuilder:
+	* .travis.yml: Added r-cran-knitr and r-cran-rmarkdown
+
+2018-09-01  Dirk Eddelbuettel  <edd@debian.org>
+
+	* .travis.yml: Switch Travis CI to R 3.5 repo
+
 2017-12-16  Dirk Eddelbuettel  <edd@debian.org>
 
 	* inst/include/kissranom.h: New upstream version
