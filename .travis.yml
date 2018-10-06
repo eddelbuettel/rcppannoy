@@ -17,7 +17,7 @@ before_install:
   - ./run.sh bootstrap
 
 install:
-  - ./run.sh install_aptget r-cran-runit r-cran-rcpp
+  - ./run.sh install_aptget r-cran-runit r-cran-rcpp r-cran-knitr r-cran-rmarkdown
 
 script:
   - ./run.sh run_tests
