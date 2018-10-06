@@ -16,6 +16,7 @@ License: GPL (>= 2)
 Depends: R (>= 3.1)
 Imports: methods, Rcpp (>= 0.11.3)
 LinkingTo: Rcpp
-Suggests: RUnit
+Suggests: RUnit, knitr, rmarkdown
 NeedsCompilation: yes
+VignetteBuilder: knitr
 Packaged: 2016-10-01 12:51:36.319463 UTC; edd
