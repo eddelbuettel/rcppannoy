@@ -5,12 +5,12 @@
 
 \section{Changes in version 0.0.11 (2018-10-yy)}{
   \itemize{
-    \item Synchronized with Annoy upstream \ghpr{26}
+    \item Synchronized with Annoy upstream (\ghpr{26} and \ghpr{30}).
     \item Added new Hamming distance measure functionality; should be
     considered experimental as the functionality is on integer values.
     \item Travis CI use was updated to the R 3.5 PPA (\ghpr{28})
     \item New vignette about Annoy use from C++ via Rcpp (Aaron Lun
-    \ghpr{29) addressing \ghit{19}).
+    \ghpr{29} addressing \ghit{19}).
   }
 }
 

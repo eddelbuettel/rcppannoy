@@ -1,3 +1,9 @@
+2018-10-07  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/annoylib.h: New upstream version 1.13 plus two PRs by
+	Aaron and Dirk, respectively.
+	* inst/include/mman.h: Idem
+
 2018-10-06  Aaron Lun  <aaron.lun@cruk.cam.ac.uk>
 
 	* vignettes/rcppannoy.Rmd: New vignette on using Annoy from C++
@@ -10,7 +16,7 @@
 
 2017-12-16  Dirk Eddelbuettel  <edd@debian.org>
 
-	* inst/include/kissranom.h: New upstream version
+	* inst/include/kissrandom.h: New upstream version
 	* inst/include/annoylib.h: Idem; plus some small changes to avoid
 	g++ warnings, also sent upstream
 
