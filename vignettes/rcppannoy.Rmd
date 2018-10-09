@@ -36,6 +36,7 @@ The pre-processor statements in your source files should look like:
 #endif
 
 // define R's REprintf as the 'local' error print method for Annoy
+#include "Rcpp.h"
 #define __ERROR_PRINTER_OVERRIDE__  REprintf
 
 #include "annoylib.h"
@@ -75,10 +76,10 @@ Note the copy from the double-precision matrix into a `float` vector before call
 
 ```cpp
 MyAnnoyIndex obj(ndims);
-std::vector<ANNOYTYPE> tmp(ndims);
+std::vector<ANNOYTYPE> tmp(ndims); // from <vector>
 for (int i=0; i<nsamples; ++i) {
-    auto curcol=mat.column(i); // C++11 auto for brevity.
-    std::copy(curcol.begin(), curcol.end(), tmp.begin());
+    Rcpp::NumericMatrix::Row currow=mat.row(i); 
+    std::copy(currow.begin(), currow.end(), tmp.begin()); // from <algorithm>
     obj.add_item(i, tmp.data());
 }
 obj.build(50);
@@ -110,7 +111,7 @@ To do this, we write:
 
 ```cpp
 std::vector<int> neighbor_index;
-std::vector<double> neighbor_dist;
+std::vector<ANNOYTYPE> neighbor_dist;
 obj.get_nns_by_item(c, K + 1, -1, &neighbor_index, &neighbor_dist); 
 ```
 
