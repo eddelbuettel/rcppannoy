@@ -65,9 +65,9 @@ typedef AnnoyIndex<int, ANNOYTYPE, Euclidean, Kiss64Random> MyAnnoyIndex;
 Note that we use `float` by default, rather than the more conventional `double`.
 This is chosen for speed and to be consistent with the original Python implementation.
 
-Further note that the Annoy library uses a fixed seed for its random number generation.
+The Annoy library (or specifically, the `Kiss64Random` class) uses a fixed seed for its random number generation.
 Thus, it is "deterministic" in the sense that repeated runs on the same data will yield the same result.
-It will also be unresponsive to the state of R's RNG seed.
+The results will also be unresponsive to the state of R's RNG seed.
 
 ```{Rcpp, eval=FALSE, echo=FALSE}
 // Extra things needed for compilation:
