@@ -10,6 +10,13 @@ vignette: >
   %\usepackage[utf8]{inputenc}
 ---
 
+```{r, echo=FALSE, results="hide"}
+knitr::opts_chunk$set(error=FALSE, warning=FALSE, message=FALSE)
+```
+
+```{Rcpp, ref.label=knitr::all_rcpp_labels(), include=FALSE}
+```
+
 # Setting up your package 
 
 The [Annoy](https://github.com/spotify/annoy) C++ library implements a quick and simple method for approximate nearest neighbor (oh yeah) searching.
@@ -29,7 +36,7 @@ Obviously, the header files need to be `include`d in any C++ source file that us
 A few macros also need to be added to handle Windows-specific behaviour and to ensure that error messages are printed through R.
 The pre-processor statements in your source files should look like:
 
-```cpp
+```{Rcpp, eval=FALSE}
 #if defined(__MINGW32__)
 #undef Realloc
 #undef Free
@@ -49,7 +56,7 @@ The `AnnoyIndex` template class can accommodate different data types, distance m
 Here, we will consider the most common application of a nearest-neighbor search on floating-point data with Euclidean distance.
 We `typedef` the type and realized template for convenience:
 
-```cpp
+```{Rcpp, eval=FALSE}
 typedef float ANNOYTYPE;
 
 typedef AnnoyIndex<int, ANNOYTYPE, Euclidean, Kiss64Random> MyAnnoyIndex;
@@ -62,11 +69,24 @@ Further note that the Annoy library uses a fixed seed for its random number gene
 Thus, it is "deterministic" in the sense that repeated runs on the same data will yield the same result.
 It will also be unresponsive to the state of R's RNG seed.
 
+```{Rcpp, eval=FALSE, echo=FALSE}
+// Extra things needed for compilation:
+#include <vector>
+#include <algorithm>
+
+// [[Rcpp::depends(RcppAnnoy)]]
+// [[Rcpp::export]]
+Rcpp::IntegerVector testfun(Rcpp::NumericMatrix mat) {
+    int c=0, K=5;
+    std::vector<ANNOYTYPE> stub(mat.ncol());
+    ANNOYTYPE* query=stub.data();
+```
+
 # Building an index
 
 Let's say we have an `Rcpp::NumericMatrix` named `mat`, where each row corresponds to a sample and each column corresponds to a dimension/variable.
 
-```cpp
+```{Rcpp, eval=FALSE}
 const size_t nsamples=mat.nrow();
 const size_t ndims=mat.ncol();
 ```
@@ -74,7 +94,7 @@ const size_t ndims=mat.ncol();
 It is simple to build a `MyAnnoyIndex` containing the data in this matrix.
 Note the copy from the double-precision matrix into a `float` vector before calling `add_item()`.
 
-```cpp
+```{Rcpp, eval=FALSE}
 MyAnnoyIndex obj(ndims);
 std::vector<ANNOYTYPE> tmp(ndims); // from <vector>
 for (int i=0; i<nsamples; ++i) {
@@ -90,13 +110,13 @@ Indices with more trees are larger (in memory and on file) but yield greater sea
 
 The index can also be saved to file:
 
-```cpp
+```{Rcpp, eval=FALSE}
 obj.save("annoy.index");
 ```
 
 ... and reloaded in some other context:
 
-```cpp
+```{Rcpp, eval=FALSE}
 MyAnnoyIndex obj2(ndims);
 obj2.load("annoy.index"); // same as 'obj'.
 ```
@@ -109,7 +129,7 @@ It also allows us to avoid rebuilding the index in applications where the same d
 Let's say that we want to find the `K` (approximate) nearest neighbors of sample `c` in the original data set used to construct `obj`.
 To do this, we write:
 
-```cpp
+```{Rcpp, eval=FALSE}
 std::vector<int> neighbor_index;
 std::vector<ANNOYTYPE> neighbor_dist;
 obj.get_nns_by_item(c, K + 1, -1, &neighbor_index, &neighbor_dist); 
@@ -132,7 +152,7 @@ This defaults to the number of trees multiplied by the number of requested neigh
 Another application is to query the index for the neighbors of a new sample given its coordinates.
 Assuming we have a `float*` to an array of coordinates of length `ndims`, we do:
 
-```cpp
+```{Rcpp, eval=FALSE}
 obj.get_nns_by_vector(query, K+1, -1, &neighbor_index, &neighbor_dist);
 ```
 
@@ -145,4 +165,15 @@ An example of using the Annoy library via _RcppAnnoy_ is available in the [_Bioc
 
 ```{r}
 sessionInfo()
+```
+
+```{Rcpp, eval=FALSE, echo=FALSE}
+// Odds and ends to complete compilation.
+    return Rcpp::IntegerVector(neighbor_index.begin(), neighbor_index.end());
+}
+```
+
+```{r, echo=FALSE, results="hide"}
+# Checking that the function works.
+testfun(matrix(0, 10, 5))
 ```
