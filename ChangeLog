@@ -1,3 +1,11 @@
+2018-10-09  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll minor version
+
+2018-10-09  Aaron Lun  <aaron.lun@cruk.cam.ac.uk>
+
+	* vignettes/rcppannoy.Rmd: Minor fixes
+
 2018-10-07  Dirk Eddelbuettel  <edd@debian.org>
 
 	* inst/include/annoylib.h: New upstream version 1.13 plus two PRs by
