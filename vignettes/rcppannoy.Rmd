@@ -1,12 +1,34 @@
 ---
 title: Using Annoy in package C++ code
-author: Aaron Lun 
-date: "`r Sys.Date()`"
+author: 
+  - name: Aaron Lun 
+    affiliation: a
+address:
+  - code: a
+    address: \url{https://github.com/LTLA}
+lead_author_surname: Lun
+doi: "https://cran.r-project.org/package=RcppAnnoy"
+keywords:
+ - Rcpp
+ - Annoy
+ - Approximate Nearest Neighbours
+footer_contents: "RcppAnnoy Vignette"
+date: \today
 output: 
-  rmarkdown::html_vignette
+  pinp::pinp:
+      collapse: true
+      keep_tex: false
+bibliography: rcppannoy.bib
+skip_final_break: true
+abstract: |
+  This note shows how to use the Annoy library for _Approximate Nearest
+  Neighbours (Oh Yeah)_ from C++ code using the headers provided by the
+  RcppAnnoy package.
 vignette: >
   %\VignetteIndexEntry{Using Annoy in C++}
   %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteKeywords{Rcpp, Annoy, R, Cpp, Approximate Nearest Neighbours}
+  %\VignettePackage{Rcpp}
   %\usepackage[utf8]{inputenc}
 ---
 
@@ -19,8 +41,8 @@ knitr::opts_chunk$set(error=FALSE, warning=FALSE, message=FALSE, eval=FALSE)
 
 # Setting up your package 
 
-The [Annoy](https://github.com/spotify/annoy) C++ library implements a quick and simple method for approximate nearest neighbor (oh yeah) searching.
-The _RcppAnnoy_ package provides a centralized resource for developers to use this code in their own R packages.
+The [Annoy](https://github.com/spotify/annoy) \citep{Github:annoy} C++ library implements a quick and simple method for approximate nearest neighbor (oh yeah) searching.
+The _RcppAnnoy_ package \citep{CRAN:RcppAnnoy} provides a centralized resource for developers to use this code in their own R packages.
 To do so, simply put in your `DESCRIPTION`:
 
 ```
@@ -42,7 +64,8 @@ The pre-processor statements in your source files should look like:
 #undef Free
 #endif
 
-// define R's REprintf as the 'local' error print method for Annoy
+// define R's REprintf as the 'local' error
+// print method for Annoy
 #include "Rcpp.h"
 #define __ERROR_PRINTER_OVERRIDE__  REprintf
 
@@ -59,7 +82,9 @@ We `typedef` the type and realized template for convenience:
 ```{Rcpp}
 typedef float ANNOYTYPE;
 
-typedef AnnoyIndex<int, ANNOYTYPE, Euclidean, Kiss64Random> MyAnnoyIndex;
+typedef
+AnnoyIndex<int, ANNOYTYPE, Euclidean, Kiss64Random>
+MyAnnoyIndex;
 ```
 
 Note that we use `float` by default, rather than the more conventional `double`.
@@ -96,10 +121,12 @@ Note the copy from the double-precision matrix into a `float` vector before call
 
 ```{Rcpp}
 MyAnnoyIndex obj(ndims);
-std::vector<ANNOYTYPE> tmp(ndims); // from <vector>
+// from <vector>        
+std::vector<ANNOYTYPE> tmp(ndims); 
 for (int i=0; i<nsamples; ++i) {
-    Rcpp::NumericMatrix::Row currow=mat.row(i); 
-    std::copy(currow.begin(), currow.end(), tmp.begin()); // from <algorithm>
+    Rcpp::NumericMatrix::Row cr=mat.row(i);
+    // from <algorithm>
+    std::copy(cr.begin(), cr.end(), tmp.begin()); 
     obj.add_item(i, tmp.data());
 }
 obj.build(50);
@@ -132,7 +159,8 @@ To do this, we write:
 ```{Rcpp}
 std::vector<int> neighbor_index;
 std::vector<ANNOYTYPE> neighbor_dist;
-obj.get_nns_by_item(c, K + 1, -1, &neighbor_index, &neighbor_dist); 
+obj.get_nns_by_item(c, K + 1, -1, &neighbor_index,
+                    &neighbor_dist); 
 ```
 
 Upon return, the `neighbor_index` vector will be filled with the sample numbers of the `K` nearest neighbors (i.e., rows of the original `mat`, in this case).
@@ -153,7 +181,9 @@ Another application is to query the index for the neighbors of a new sample give
 Assuming we have a `float*` to an array of coordinates of length `ndims`, we do:
 
 ```{Rcpp}
-obj.get_nns_by_vector(query, K+1, -1, &neighbor_index, &neighbor_dist);
+obj.get_nns_by_vector(query, K+1, -1, 
+                      &neighbor_index,
+                      &neighbor_dist);                                    
 ```
 
 # Further information
@@ -161,9 +191,10 @@ obj.get_nns_by_vector(query, K+1, -1, &neighbor_index, &neighbor_dist);
 The [Annoy](https://github.com/spotify/Annoy) repository is the canonical source of all things Annoying.
 Questions or issues related to the Annoy C++ library itself should be posted there.
 Any issues specific to the _RcppAnnoy_ interface should be posted at its separate [Github](https://github.com/eddelbuettel/rcppannoy) repository.
-An example of using the Annoy library via _RcppAnnoy_ is available in the [_BiocNeighbors_](https://bioconductor.org/packages/BiocNeighbors) package.
+An example of using the Annoy library via _RcppAnnoy_ is available in the [_BiocNeighbors_](https://bioconductor.org/packages/BiocNeighbors) package
+\citep{Wang:2012,Lun+Richard+Marioni:2017}.
 
-```{r, eval=TRUE}
+```{r, eval=FALSE, include=FALSE, echo=FALSE}
 sessionInfo()
 ```
 
