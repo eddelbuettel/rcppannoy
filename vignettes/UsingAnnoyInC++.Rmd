@@ -47,7 +47,7 @@ knitr::opts_chunk$set(error=FALSE, warning=FALSE, message=FALSE, eval=FALSE)
 The [\pkg{Annoy}](https://github.com/spotify/annoy) \citep{Github:annoy} \proglang{C++} library implements a quick and simple method for approximate nearest neighbor (oh yeah) searching.
 The \pkg{RcppAnnoy} package \citep{CRAN:RcppAnnoy} provides a centralized
 resource for developers to use this code in their own \proglang{R} packages by relying
-on \pkg{Rcpp} \citep{Eddelbuettel:2013:Rcpp,CRAN:Rcpp}. To use \pkg{Annoy} in \proglang{C++} code,, simply put in your `DESCRIPTION` the line
+on \pkg{Rcpp} \citep{TAS:Rcpp,CRAN:Rcpp}. To use \pkg{Annoy} in \proglang{C++} code,, simply put in your `DESCRIPTION` the line
 
 ```
 LinkingTo: RcppAnnoy
@@ -196,7 +196,7 @@ The [Annoy repository](https://github.com/spotify/Annoy) is the canonical source
 Questions or issues related to the \pkg{Annoy} \proglang{C++} library itself should be posted there.
 Any issues specific to the \pkg{RcppAnnoy} interface should be posted at its separate [Github](https://github.com/eddelbuettel/rcppannoy) repository.
 An example of using the Annoy library via \pkg{RcppAnnoy} is available in the [\pkg{BiocNeighbors}](https://bioconductor.org/packages/BiocNeighbors) package
-\citep{Wang:2012,Lun+Richard+Marioni:2017}.
+\citep{Bioc:BiocNeighbors}.
 
 ```{r, eval=FALSE, include=FALSE, echo=FALSE}
 ## not needed   sessionInfo()
