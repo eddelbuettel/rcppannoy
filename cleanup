@@ -1,5 +1,5 @@
 #!/bin/bash
 
-rm -rf src/*.o src/*.so src/*.dll src/*.dylib src/symbols.rds \
+rm -rf *~ */*~ src/*.o src/*.so src/*.dll src/*.dylib src/symbols.rds \
    vignettes/jss.bst vignettes/pinp.cls vignettes/auto \
    vignettes/annoy.index
