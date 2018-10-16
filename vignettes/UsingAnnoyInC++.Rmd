@@ -24,6 +24,9 @@ abstract: |
   This note shows how to use the Annoy library for _Approximate Nearest
   Neighbours (Oh Yeah)_ from C++ code using the headers provided by the
   RcppAnnoy package.
+header-includes: >
+  \newcommand{\proglang}[1]{\textsf{#1}}
+  \newcommand{\pkg}[1]{\textbf{#1}}
 vignette: >
   %\VignetteIndexEntry{Using Annoy in C++}
   %\VignetteEngine{knitr::rmarkdown}
@@ -41,20 +44,21 @@ knitr::opts_chunk$set(error=FALSE, warning=FALSE, message=FALSE, eval=FALSE)
 
 # Setting up your package 
 
-The [Annoy](https://github.com/spotify/annoy) \citep{Github:annoy} C++ library implements a quick and simple method for approximate nearest neighbor (oh yeah) searching.
-The _RcppAnnoy_ package \citep{CRAN:RcppAnnoy} provides a centralized resource for developers to use this code in their own R packages.
-To do so, simply put in your `DESCRIPTION`:
+The [\pkg{Annoy}](https://github.com/spotify/annoy) \citep{Github:annoy} \proglang{C++} library implements a quick and simple method for approximate nearest neighbor (oh yeah) searching.
+The \pkg{RcppAnnoy} package \citep{CRAN:RcppAnnoy} provides a centralized
+resource for developers to use this code in their own \proglang{R} packages by relying
+on \pkg{Rcpp} \citep{TAS:Rcpp,CRAN:Rcpp}. To use \pkg{Annoy} in \proglang{C++} code,, simply put in your `DESCRIPTION` the line
 
 ```
 LinkingTo: RcppAnnoy
 ```
 
-... and the header files will be available for inclusion into your package's source files.
-Note that Annoy is a header-only library so no additional commands are necessary for the linker.
+and the header files will be available for inclusion into your package's source files.
+Note that \pkg{Annoy} is a header-only library so no additional commands are necessary for the linker.
 
 # Including the header files
 
-Obviously, the header files need to be `include`d in any C++ source file that uses Annoy.
+Obviously, the header files need to be `include`d in any \proglang{C++} source file that uses \pkg{Annoy}.
 A few macros also need to be added to handle Windows-specific behaviour and to ensure that error messages are printed through R.
 The pre-processor statements in your source files should look like:
 
@@ -90,7 +94,7 @@ MyAnnoyIndex;
 Note that we use `float` by default, rather than the more conventional `double`.
 This is chosen for speed and to be consistent with the original Python implementation.
 
-The Annoy library (or specifically, the `Kiss64Random` class) uses a fixed seed for its random number generation.
+The \pkg{Annoy} library (or specifically, the `Kiss64Random` class) uses a fixed seed for its random number generation.
 Thus, it is "deterministic" in the sense that repeated runs on the same data will yield the same result.
 The results will also be unresponsive to the state of R's RNG seed.
 
@@ -135,20 +139,20 @@ obj.build(50);
 The `build()` method accepts an integer argument specifying the number of trees to use to construct the index.
 Indices with more trees are larger (in memory and on file) but yield greater search accuracy.
 
-The index can also be saved to file:
+The index can also be saved to file via
 
 ```{Rcpp}
 obj.save("annoy.index");
 ```
 
-... and reloaded in some other context:
+and reloaded in some other context:
 
 ```{Rcpp}
 MyAnnoyIndex obj2(ndims);
 obj2.load("annoy.index"); // same as 'obj'.
 ```
 
-This is helpful for parallelization across workers running in different R sessions.
+This is helpful for parallelization across workers running in different \proglang{R} sessions.
 It also allows us to avoid rebuilding the index in applications where the same data set is to be queried multiple times.
 
 # Searching for nearest neighbors
@@ -188,14 +192,14 @@ obj.get_nns_by_vector(query, K+1, -1,
 
 # Further information
 
-The [Annoy](https://github.com/spotify/Annoy) repository is the canonical source of all things Annoying.
-Questions or issues related to the Annoy C++ library itself should be posted there.
-Any issues specific to the _RcppAnnoy_ interface should be posted at its separate [Github](https://github.com/eddelbuettel/rcppannoy) repository.
-An example of using the Annoy library via _RcppAnnoy_ is available in the [_BiocNeighbors_](https://bioconductor.org/packages/BiocNeighbors) package
-\citep{Wang:2012,Lun+Richard+Marioni:2017}.
+The [Annoy repository](https://github.com/spotify/Annoy) is the canonical source of all things Annoying.
+Questions or issues related to the \pkg{Annoy} \proglang{C++} library itself should be posted there.
+Any issues specific to the \pkg{RcppAnnoy} interface should be posted at its separate [Github](https://github.com/eddelbuettel/rcppannoy) repository.
+An example of using the Annoy library via \pkg{RcppAnnoy} is available in the [\pkg{BiocNeighbors}](https://bioconductor.org/packages/BiocNeighbors) package
+\citep{Bioc:BiocNeighbors}.
 
 ```{r, eval=FALSE, include=FALSE, echo=FALSE}
-sessionInfo()
+## not needed   sessionInfo()
 ```
 
 ```{Rcpp, echo=FALSE}
@@ -207,4 +211,5 @@ sessionInfo()
 ```{r, echo=FALSE, results="hide", eval=TRUE}
 # Checking that the function works.
 testfun(matrix(0, 10, 5))
+if (file.exists("annoy.index")) unlink("annoy.index")
 ```

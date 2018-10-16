@@ -1,5 +1,13 @@
 @String{CRAN = "http://CRAN.R-Project.org/" }
 
+@Manual{Bioc:BiocNeighbors,
+  title =        {BiocNeighbors: Nearest Neighbor Detection for
+                  Bioconductor Packages},
+  author =       {Aaron Lun},
+  year =         2018,
+  note =         {R package version 0.99.22},
+}
+
 @Manual{CRAN:Rcpp,
   title =	 {{Rcpp}: Seamless {R} and {C++} Integration},
   author =	 {Dirk Eddelbuettel and Romain Fran\c{c}ois and JJ
@@ -10,6 +18,14 @@
   url =		 CRAN # "package=Rcpp"
 }
 
+@Manual{CRAN:RcppAnnoy,
+  title =	 {RcppAnnoy: {Rcpp} Bindings for {Annoy}, a Library for Approximate Nearest Neighbors},
+  author = 	 {Dirk Eddelbuettel},
+  year =	 2018,
+  note =	 {R package version 0.0.10},
+  url =		 CRAN # "package=RcppAnnoy"
+}
+
 @Book{Eddelbuettel:2013:Rcpp,
   author =	 {Dirk Eddelbuettel},
   title =	 {Seamless R and C++ Integration with Rcpp},
@@ -18,6 +34,14 @@
   year =	 2013,
   address =	 {New York},
   isbn =	 {978-1-4614-6867-7}
+}
+
+@Manual{Github:annoy,
+  author =       {Erik Bernhardsson},
+  title =        {Annoy: Approximate Nearest Neighbors in C++/Python},
+  year =         2018,
+  note =	 {Python package version 1.13.0},
+  url =          {https://pypi.org/project/annoy/},
 }
 
 @Article{JSS:Rcpp,
@@ -31,20 +55,28 @@
   url =		 {http://www.jstatsoft.org/v40/i08/},
 }
 
-@Manual{Github:annoy,
-  author =       {Erik Bernhardsson},
-  title =        {Annoy: Approximate Nearest Neighbors in C++/Python},
-  year =         2018,
-  note =	 {Python package version 1.13.0},
-  url =          {https://pypi.org/project/annoy/},
+@Article{Lun+Richard+Marioni:2017,
+  author =       {Aaron T. L. Lun and Arianne C. Richard and John
+                  C. Marioni},
+  title =        {Testing for differential abundance in mass cytometry
+                  data},
+  journal =      {Nat. Methods},
+  year =         2017,
+  volume =       14,
+  number =       7,
+  pages =        {707--709},
+  month =        {Jul},
 }
 
-@Manual{CRAN:RcppAnnoy,
-  title =	 {RcppAnnoy: {Rcpp} Bindings for {Annoy}, a Library for Approximate Nearest Neighbors},
-  author = 	 {Dirk Eddelbuettel},
-  year =	 2018,
-  note =	 {R package version 0.0.10},
-  url =		 CRAN # "package=RcppAnnoy"
+@Article{TAS:Rcpp,
+  author =       {Dirk Eddelbuettel and James Joseph Balamuta},
+  title =        {Extending R with C++: A Brief Introduction to Rcpp},
+  journal =      {The American Statistician},
+  volume =       72,
+  number =       1,
+  year =         2018,
+  month =        {August},
+  doi =          {10.1080/00031305.2017.1375990}
 }
 
 @Article{Wang:2012,
@@ -58,17 +90,4 @@
   number =       6,
   pages =        {2351--2358},
   month =        {Feb},
-}
-
-@Article{Lun+Richard+Marioni:2017,
-  author =       {Aaron T. L. Lun and Arianne C. Richard and John
-                  C. Marioni},
-  title =        {Testing for differential abundance in mass cytometry
-                  data},
-  journal =      {Nat. Methods},
-  year =         2017,
-  volume =       14,
-  number =       7,
-  pages =        {707--709},
-  month =        {Jul},
 }
