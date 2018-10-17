@@ -7,7 +7,7 @@
 	* vignettes/UsingAnnoyInC++.Rmd: Renamed vignette, minor edits
 	* vignettes/rcppannoy.bib: Expanded, sorted (thanks, Emacs)
 
-2018-10-16  Dirk Eddelbuettel  <edd@debian.org>
+2018-10-14  Dirk Eddelbuettel  <edd@debian.org>
 
 	* vignettes/rcppannoy.Rmd: Minor edits
 
