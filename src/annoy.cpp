@@ -2,7 +2,7 @@
 //
 //  RcppAnnoy -- Rcpp bindings to Annoy library for Approximate Nearest Neighbours
 //
-//  Copyright (C) 2014 - 2017  Dirk Eddelbuettel
+//  Copyright (C) 2014 - 2018  Dirk Eddelbuettel
 //
 //  This file is part of RcppAnnoy
 //
