@@ -30,6 +30,7 @@
 #if defined(_MSC_VER) && _MSC_VER == 1500
 typedef unsigned char     uint8_t;
 typedef signed __int32    int32_t;
+typedef unsigned __int64  uint64_t;
 #else
 #include <stdint.h>
 #endif
@@ -65,6 +66,9 @@ typedef signed __int32    int32_t;
 
 #ifndef _MSC_VER
 #define popcount __builtin_popcountll
+#elif _MSC_VER == 1500
+#define isnan(x) _isnan(x)
+#define popcount cole_popcount
 #else
 #define popcount __popcnt64
 #endif
@@ -125,6 +129,19 @@ inline T manhattan_distance(const T* x, const T* y, int f) {
   return d;
 }
 
+template<typename T>
+inline T euclidean_distance(const T* x, const T* y, int f) {
+  // Don't use dot-product: avoid catastrophic cancellation in #314.
+  T d = 0.0;
+  for (int i = 0; i < f; ++i) {
+    const T tmp=*x - *y;
+    d += tmp * tmp;
+    ++x;
+    ++y;
+  }
+  return d;
+}
+
 #ifdef USE_AVX
 // Horizontal single sum of 256bit vector.
 inline float hsum256_ps_avx(__m256 v) {
@@ -176,6 +193,30 @@ inline float manhattan_distance<float>(const float* x, const float* y, int f) {
   // Don't forget the remaining values.
   for (; i > 0; i--) {
     result += fabsf(*x - *y);
+    x++;
+    y++;
+  }
+  return result;
+}
+
+template<>
+inline float euclidean_distance<float>(const float* x, const float* y, int f) {
+  float result=0;
+  if (f > 7) {
+    __m256 d = _mm256_setzero_ps();
+    for (; f > 7; f -= 8) {
+      const __m256 diff = _mm256_sub_ps(_mm256_loadu_ps(x), _mm256_loadu_ps(y));
+      d = _mm256_add_ps(d, _mm256_mul_ps(diff, diff)); // no support for fmadd in AVX...
+      x += 8;
+      y += 8;
+    }
+    // Sum all floats in dot register.
+    result = hsum256_ps_avx(d);
+  }
+  // Don't forget the remaining values.
+  for (; f > 0; f--) {
+    float tmp = *x - *y;
+    result += tmp * tmp;
     x++;
     y++;
   }
@@ -356,10 +397,7 @@ struct DotProduct : Angular {
      * This is an extension of the Angular node with an extra attribute for the scaled norm.
      */
     S n_descendants;
-    union {
-      S children[2]; // Will possibly store more than 2
-      T norm;
-    };
+    S children[2]; // Will possibly store more than 2
     T dot_factor;
     T v[1]; // We let this one overflow intentionally. Need to allocate at least 1 to make GCC happy
   };
@@ -379,14 +417,12 @@ struct DotProduct : Angular {
 
   template<typename S, typename T>
   static inline void init_node(Node<S, T>* n, int f) {
-    n->norm = dot(n->v, n->v, f);
   }
 
   template<typename T, typename Node>
   static inline void copy_node(Node* dest, const Node* source, const int f) {
     memcpy(dest->v, source->v, f * sizeof(T));
     dest->dot_factor = source->dot_factor;
-    dest->norm = source->norm;
   }
 
   template<typename S, typename T, typename Random>
@@ -460,11 +496,10 @@ struct DotProduct : Angular {
       Node* node = get_node_ptr<S, Node>(nodes, _s, i);
       T node_norm = node->dot_factor;
 
-      T dot_factor = sqrt(pow(max_norm, 2.0) - pow(node_norm, 2.0));
+      T dot_factor = sqrt(pow(max_norm, static_cast<T>(2.0)) - pow(node_norm, static_cast<T>(2.0)));
       if (isnan(dot_factor)) dot_factor = 0;
 
       node->dot_factor = dot_factor;
-      node->norm = dot(node->v, node->v, f) + (dot_factor * dot_factor);
     }
   }
 };
@@ -487,6 +522,17 @@ struct Hamming : Base {
   template<typename T>
   static inline T pq_initial_value() {
     return numeric_limits<T>::max();
+  }
+  template<typename T>
+  static inline int cole_popcount(T v) {
+    // Note: Only used with MSVC 9, which lacks intrinsics and fails to
+    // calculate std::bitset::count for v > 32bit. Uses the generalized
+    // approach by Eric Cole.
+    // See https://graphics.stanford.edu/~seander/bithacks.html#CountBitsSet64
+    v = v - ((v >> 1) & (T)~(T)0/3);
+    v = (v & (T)~(T)0/15*3) + ((v >> 2) & (T)~(T)0/15*3);
+    v = (v + (v >> 4)) & (T)~(T)0/255*15;
+    return (T)(v * ((T)~(T)0/255)) >> (sizeof(T) - 1) * 8;
   }
   template<typename S, typename T>
   static inline T distance(const Node<S, T>* x, const Node<S, T>* y, int f) {
@@ -559,10 +605,7 @@ struct Minkowski : Base {
   struct ANNOY_NODE_ATTRIBUTE Node {
     S n_descendants;
     T a; // need an extra constant term to determine the offset of the plane
-    union {
-      S children[2];
-      T norm;
-    };
+    S children[2];
     T v[1];
   };
   template<typename S, typename T>
@@ -593,10 +636,7 @@ struct Minkowski : Base {
 struct Euclidean : Minkowski {
   template<typename S, typename T>
   static inline T distance(const Node<S, T>* x, const Node<S, T>* y, int f) {
-    T pp = x->norm ? x->norm : dot(x->v, x->v, f); // For backwards compatibility reasons, we need to fall back and compute the norm here
-    T qq = y->norm ? y->norm : dot(y->v, y->v, f);
-    T pq = dot(x->v, y->v, f);
-    return pp + qq - 2*pq;
+    return euclidean_distance(x->v, y->v, f);    
   }
   template<typename S, typename T, typename Random>
   static inline void create_split(const vector<Node<S, T>*>& nodes, int f, size_t s, Random& random, Node<S, T>* n) {
@@ -619,7 +659,6 @@ struct Euclidean : Minkowski {
   }
   template<typename S, typename T>
   static inline void init_node(Node<S, T>* n, int f) {
-    n->norm = dot(n->v, n->v, f);
   }
   static const char* name() {
     return "euclidean";
@@ -666,15 +705,15 @@ class AnnoyIndexInterface {
   virtual void add_item(S item, const T* w) = 0;
   virtual void build(int q) = 0;
   virtual void unbuild() = 0;
-  virtual bool save(const char* filename) = 0;
+  virtual bool save(const char* filename, bool prefault=false) = 0;
   virtual void unload() = 0;
-  virtual bool load(const char* filename) = 0;
-  virtual T get_distance(S i, S j) = 0;
-  virtual void get_nns_by_item(S item, size_t n, size_t search_k, vector<S>* result, vector<T>* distances) = 0;
-  virtual void get_nns_by_vector(const T* w, size_t n, size_t search_k, vector<S>* result, vector<T>* distances) = 0;
-  virtual S get_n_items() = 0;
+  virtual bool load(const char* filename, bool prefault=false) = 0;
+  virtual T get_distance(S i, S j) const = 0;
+  virtual void get_nns_by_item(S item, size_t n, size_t search_k, vector<S>* result, vector<T>* distances) const = 0;
+  virtual void get_nns_by_vector(const T* w, size_t n, size_t search_k, vector<S>* result, vector<T>* distances) const = 0;
+  virtual S get_n_items() const = 0;
   virtual void verbose(bool v) = 0;
-  virtual void get_item(S item, T* v) = 0;
+  virtual void get_item(S item, T* v) const = 0;
   virtual void set_seed(int q) = 0;
 };
 
@@ -790,7 +829,7 @@ public:
     _n_nodes = _n_items;
   }
 
-  bool save(const char* filename) {
+  bool save(const char* filename, bool prefault=false) {
     FILE *f = fopen(filename, "wb");
     if (f == NULL)
       return false;
@@ -799,7 +838,7 @@ public:
     fclose(f);
 
     unload();
-    return load(filename);
+    return load(filename, prefault=false);
   }
 
   void reinitialize() {
@@ -826,7 +865,7 @@ public:
     if (_verbose) showUpdate("unloaded\n");
   }
 
-  bool load(const char* filename) {
+  bool load(const char* filename, bool prefault=false) {
     _fd = open(filename, O_RDONLY, (int)0400);
     if (_fd == -1) {
       _fd = 0;
@@ -834,8 +873,9 @@ public:
     }
     off_t size = lseek(_fd, 0, SEEK_END);
 #ifdef MAP_POPULATE
+    const int populate = prefault ? MAP_POPULATE : 0;
     _nodes = (Node*)mmap(
-        0, size, PROT_READ, MAP_SHARED | MAP_POPULATE, _fd, 0);
+        0, size, PROT_READ, MAP_SHARED | populate, _fd, 0);
 #else
     _nodes = (Node*)mmap(
         0, size, PROT_READ, MAP_SHARED, _fd, 0);
@@ -864,26 +904,26 @@ public:
     return true;
   }
 
-  T get_distance(S i, S j) {
+  T get_distance(S i, S j) const {
     return D::normalized_distance(D::distance(_get(i), _get(j), _f));
   }
 
-  void get_nns_by_item(S item, size_t n, size_t search_k, vector<S>* result, vector<T>* distances) {
+  void get_nns_by_item(S item, size_t n, size_t search_k, vector<S>* result, vector<T>* distances) const {
     const Node* m = _get(item);
     _get_all_nns(m->v, n, search_k, result, distances);
   }
 
-  void get_nns_by_vector(const T* w, size_t n, size_t search_k, vector<S>* result, vector<T>* distances) {
+  void get_nns_by_vector(const T* w, size_t n, size_t search_k, vector<S>* result, vector<T>* distances) const {
     _get_all_nns(w, n, search_k, result, distances);
   }
-  S get_n_items() {
+  S get_n_items() const {
     return _n_items;
   }
   void verbose(bool v) {
     _verbose = v;
   }
 
-  void get_item(S item, T* v) {
+  void get_item(S item, T* v) const {
     Node* m = _get(item);
     memcpy(v, m->v, (_f) * sizeof(T));
   }
@@ -905,7 +945,7 @@ protected:
     }
   }
 
-  inline Node* _get(const S i) {
+  inline Node* _get(const S i) const {
     return get_node_ptr<S, Node>(_nodes, _s, i);
   }
 
@@ -927,7 +967,9 @@ protected:
       // Using std::copy instead of a loop seems to resolve issues #3 and #13,
       // probably because gcc 4.8 goes overboard with optimizations.
       // Using memcpy instead of std::copy for MSVC compatibility. #235
-      memcpy(m->children, &indices[0], indices.size() * sizeof(S));
+      // Only copy when necessary to avoid crash in MSVC 9. #293
+      if (!indices.empty())
+        memcpy(m->children, &indices[0], indices.size() * sizeof(S));
       return item;
     }
 
@@ -992,7 +1034,7 @@ protected:
     return item;
   }
 
-  void _get_all_nns(const T* v, size_t n, size_t search_k, vector<S>* result, vector<T>* distances) {
+  void _get_all_nns(const T* v, size_t n, size_t search_k, vector<S>* result, vector<T>* distances) const {
     Node* v_node = (Node *)malloc(_s); // TODO: avoid
     D::template zero_value<Node>(v_node);
     memcpy(v_node->v, v, sizeof(T) * _f);
