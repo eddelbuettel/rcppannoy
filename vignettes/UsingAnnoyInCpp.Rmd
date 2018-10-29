@@ -199,10 +199,6 @@ Any issues specific to the \pkg{RcppAnnoy} interface should be posted at its sep
 An example of using the Annoy library via \pkg{RcppAnnoy} is available in the [\pkg{BiocNeighbors}](https://bioconductor.org/packages/BiocNeighbors) package
 \citep{Bioc:BiocNeighbors}.
 
-```{r, eval=FALSE, include=FALSE, echo=FALSE}
-## not needed   sessionInfo()
-```
-
 ```{Rcpp, echo=FALSE}
 // Odds and ends to complete compilation.
     return Rcpp::IntegerVector(neighbor_index.begin(), neighbor_index.end());
