@@ -37,9 +37,10 @@ vignette: >
 
 ```{r, echo=FALSE, results="hide"}
 knitr::opts_chunk$set(error=FALSE, warning=FALSE, message=FALSE, eval=FALSE)
+is.win <- .Platform$OS.type=="windows" # doesn't compile with knitr on Windows, for some reason.
 ```
 
-```{Rcpp, ref.label=knitr::all_rcpp_labels(), include=FALSE, eval=TRUE}
+```{Rcpp, ref.label=knitr::all_rcpp_labels(), include=FALSE, eval=!is.win}
 ```
 
 # Setting up your package 
@@ -208,7 +209,7 @@ An example of using the Annoy library via \pkg{RcppAnnoy} is available in the [\
 }
 ```
 
-```{r, echo=FALSE, results="hide", eval=TRUE}
+```{r, echo=FALSE, results="hide", eval=!is.win}
 # Checking that the function works.
 testfun(matrix(0, 10, 5))
 if (file.exists("annoy.index")) unlink("annoy.index")
