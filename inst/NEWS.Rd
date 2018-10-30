@@ -3,14 +3,15 @@
 \newcommand{\ghpr}{\href{https://github.com/eddelbuettel/rcppannoy/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/eddelbuettel/rcppannoy/issues/#1}{##1}}
 
-\section{Changes in version 0.0.11 (2018-10-yy)}{
+\section{Changes in version 0.0.11 (2018-10-30)}{
   \itemize{
-    \item Synchronized with Annoy upstream (\ghpr{26} and \ghpr{30}).
+    \item Synchronized with Annoy upstream (\ghpr{26}, \ghpr{30}, \ghpr{36}).
     \item Added new Hamming distance measure functionality; should be
     considered experimental as the functionality depends on integer values.
     \item Travis CI use was updated to the R 3.5 PPA (\ghpr{28})
     \item New vignette about Annoy use from C++ via Rcpp (Aaron Lun
-    in \ghpr{29} addressing \ghit{19}; also \ghpr{32}).
+    in \ghpr{29} addressing \ghit{19}; also \ghpr{32}, \ghpr{33})
+    \item The vignette was rewritten using \pkg{pinp} (\ghpr{34}, \ghpr{35}).
   }
 }
 
