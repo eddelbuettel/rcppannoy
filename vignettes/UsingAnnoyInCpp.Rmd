@@ -39,15 +39,14 @@ vignette: >
 knitr::opts_chunk$set(error=FALSE, warning=FALSE, message=FALSE, eval=FALSE)
 ```
 
-```{Rcpp, ref.label=knitr::all_rcpp_labels(), include=FALSE, eval=TRUE}
-```
-
 # Setting up your package 
 
-The [\pkg{Annoy}](https://github.com/spotify/annoy) \citep{Github:annoy} \proglang{C++} library implements a quick and simple method for approximate nearest neighbor (oh yeah) searching.
-The \pkg{RcppAnnoy} package \citep{CRAN:RcppAnnoy} provides a centralized
-resource for developers to use this code in their own \proglang{R} packages by relying
-on \pkg{Rcpp} \citep{TAS:Rcpp,CRAN:Rcpp}. To use \pkg{Annoy} in \proglang{C++} code,, simply put in your `DESCRIPTION` the line
+The [\pkg{Annoy}](https://github.com/spotify/annoy) \proglang{C++} library
+\citep{Github:annoy} implements a quick and simple method for _approximate nearest neighbor
+(oh yeah)_ searching.  The \pkg{RcppAnnoy} package \citep{CRAN:RcppAnnoy} provides a
+centralized resource for developers to use this code in their own \proglang{R} packages by
+relying on \pkg{Rcpp} \citep{TAS:Rcpp,CRAN:Rcpp}. To use \pkg{Annoy} in \proglang{C++}
+code,, simply put in your `DESCRIPTION` the line
 
 ```
 LinkingTo: RcppAnnoy
@@ -58,11 +57,12 @@ Note that \pkg{Annoy} is a header-only library so no additional commands are nec
 
 # Including the header files
 
-Obviously, the header files need to be `include`d in any \proglang{C++} source file that uses \pkg{Annoy}.
-A few macros also need to be added to handle Windows-specific behaviour and to ensure that error messages are printed through R.
-The pre-processor statements in your source files should look like:
+Obviously, the header files need to be `include`d in any \proglang{C++} source file that
+uses \pkg{Annoy}.  A few macros also need to be added to handle Windows-specific behaviour
+and to ensure that error messages are printed through R.  The pre-processor statements in
+your source files should look like:
 
-```{Rcpp}
+```cpp
 #if defined(__MINGW32__)
 #undef Realloc
 #undef Free
@@ -83,7 +83,7 @@ The `AnnoyIndex` template class can accommodate different data types, distance m
 Here, we will consider the most common application of a nearest-neighbor search on floating-point data with Euclidean distance.
 We `typedef` the type and realized template for convenience:
 
-```{Rcpp}
+```cpp
 typedef float ANNOYTYPE;
 
 typedef
@@ -98,24 +98,11 @@ The \pkg{Annoy} library (or specifically, the `Kiss64Random` class) uses a fixed
 Thus, it is "deterministic" in the sense that repeated runs on the same data will yield the same result.
 The results will also be unresponsive to the state of R's RNG seed.
 
-```{Rcpp, eval=FALSE, echo=FALSE}
-// Extra things needed for compilation:
-#include <vector>
-#include <algorithm>
-
-// [[Rcpp::depends(RcppAnnoy)]]
-// [[Rcpp::export]]
-Rcpp::IntegerVector testfun(Rcpp::NumericMatrix mat) {
-    int c=0, K=5;
-    std::vector<ANNOYTYPE> stub(mat.ncol());
-    ANNOYTYPE* query=stub.data();
-```
-
 # Building an index
 
 Let's say we have an `Rcpp::NumericMatrix` named `mat`, where each row corresponds to a sample and each column corresponds to a dimension/variable.
 
-```{Rcpp}
+```cpp
 const size_t nsamples=mat.nrow();
 const size_t ndims=mat.ncol();
 ```
@@ -123,7 +110,7 @@ const size_t ndims=mat.ncol();
 It is simple to build a `MyAnnoyIndex` containing the data in this matrix.
 Note the copy from the double-precision matrix into a `float` vector before calling `add_item()`.
 
-```{Rcpp}
+```cpp
 MyAnnoyIndex obj(ndims);
 // from <vector>        
 std::vector<ANNOYTYPE> tmp(ndims); 
@@ -136,55 +123,63 @@ for (size_t i=0; i<nsamples; ++i) {
 obj.build(50);
 ```
 
-The `build()` method accepts an integer argument specifying the number of trees to use to construct the index.
-Indices with more trees are larger (in memory and on file) but yield greater search accuracy.
+The `build()` method accepts an integer argument specifying the number of trees to use to
+construct the index.  Indices with more trees are larger (in memory and on file) but yield
+greater search accuracy.
 
 The index can also be saved to file via
 
-```{Rcpp}
+```cpp
 obj.save("annoy.index");
 ```
 
 and reloaded in some other context:
 
-```{Rcpp}
+```cpp
 MyAnnoyIndex obj2(ndims);
 obj2.load("annoy.index"); // same as 'obj'.
 ```
 
-This is helpful for parallelization across workers running in different \proglang{R} sessions.
-It also allows us to avoid rebuilding the index in applications where the same data set is to be queried multiple times.
+This is helpful for parallelization across workers running in different \proglang{R}
+sessions.  It also allows us to avoid rebuilding the index in applications where the same
+data set is to be queried multiple times.
 
 # Searching for nearest neighbors
 
-Let's say that we want to find the `K` (approximate) nearest neighbors of sample `c` in the original data set used to construct `obj`.
-To do this, we write:
+Let's say that we want to find the `K` (approximate) nearest neighbors of sample `c` in
+the original data set used to construct `obj`.  To do this, we write:
 
-```{Rcpp}
+```cpp
 std::vector<int> neighbor_index;
 std::vector<ANNOYTYPE> neighbor_dist;
 obj.get_nns_by_item(c, K + 1, -1, &neighbor_index,
                     &neighbor_dist); 
 ```
 
-Upon return, the `neighbor_index` vector will be filled with the sample numbers of the `K` nearest neighbors (i.e., rows of the original `mat`, in this case).
-The `neighbor_dist` vector will be filled with the distances to each of those neighbors.
-Note that:
+Upon return, the `neighbor_index` vector will be filled with the sample numbers of the `K`
+nearest neighbors (i.e., rows of the original `mat`, in this case).  The `neighbor_dist`
+vector will be filled with the distances to each of those neighbors.  Note that:
 
-- We ask for the `K+1` nearest neighbors, as the set returned in `neighbor_index` will usually include `c` itself.
-This should be taken into consideration when the results are used in downstream calculations.
-- The returned neighbors are sorted by increasing distance from `c`.
-However, note that `c` itself may not necessarily be at the start if there is another point with the same coordinates.
+- We ask for the `K+1` nearest neighbors, as the set returned in `neighbor_index` will
+usually include `c` itself.  This should be taken into consideration when the results are
+used in downstream calculations.
+- The returned neighbors are sorted by increasing distance from `c`.  However, note that
+`c` itself may not necessarily be at the start if there is another point with the same
+coordinates.
 - `get_nns_by_item()` requires pointers to the vectors rather than the vectors themselves.
-If the pointer to the output vector for distances is `NULL`, distances will not be returned.
-This provides a slight performance boost when only the identities of the neighbors are of interest.
-- The `-1` is the default value for a tuning parameter that specifies how many samples should be collected from the trees for exhaustive distance calculations.
-This defaults to the number of trees multiplied by the number of requested neighbors; larger values will increase accuracy at the cost of speed.
+If the pointer to the output vector for distances is `NULL`, distances will not be
+returned.  This provides a slight performance boost when only the identities of the
+neighbors are of interest.
+- The `-1` is the default value for a tuning parameter that specifies how many samples
+should be collected from the trees for exhaustive distance calculations.  This defaults to
+the number of trees multiplied by the number of requested neighbors; larger values will
+increase accuracy at the cost of speed.
 
-Another application is to query the index for the neighbors of a new sample given its coordinates.
-Assuming we have a `float*` to an array of coordinates of length `ndims`, we do:
+Another application is to query the index for the neighbors of a new sample given its
+coordinates.  Assuming we have a `float*` to an array of coordinates of length `ndims`, we
+do:
 
-```{Rcpp}
+```cpp
 obj.get_nns_by_vector(query, K+1, -1, 
                       &neighbor_index,
                       &neighbor_dist);                                    
@@ -192,24 +187,11 @@ obj.get_nns_by_vector(query, K+1, -1,
 
 # Further information
 
-The [Annoy repository](https://github.com/spotify/Annoy) is the canonical source of all things Annoying.
-Questions or issues related to the \pkg{Annoy} \proglang{C++} library itself should be posted there.
-Any issues specific to the \pkg{RcppAnnoy} interface should be posted at its separate [Github](https://github.com/eddelbuettel/rcppannoy) repository.
-An example of using the Annoy library via \pkg{RcppAnnoy} is available in the [\pkg{BiocNeighbors}](https://bioconductor.org/packages/BiocNeighbors) package
+The [Annoy repository](https://github.com/spotify/Annoy) is the canonical source of all
+things Annoying.  Questions or issues related to the \pkg{Annoy} \proglang{C++} library
+itself should be posted there.  Any issues specific to the \pkg{RcppAnnoy} interface
+should be posted at its separate [Github](https://github.com/eddelbuettel/rcppannoy)
+repository.  An example of using the Annoy library via \pkg{RcppAnnoy} is available in the
+[\pkg{BiocNeighbors}](https://bioconductor.org/packages/BiocNeighbors) package
 \citep{Bioc:BiocNeighbors}.
 
-```{r, eval=FALSE, include=FALSE, echo=FALSE}
-## not needed   sessionInfo()
-```
-
-```{Rcpp, echo=FALSE}
-// Odds and ends to complete compilation.
-    return Rcpp::IntegerVector(neighbor_index.begin(), neighbor_index.end());
-}
-```
-
-```{r, echo=FALSE, results="hide", eval=TRUE}
-# Checking that the function works.
-testfun(matrix(0, 10, 5))
-if (file.exists("annoy.index")) unlink("annoy.index")
-```

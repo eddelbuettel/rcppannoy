@@ -35,12 +35,14 @@ typedef unsigned __int64  uint64_t;
 #include <stdint.h>
 #endif
 
-#ifdef _MSC_VER
-#define NOMINMAX
-#include "mman.h"
-#include <windows.h>
+#ifdef __MINGW32__
+ #ifndef NOMINMAX
+  #define NOMINMAX
+ #endif
+ #include "mman.h"
+ #include <windows.h>
 #else
-#include <sys/mman.h>
+ #include <sys/mman.h>
 #endif
 
 #include <string.h>
