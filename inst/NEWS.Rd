@@ -3,6 +3,12 @@
 \newcommand{\ghpr}{\href{https://github.com/eddelbuettel/rcppannoy/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/eddelbuettel/rcppannoy/issues/#1}{##1}}
 
+\section{Changes in version 0.0.12 (2019-xx-yy)}{
+  \itemize{
+    \item Allow setting of seed (\ghpr{41} fixing \ghit{40}).
+  }
+}
+
 \section{Changes in version 0.0.11 (2018-10-30)}{
   \itemize{
     \item Synchronized with Annoy upstream (\ghpr{26}, \ghpr{30}, \ghpr{36}).

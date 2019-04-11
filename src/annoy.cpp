@@ -63,6 +63,7 @@ public:
     int    getNItems()                    { return ptr->get_n_items();      }
     double getDistance(int i, int j)      { return ptr->get_distance(i, j); }
     void   verbose(bool v)                { ptr->verbose(v);                }
+    void   setSeed(int s)                 { ptr->set_seed(s);               }
 
     std::vector<S> getNNsByItem(S item, size_t n) {
         std::vector<S> result;
@@ -92,7 +93,7 @@ public:
         ptr->get_nns_by_vector(&fv[0], n, -1, &result, NULL);
         return result;
     }
-    
+
     Rcpp::List getNNsByVectorList(std::vector<T> fv, size_t n,
                                   size_t search_k, bool include_distances) {
         if (fv.size() != vectorsz) {
@@ -111,7 +112,7 @@ public:
             return Rcpp::List::create(Rcpp::Named("item") = result);
         }
     }
-    
+
     std::vector<double> getItemsVector(S item) {
         std::vector<T> fv(vectorsz);
         ptr->get_item(item, &fv[0]);
@@ -150,6 +151,7 @@ RCPP_MODULE(AnnoyAngular) {
         .method("getItemsVector", &AnnoyAngular::getItemsVector,  "retrieve item vector")
         .method("getNItems",      &AnnoyAngular::getNItems,       "get N items")
         .method("setVerbose",     &AnnoyAngular::verbose,         "set verbose")
+        .method("setSeed",        &AnnoyAngular::setSeed,         "set seed")
         ;
 }
 
@@ -176,6 +178,7 @@ RCPP_MODULE(AnnoyEuclidean) {
         .method("getItemsVector", &AnnoyEuclidean::getItemsVector, "retrieve item vector")
         .method("getNItems",      &AnnoyEuclidean::getNItems,      "get N items")
         .method("setVerbose",     &AnnoyEuclidean::verbose,        "set verbose")
+        .method("setSeed",        &AnnoyEuclidean::setSeed,        "set seed")
         ;
 }
 
@@ -202,6 +205,7 @@ RCPP_MODULE(AnnoyManhattan) {
         .method("getItemsVector", &AnnoyManhattan::getItemsVector, "retrieve item vector")
         .method("getNItems",      &AnnoyManhattan::getNItems,      "get N items")
         .method("setVerbose",     &AnnoyManhattan::verbose,        "set verbose")
+        .method("setSeed",        &AnnoyManhattan::setSeed,        "set seed")
         ;
 }
 
@@ -228,5 +232,6 @@ RCPP_MODULE(AnnoyHamming) {
         .method("getItemsVector", &AnnoyHamming::getItemsVector, "retrieve item vector")
         .method("getNItems",      &AnnoyHamming::getNItems,      "get N items")
         .method("setVerbose",     &AnnoyHamming::verbose,        "set verbose")
+        .method("setSeed",        &AnnoyHamming::setSeed,        "set seed")
         ;
 }
