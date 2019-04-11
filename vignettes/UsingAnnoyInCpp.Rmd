@@ -99,7 +99,7 @@ The \pkg{Annoy} library uses random number generation during index creation
 By default, the seed is fixed and results will be "deterministic" in the sense
 that repeated runs on the same data will yield the same result. They will also be
 unresponsive to the state of R's RNG seed. The seed used by `AnnoyIndex` can be
-specified by the `set_seed` method, which should be called before adding items
+specified by the `setSeed` method, which should be called before adding items
 to the index.
 
 # Building an index

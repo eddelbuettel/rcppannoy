@@ -5,7 +5,9 @@
 
 \section{Changes in version 0.0.12 (2019-xx-yy)}{
   \itemize{
-    \item Allow setting of seed (\ghpr{41} fixing \ghit{40}).
+    \item Allow setting of seed (Dirk in \ghpr{41} fixing \ghit{40}).
+    \item Document \code{setSeed} (James Melville in \ghpr{42}
+    documenting \ghit{41}).
   }
 }
 

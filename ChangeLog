@@ -1,3 +1,11 @@
+2019-04-11  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/tests/runit.seeds.R (test01seeds): Add tests
+
+2019-04-11  James Melville  <jlmelville@gmail.com>
+
+	* vignettes/UsingAnnoyInCpp.Rmd: Document setSeed
+
 2019-04-10  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION (Version, Date): Roll minor version
