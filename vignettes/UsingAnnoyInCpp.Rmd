@@ -94,9 +94,13 @@ MyAnnoyIndex;
 Note that we use `float` by default, rather than the more conventional `double`.
 This is chosen for speed and to be consistent with the original Python implementation.
 
-The \pkg{Annoy} library (or specifically, the `Kiss64Random` class) uses a fixed seed for its random number generation.
-Thus, it is "deterministic" in the sense that repeated runs on the same data will yield the same result.
-The results will also be unresponsive to the state of R's RNG seed.
+The \pkg{Annoy} library uses random number generation during index creation
+(via the `Kiss64Random` class), with a seed that is separate from R's RNG seed.
+By default, the seed is fixed and results will be "deterministic" in the sense
+that repeated runs on the same data will yield the same result. They will also be
+unresponsive to the state of R's RNG seed. The seed used by `AnnoyIndex` can be
+specified by the `set_seed` method, which should be called before adding items
+to the index.
 
 # Building an index
 
