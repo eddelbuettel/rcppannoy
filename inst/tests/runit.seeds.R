@@ -34,8 +34,8 @@ if (.runThisTest) {
         checkEquals(v1$getNNsByVector(c(0.5,0.5), 20),
                     v3$getNNsByVector(c(0.5,0.5), 20),
                     msg="v1 and v3 are equal")
-        checkTrue(sum(abs(v1$getNNsByVector(c(0.5,0.5), 20) -
-                          v2$getNNsByVector(c(0.5,0.5), 20))) > 0,
+        checkTrue(any(v1$getNNsByVector(c(0.5,0.5), 20) !=
+                      v2$getNNsByVector(c(0.5,0.5), 20)),
                   msg="v1 and v2 are not equal")
     }
 }
