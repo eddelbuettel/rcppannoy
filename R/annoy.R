@@ -183,7 +183,7 @@ NULL
 #' a$getNNsByItemList(0, 5, -1, FALSE)
 #'
 #'
-#' v = runif(vector_size)
+#' v <- runif(vector_size)
 #' # Retrieve 5 nearest neighbors to vector v
 #' # Returned as integer vector of indices
 #' a$getNNsByVector(v, 5)
