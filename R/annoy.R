@@ -8,7 +8,7 @@
 #'
 #' @description
 #' Annoy is a small library written to provide fast and memory-efficient
-#' nearest neigbor lookup from a possibly static index which can be
+#' nearest neighbor lookup from a possibly static index which can be
 #' shared across processes.
 #'
 #' @details Details about Annoy are available at the reference listed below.
@@ -34,7 +34,7 @@ NULL
 #'
 #' @description
 #' Annoy is a small library written to provide fast and memory-efficient
-#' nearest neigbor lookup from a possibly static index which can be
+#' nearest neighbor lookup from a possibly static index which can be
 #' shared across processes.
 #'
 #' @section Usage:
