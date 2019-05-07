@@ -17,7 +17,7 @@
 \title{Approximate Nearest Neighbors with Annoy}
 \description{
 Annoy is a small library written to provide fast and memory-efficient
-nearest neigbor lookup from a possibly static index which can be
+nearest neighbor lookup from a possibly static index which can be
 shared across processes.
 }
 \section{Usage}{
@@ -168,7 +168,7 @@ a$getNNsByItemList(0, 5, -1, TRUE)
 a$getNNsByItemList(0, 5, -1, FALSE)
 
 
-v = runif(vector_size)
+v <- runif(vector_size)
 # Retrieve 5 nearest neighbors to vector v
 # Returned as integer vector of indices
 a$getNNsByVector(v, 5)
