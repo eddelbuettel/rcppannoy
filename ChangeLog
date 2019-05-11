@@ -6,6 +6,7 @@
 	* vignettes/rmd/rcppannoy.bib: Idem
 	
 	* DESCRIPTION (Suggests): Remove three packages needed for vignette
+	* .travis.yml (install): Idem
 
 	* .Rbuildignore: Exclude vignettes/rmd/ from build
 

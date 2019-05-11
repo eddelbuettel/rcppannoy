@@ -16,7 +16,7 @@ before_install:
   - ./run.sh bootstrap
 
 install:
-  - ./run.sh install_aptget r-cran-rcpp r-cran-knitr r-cran-rmarkdown r-cran-pinp
+  - ./run.sh install_aptget r-cran-rcpp
   - ./run.sh install_r tinytest
 
 script:
