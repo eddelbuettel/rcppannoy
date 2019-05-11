@@ -1,4 +1,18 @@
-2019-05-06  Adam Spannbauer <SpannbauerAdam@gmail.com>
+2019-05-10  Dirk Eddelbuettel  <edd@debian.org>
+
+	* tests/tinytest.R: New test runner using tinytest
+
+	* inst/tinytest/testIndex.R: New test file using tinytest
+	* inst/tinytest/testAngular.R: Idem
+	* inst/tinytest/testEuclidean.R: Idem
+	* inst/tinytest/testHamming.R: Idem
+	* inst/tinytest/testManhattan.R: Idem
+
+	* .travis.yml (install): Add tinytest to Travis setup
+
+	* local/: Old RUnit test files in source but not in package
+
+2019-05-06  Adam Spannbauer  <SpannbauerAdam@gmail.com>
 
 	* R/annoy.R: Added documentation
 	* man/AnnoyIndex.Rd: Rendered documentation
