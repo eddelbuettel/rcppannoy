@@ -1,0 +1,9 @@
+\documentclass{article}
+\usepackage{pdfpages}
+%\VignetteIndexEntry{Using Annoy in C++}
+%\VignetteKeywords{Rcpp, Annoy, R, Cpp, Approximate Nearest Neighbours}
+%\VignettePackage{RcppAnnoy}
+
+\begin{document}
+\includepdf[pages=-, fitpaper=true]{UsingAnnoyInCpp.pdf}
+\end{document}

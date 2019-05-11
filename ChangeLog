@@ -1,3 +1,14 @@
+2019-05-11  Dirk Eddelbuettel  <edd@debian.org>
+
+	* vignettes/UsingAnnoyInCcppWrapper.Rnw: Vignette wrapper with tip of
+	the hat to Mark van der Loo for his January 2019 blog post
+	* vignettes/rmd/UsingAnnoyInCpp.Rmd (vignette): Moved
+	* vignettes/rmd/rcppannoy.bib: Idem
+	
+	* DESCRIPTION (Suggests): Remove three packages needed for vignette
+
+	* .Rbuildignore: Exclude vignettes/rmd/ from build
+
 2019-05-10  Dirk Eddelbuettel  <edd@debian.org>
 
 	* tests/tinytest.R: New test runner using tinytest
@@ -11,6 +22,7 @@
 	* .travis.yml (install): Add tinytest to Travis setup
 
 	* local/: Old RUnit test files in source but not in package
+	* .Rbuildignore: Exclude local/ from build
 
 2019-05-06  Adam Spannbauer  <SpannbauerAdam@gmail.com>
 
