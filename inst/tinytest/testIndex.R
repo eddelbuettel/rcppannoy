@@ -6,7 +6,7 @@ if (.runThisTest) {
     suppressMessages(library(RcppAnnoy))
 
     a <- new(AnnoyAngular, 10)
-    a$load(system.file("tests", "data", "test.tree", package="RcppAnnoy"))
+    a$load(system.file("tinytest", "data", "test.tree", package="RcppAnnoy"))
 
     ## This might change in the future if we change the search
     ## algorithm, but in that case let's update the test
@@ -20,7 +20,7 @@ if (.runThisTest) {
 
     ## modeled after annoy_test.py() and its t
     i <- new(AnnoyAngular, 10)
-    i$load(system.file("tests", "data", "test.tree", package="RcppAnnoy"))
+    i$load(system.file("tinytest", "data", "test.tree", package="RcppAnnoy"))
 
     u <- i$getItemsVector(99)
     i$save(tempfile())
@@ -29,7 +29,7 @@ if (.runThisTest) {
     checkEqual(u, v, msg="getItemVector comparison")
 
     j <- new(AnnoyAngular, 10)
-    j$load(system.file("tests", "data", "test.tree", package="RcppAnnoy"))
+    j$load(system.file("tinytest", "data", "test.tree", package="RcppAnnoy"))
 
     w <- i$getItemsVector(99)
     checkEqual(u, w, msg="getItemVector comparison")

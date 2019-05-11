@@ -10,6 +10,8 @@
 
 	* .travis.yml (install): Add tinytest to Travis setup
 
+	* local/: Old RUnit test files in source but not in package
+
 2019-05-06  Adam Spannbauer  <SpannbauerAdam@gmail.com>
 
 	* R/annoy.R: Added documentation
