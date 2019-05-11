@@ -17,6 +17,7 @@ before_install:
 
 install:
   - ./run.sh install_aptget r-cran-runit r-cran-rcpp r-cran-knitr r-cran-rmarkdown r-cran-pinp
+  - ./run.sh install_r tinytest
 
 script:
   - ./run.sh run_tests
