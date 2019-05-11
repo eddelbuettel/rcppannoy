@@ -8,6 +8,8 @@
     \item Allow setting of seed (Dirk in \ghpr{41} fixing \ghit{40}).
     \item Document \code{setSeed} (James Melville in \ghpr{42}
     documenting \ghit{41}).
+    \item Added documentation (Adam Spannbauer in \ghpr{44} closing
+    \ghit{43}). 
   }
 }
 
