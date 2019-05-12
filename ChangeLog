@@ -1,3 +1,7 @@
+2019-05-12  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Date, Version): Release 0.0.12
+
 2019-05-11  Dirk Eddelbuettel  <edd@debian.org>
 
 	* vignettes/UsingAnnoyInCcppWrapper.Rnw: Vignette wrapper with tip of
