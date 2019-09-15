@@ -1,3 +1,8 @@
+2019-09-15  Dirk Eddelbuettel  <edd@debian.org>
+
+	* R/annoy.R: Use a tempfile() in example to save + load an annoy tree
+	* man/AnnoyIndex.Rd: Ditto
+
 2019-05-12  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION (Date, Version): Release 0.0.12

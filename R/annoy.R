@@ -112,8 +112,6 @@
 #' \code{$setSeed()}
 #' Set random seed for annoy (integer).
 #'
-#' @export
-#'
 #' @examples
 #' library(RcppAnnoy)
 #'
@@ -177,11 +175,14 @@
 #'
 #' # SAVING/LOADING ANNOY INDEX ---------------------------------------------------
 #'
+#' # Create a tempfile, replace with a local file to keep
+#' treefile <- tempfile(pattern="annoy", fileext="tree")
+#'
 #' # Save annoy tree to disk
-#' a$save("annoy.tree")
+#' a$save(treefile)
 #'
 #' # Load annoy tree from disk
-#' a$load("annoy.tree")
+#' a$load(treefile)
 #'
 #' # Unload index from memory
 #' a$unload()
@@ -192,4 +193,3 @@ loadModule("AnnoyAngular", TRUE)
 loadModule("AnnoyEuclidean", TRUE)
 loadModule("AnnoyManhattan", TRUE)
 loadModule("AnnoyHamming", TRUE)
-
