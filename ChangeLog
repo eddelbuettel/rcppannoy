@@ -1,3 +1,12 @@
+2019-09-21  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll minor version
+
+	* inst/include/annoylib.h: New upstream v1.16 (plus up to pr410)
+	* inst/include/mman.h: Idem
+
+	* src/annoy.cpp: Add getNTrees(), use error message in addItem()
+
 2019-09-15  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION (Version, Date): Roll minor version
