@@ -54,13 +54,15 @@ public:
         if (item < 0) Rcpp::stop("Inadmissible item value %d", item);
         std::vector<T> fv(dv.size());
         std::copy(dv.begin(), dv.end(), fv.begin());
-        ptr->add_item(item, &fv[0]);
+        char *errormsg;
+        if (!ptr->add_item(item, &fv[0], &errormsg)) Rcpp::stop(errormsg);
     }
     void   callBuild(int n)               { ptr->build(n);                  }
     void   callSave(std::string filename) { ptr->save(filename.c_str());    }
     void   callLoad(std::string filename) { ptr->load(filename.c_str());    }
     void   callUnload()                   { ptr->unload();                  }
     int    getNItems()                    { return ptr->get_n_items();      }
+    int    getNTrees()                    { return ptr->get_n_trees();      }
     double getDistance(int i, int j)      { return ptr->get_distance(i, j); }
     void   verbose(bool v)                { ptr->verbose(v);                }
     void   setSeed(int s)                 { ptr->set_seed(s);               }
@@ -149,7 +151,8 @@ RCPP_MODULE(AnnoyAngular) {
         .method("getNNsByVectorList",  &AnnoyAngular::getNNsByVectorList,
                 "retrieve Nearest Neigbours given vector")
         .method("getItemsVector", &AnnoyAngular::getItemsVector,  "retrieve item vector")
-        .method("getNItems",      &AnnoyAngular::getNItems,       "get N items")
+        .method("getNItems",      &AnnoyAngular::getNItems,       "get number of items")
+        .method("getNTrees",      &AnnoyAngular::getNTrees,       "get number of trees")
         .method("setVerbose",     &AnnoyAngular::verbose,         "set verbose")
         .method("setSeed",        &AnnoyAngular::setSeed,         "set seed")
         ;
@@ -176,7 +179,8 @@ RCPP_MODULE(AnnoyEuclidean) {
         .method("getNNsByVectorList",&AnnoyEuclidean::getNNsByVectorList,
                 "retrieve Nearest Neigbours given vector")
         .method("getItemsVector", &AnnoyEuclidean::getItemsVector, "retrieve item vector")
-        .method("getNItems",      &AnnoyEuclidean::getNItems,      "get N items")
+        .method("getNItems",      &AnnoyEuclidean::getNItems,      "get number of items")
+        .method("getNTrees",      &AnnoyEuclidean::getNTrees,      "get number of trees")
         .method("setVerbose",     &AnnoyEuclidean::verbose,        "set verbose")
         .method("setSeed",        &AnnoyEuclidean::setSeed,        "set seed")
         ;
@@ -203,7 +207,8 @@ RCPP_MODULE(AnnoyManhattan) {
         .method("getNNsByVectorList",&AnnoyManhattan::getNNsByVectorList,
                 "retrieve Nearest Neigbours given vector")
         .method("getItemsVector", &AnnoyManhattan::getItemsVector, "retrieve item vector")
-        .method("getNItems",      &AnnoyManhattan::getNItems,      "get N items")
+        .method("getNItems",      &AnnoyManhattan::getNItems,      "get number of items")
+        .method("getNTrees",      &AnnoyManhattan::getNTrees,      "get number of trees")
         .method("setVerbose",     &AnnoyManhattan::verbose,        "set verbose")
         .method("setSeed",        &AnnoyManhattan::setSeed,        "set seed")
         ;
@@ -230,7 +235,8 @@ RCPP_MODULE(AnnoyHamming) {
         .method("getNNsByVectorList",&AnnoyHamming::getNNsByVectorList,
                 "retrieve Nearest Neigbours given vector")
         .method("getItemsVector", &AnnoyHamming::getItemsVector, "retrieve item vector")
-        .method("getNItems",      &AnnoyHamming::getNItems,      "get N items")
+        .method("getNItems",      &AnnoyHamming::getNItems,      "get number of items")
+        .method("getNTrees",      &AnnoyHamming::getNTrees,      "get number of trees")
         .method("setVerbose",     &AnnoyHamming::verbose,        "set verbose")
         .method("setSeed",        &AnnoyHamming::setSeed,        "set seed")
         ;
