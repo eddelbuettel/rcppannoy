@@ -1,6 +1,11 @@
 2019-09-22  Dirk Eddelbuettel  <edd@debian.org>
 
-	* src/annoy.cpp: Add unbuild()
+	* src/annoy.cpp: Add unbuild(), add onDiskBuild()
+
+	* inst/tinytest/testOnDiskBuild.R: Add tests
+
+	* inst/tinytest/testIndex.R: May use tinytest::exit_file()
+	* inst/tinytest/testSeeds.R: Idem
 
 2019-09-21  Dirk Eddelbuettel  <edd@debian.org>
 
