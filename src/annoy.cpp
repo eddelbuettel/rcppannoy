@@ -58,6 +58,7 @@ public:
         if (!ptr->add_item(item, &fv[0], &errormsg)) Rcpp::stop(errormsg);
     }
     void   callBuild(int n)               { ptr->build(n);                  }
+    void   callUnbuild()                  { ptr->unbuild();                 }
     void   callSave(std::string filename) { ptr->save(filename.c_str());    }
     void   callLoad(std::string filename) { ptr->load(filename.c_str());    }
     void   callUnload()                   { ptr->unload();                  }
@@ -123,6 +124,12 @@ public:
         return dv;
     }
 
+    bool onDiskBuild(std::string fname) {
+        char *errormsg;
+        if (!ptr->on_disk_build(fname.c_str(), &errormsg)) Rcpp::stop(errormsg);
+        return true;
+    }
+
 };
 
 typedef Annoy<int32_t, float,    Angular,   Kiss64Random> AnnoyAngular;
@@ -138,6 +145,7 @@ RCPP_MODULE(AnnoyAngular) {
 
         .method("addItem",        &AnnoyAngular::addItem,         "add item")
         .method("build",          &AnnoyAngular::callBuild,       "build an index")
+        .method("unbuild",        &AnnoyAngular::callUnbuild,     "unbuild an index")
         .method("save",           &AnnoyAngular::callSave,        "save index to file")
         .method("load",           &AnnoyAngular::callLoad,        "load index from file")
         .method("unload",         &AnnoyAngular::callUnload,      "unload index")
@@ -155,6 +163,7 @@ RCPP_MODULE(AnnoyAngular) {
         .method("getNTrees",      &AnnoyAngular::getNTrees,       "get number of trees")
         .method("setVerbose",     &AnnoyAngular::verbose,         "set verbose")
         .method("setSeed",        &AnnoyAngular::setSeed,         "set seed")
+        .method("onDiskBuild",    &AnnoyAngular::onDiskBuild,     "build in given file")
         ;
 }
 
@@ -166,6 +175,7 @@ RCPP_MODULE(AnnoyEuclidean) {
 
         .method("addItem",        &AnnoyEuclidean::addItem,        "add item")
         .method("build",          &AnnoyEuclidean::callBuild,      "build an index")
+        .method("unbuild",        &AnnoyEuclidean::callUnbuild,    "unbuild an index")
         .method("save",           &AnnoyEuclidean::callSave,       "save index to file")
         .method("load",           &AnnoyEuclidean::callLoad,       "load index from file")
         .method("unload",         &AnnoyEuclidean::callUnload,     "unload index")
@@ -183,6 +193,7 @@ RCPP_MODULE(AnnoyEuclidean) {
         .method("getNTrees",      &AnnoyEuclidean::getNTrees,      "get number of trees")
         .method("setVerbose",     &AnnoyEuclidean::verbose,        "set verbose")
         .method("setSeed",        &AnnoyEuclidean::setSeed,        "set seed")
+        .method("onDiskBuild",    &AnnoyEuclidean::onDiskBuild,    "build in given file")
         ;
 }
 
@@ -194,6 +205,7 @@ RCPP_MODULE(AnnoyManhattan) {
 
         .method("addItem",        &AnnoyManhattan::addItem,        "add item")
         .method("build",          &AnnoyManhattan::callBuild,      "build an index")
+        .method("unbuild",        &AnnoyManhattan::callUnbuild,    "unbuild an index")
         .method("save",           &AnnoyManhattan::callSave,       "save index to file")
         .method("load",           &AnnoyManhattan::callLoad,       "load index from file")
         .method("unload",         &AnnoyManhattan::callUnload,     "unload index")
@@ -211,6 +223,7 @@ RCPP_MODULE(AnnoyManhattan) {
         .method("getNTrees",      &AnnoyManhattan::getNTrees,      "get number of trees")
         .method("setVerbose",     &AnnoyManhattan::verbose,        "set verbose")
         .method("setSeed",        &AnnoyManhattan::setSeed,        "set seed")
+        .method("onDiskBuild",    &AnnoyManhattan::onDiskBuild,    "build in given file")
         ;
 }
 
@@ -222,6 +235,7 @@ RCPP_MODULE(AnnoyHamming) {
 
         .method("addItem",        &AnnoyHamming::addItem,        "add item")
         .method("build",          &AnnoyHamming::callBuild,      "build an index")
+        .method("unbuild",        &AnnoyHamming::callUnbuild,    "unbuild an index")
         .method("save",           &AnnoyHamming::callSave,       "save index to file")
         .method("load",           &AnnoyHamming::callLoad,       "load index from file")
         .method("unload",         &AnnoyHamming::callUnload,     "unload index")
@@ -239,5 +253,6 @@ RCPP_MODULE(AnnoyHamming) {
         .method("getNTrees",      &AnnoyHamming::getNTrees,      "get number of trees")
         .method("setVerbose",     &AnnoyHamming::verbose,        "set verbose")
         .method("setSeed",        &AnnoyHamming::setSeed,        "set seed")
+        .method("onDiskBuild",    &AnnoyHamming::onDiskBuild,    "build in given file")
         ;
 }
