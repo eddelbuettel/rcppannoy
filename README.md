@@ -4,18 +4,22 @@ Rcpp bindings for [Annoy](https://github.com/spotify/annoy)
 
 ### What is Annoy?
 
-[Annoy](https://github.com/spotify/annoy) is a small, fast and lightweight
-library for Approximate Nearest Neighbours with a particular focus on
-efficient memory use and the ability to load a pre-saved index.
+[Annoy](https://github.com/spotify/annoy) is a small, fast and lightweight library for
+Approximate Nearest Neighbours with a particular focus on efficient memory use and the
+ability to load a pre-saved index.
 
-[Annoy](https://github.com/spotify/annoy) is written by 
-[Erik Bernhardsson](http://erikbern.com).
+[Annoy](https://github.com/spotify/annoy) is written by [Erik
+Bernhardsson](http://erikbern.com). See its page for more on features, its (Python) API,
+and the other language ports. [Annoy](https://github.com/spotify/annoy) is part of the
+esteemed _let us find other music you may like_ algorithm by
+[Spotify](https://github.com/spotify/). 
 
 ### Why this package?
 
 It provides a nice example for Rcpp Modules and use of templates: Annoy uses
-a template data type (generally `float` for efficiency) and one of two
-distance measures.  This package shows that it is easy to wrap both.
+a clean C++ core with templated data type, as well as several distance
+measures.  This package shows that it is easy to wrap both aspects from R giving us
+multi-lingual approaches to data discovery and machine learning.
 
 ### Status
 
