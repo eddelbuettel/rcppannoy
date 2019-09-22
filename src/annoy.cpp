@@ -124,6 +124,12 @@ public:
         return dv;
     }
 
+    bool onDiskBuild(std::string fname) {
+        char *errormsg;
+        if (!ptr->on_disk_build(fname.c_str(), &errormsg)) Rcpp::stop(errormsg);
+        return true;
+    }
+
 };
 
 typedef Annoy<int32_t, float,    Angular,   Kiss64Random> AnnoyAngular;
@@ -157,6 +163,7 @@ RCPP_MODULE(AnnoyAngular) {
         .method("getNTrees",      &AnnoyAngular::getNTrees,       "get number of trees")
         .method("setVerbose",     &AnnoyAngular::verbose,         "set verbose")
         .method("setSeed",        &AnnoyAngular::setSeed,         "set seed")
+        .method("onDiskBuild",    &AnnoyAngular::onDiskBuild,     "build in given file")
         ;
 }
 
@@ -186,6 +193,7 @@ RCPP_MODULE(AnnoyEuclidean) {
         .method("getNTrees",      &AnnoyEuclidean::getNTrees,      "get number of trees")
         .method("setVerbose",     &AnnoyEuclidean::verbose,        "set verbose")
         .method("setSeed",        &AnnoyEuclidean::setSeed,        "set seed")
+        .method("onDiskBuild",    &AnnoyEuclidean::onDiskBuild,    "build in given file")
         ;
 }
 
@@ -215,6 +223,7 @@ RCPP_MODULE(AnnoyManhattan) {
         .method("getNTrees",      &AnnoyManhattan::getNTrees,      "get number of trees")
         .method("setVerbose",     &AnnoyManhattan::verbose,        "set verbose")
         .method("setSeed",        &AnnoyManhattan::setSeed,        "set seed")
+        .method("onDiskBuild",    &AnnoyManhattan::onDiskBuild,    "build in given file")
         ;
 }
 
@@ -244,5 +253,6 @@ RCPP_MODULE(AnnoyHamming) {
         .method("getNTrees",      &AnnoyHamming::getNTrees,      "get number of trees")
         .method("setVerbose",     &AnnoyHamming::verbose,        "set verbose")
         .method("setSeed",        &AnnoyHamming::setSeed,        "set seed")
+        .method("onDiskBuild",    &AnnoyHamming::onDiskBuild,    "build in given file")
         ;
 }
