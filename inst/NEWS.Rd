@@ -3,6 +3,22 @@
 \newcommand{\ghpr}{\href{https://github.com/eddelbuettel/rcppannoy/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/eddelbuettel/rcppannoy/issues/#1}{##1}}
 
+\section{Changes in version 0.0.13 (2019-xx-yy)}{
+  \itemize{
+    \item In example(), the saved and loaded filename is now obtained
+    via tempfile() to not touch user directories per CRAN Policy (Dirk).
+    \item RcppAnnoy was again synchronized with Annoy upstream leading
+    to enhanced performance and more features (Dirk \ghpr{48}).
+    \item Minor changes made (and send as PRs upstream) to adapt both
+    \code{annoylib.h} and \code{mman.h} changes (Dirk).
+    \item A spurious command was removed from one vignette (Peter Hickey
+    in \ghpr{49}).
+    \item Two new user-facing functions onDiskBuild() and unbuild() were
+    added (Dirk in \ghpr{50}).
+    \item Minor tweaks were made to two tinytest-using test files (Dirk).
+  }
+}
+  
 \section{Changes in version 0.0.12 (2019-05-12)}{
   \itemize{
     \item Allow setting of seed (Dirk in \ghpr{41} fixing \ghit{40}).
