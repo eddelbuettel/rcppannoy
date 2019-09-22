@@ -58,6 +58,7 @@ public:
         if (!ptr->add_item(item, &fv[0], &errormsg)) Rcpp::stop(errormsg);
     }
     void   callBuild(int n)               { ptr->build(n);                  }
+    void   callUnbuild()                  { ptr->unbuild();                 }
     void   callSave(std::string filename) { ptr->save(filename.c_str());    }
     void   callLoad(std::string filename) { ptr->load(filename.c_str());    }
     void   callUnload()                   { ptr->unload();                  }
@@ -138,6 +139,7 @@ RCPP_MODULE(AnnoyAngular) {
 
         .method("addItem",        &AnnoyAngular::addItem,         "add item")
         .method("build",          &AnnoyAngular::callBuild,       "build an index")
+        .method("unbuild",        &AnnoyAngular::callUnbuild,     "unbuild an index")
         .method("save",           &AnnoyAngular::callSave,        "save index to file")
         .method("load",           &AnnoyAngular::callLoad,        "load index from file")
         .method("unload",         &AnnoyAngular::callUnload,      "unload index")
@@ -166,6 +168,7 @@ RCPP_MODULE(AnnoyEuclidean) {
 
         .method("addItem",        &AnnoyEuclidean::addItem,        "add item")
         .method("build",          &AnnoyEuclidean::callBuild,      "build an index")
+        .method("unbuild",        &AnnoyEuclidean::callUnbuild,    "unbuild an index")
         .method("save",           &AnnoyEuclidean::callSave,       "save index to file")
         .method("load",           &AnnoyEuclidean::callLoad,       "load index from file")
         .method("unload",         &AnnoyEuclidean::callUnload,     "unload index")
@@ -194,6 +197,7 @@ RCPP_MODULE(AnnoyManhattan) {
 
         .method("addItem",        &AnnoyManhattan::addItem,        "add item")
         .method("build",          &AnnoyManhattan::callBuild,      "build an index")
+        .method("unbuild",        &AnnoyManhattan::callUnbuild,    "unbuild an index")
         .method("save",           &AnnoyManhattan::callSave,       "save index to file")
         .method("load",           &AnnoyManhattan::callLoad,       "load index from file")
         .method("unload",         &AnnoyManhattan::callUnload,     "unload index")
@@ -222,6 +226,7 @@ RCPP_MODULE(AnnoyHamming) {
 
         .method("addItem",        &AnnoyHamming::addItem,        "add item")
         .method("build",          &AnnoyHamming::callBuild,      "build an index")
+        .method("unbuild",        &AnnoyHamming::callUnbuild,    "unbuild an index")
         .method("save",           &AnnoyHamming::callSave,       "save index to file")
         .method("load",           &AnnoyHamming::callLoad,       "load index from file")
         .method("unload",         &AnnoyHamming::callUnload,     "unload index")
