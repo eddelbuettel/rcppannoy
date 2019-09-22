@@ -46,7 +46,7 @@ The [\pkg{Annoy}](https://github.com/spotify/annoy) \proglang{C++} library
 (oh yeah)_ searching.  The \pkg{RcppAnnoy} package \citep{CRAN:RcppAnnoy} provides a
 centralized resource for developers to use this code in their own \proglang{R} packages by
 relying on \pkg{Rcpp} \citep{TAS:Rcpp,CRAN:Rcpp}. To use \pkg{Annoy} in \proglang{C++}
-code,, simply put in your `DESCRIPTION` the line
+code, simply put in your `DESCRIPTION` the line
 
 ```
 LinkingTo: RcppAnnoy
