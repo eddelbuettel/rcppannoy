@@ -3,6 +3,14 @@
 \newcommand{\ghpr}{\href{https://github.com/eddelbuettel/rcppannoy/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/eddelbuettel/rcppannoy/issues/#1}{##1}}
 
+\section{Changes in version 0.0.15 (2019-11-xx)}{
+  \itemize{
+    \item RcppAnnoy again synchronized with upstream to ensure builds with
+    older compilers without AVX512 instructions (Dirk \ghpr{53}). 
+    \item The \code{cleanup} script only uses \code{/bin/sh}.
+  }
+}
+
 \section{Changes in version 0.0.13 (2019-09-23)}{
   \itemize{
     \item In example(), the saved and loaded filename is now obtained
