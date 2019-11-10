@@ -74,12 +74,14 @@ typedef unsigned __int64  uint64_t;
 #define popcount cole_popcount
 #endif
 
-#ifndef NO_MANUAL_VECTORIZATION
-#if defined(__AVX512F__)
+#if !defined(NO_MANUAL_VECTORIZATION) && defined(__GNUC__) && (__GNUC__ >6) && defined(__AVX512F__)  // See #402
+#pragma message "Using 512-bit AVX instructions"
 #define USE_AVX512
-#elif defined(__AVX__) && defined (__SSE__) && defined(__SSE2__) && defined(__SSE3__)
+#elif !defined(NO_MANUAL_VECTORIZATION) && defined(__AVX__) && defined (__SSE__) && defined(__SSE2__) && defined(__SSE3__)
+#pragma message "Using 128-bit AVX instructions"
 #define USE_AVX
-#endif
+#else
+#pragma message "Using no AVX instructions"
 #endif
 
 #if defined(USE_AVX) || defined(USE_AVX512)
@@ -444,14 +446,12 @@ struct Angular : Base {
   }
   template<typename S, typename T, typename Random>
   static inline void create_split(const vector<Node<S, T>*>& nodes, int f, size_t s, Random& random, Node<S, T>* n) {
-    Node<S, T>* p = (Node<S, T>*)malloc(s); // TODO: avoid
-    Node<S, T>* q = (Node<S, T>*)malloc(s); // TODO: avoid
+    Node<S, T>* p = (Node<S, T>*)alloca(s);
+    Node<S, T>* q = (Node<S, T>*)alloca(s);
     two_means<T, Random, Angular, Node<S, T> >(nodes, f, random, true, p, q);
     for (int z = 0; z < f; z++)
       n->v[z] = p->v[z] - q->v[z];
     Base::normalize<T, Node<S, T> >(n, f);
-    free(p);
-    free(q);
   }
   template<typename T>
   static inline T normalized_distance(T distance) {
@@ -517,8 +517,8 @@ struct DotProduct : Angular {
 
   template<typename S, typename T, typename Random>
   static inline void create_split(const vector<Node<S, T>*>& nodes, int f, size_t s, Random& random, Node<S, T>* n) {
-    Node<S, T>* p = (Node<S, T>*)malloc(s); // TODO: avoid
-    Node<S, T>* q = (Node<S, T>*)malloc(s); // TODO: avoid
+    Node<S, T>* p = (Node<S, T>*)alloca(s);
+    Node<S, T>* q = (Node<S, T>*)alloca(s);
     DotProduct::zero_value(p);
     DotProduct::zero_value(q);
     two_means<T, Random, DotProduct, Node<S, T> >(nodes, f, random, true, p, q);
@@ -526,8 +526,6 @@ struct DotProduct : Angular {
       n->v[z] = p->v[z] - q->v[z];
     n->dot_factor = p->dot_factor - q->dot_factor;
     DotProduct::normalize<T, Node<S, T> >(n, f);
-    free(p);
-    free(q);
   }
 
   template<typename T, typename Node>
@@ -730,8 +728,8 @@ struct Euclidean : Minkowski {
   }
   template<typename S, typename T, typename Random>
   static inline void create_split(const vector<Node<S, T>*>& nodes, int f, size_t s, Random& random, Node<S, T>* n) {
-    Node<S, T>* p = (Node<S, T>*)malloc(s); // TODO: avoid
-    Node<S, T>* q = (Node<S, T>*)malloc(s); // TODO: avoid
+    Node<S, T>* p = (Node<S, T>*)alloca(s);
+    Node<S, T>* q = (Node<S, T>*)alloca(s);
     two_means<T, Random, Euclidean, Node<S, T> >(nodes, f, random, false, p, q);
 
     for (int z = 0; z < f; z++)
@@ -740,8 +738,6 @@ struct Euclidean : Minkowski {
     n->a = 0.0;
     for (int z = 0; z < f; z++)
       n->a += -n->v[z] * (p->v[z] + q->v[z]) / 2;
-    free(p);
-    free(q);
   }
   template<typename T>
   static inline T normalized_distance(T distance) {
@@ -763,8 +759,8 @@ struct Manhattan : Minkowski {
   }
   template<typename S, typename T, typename Random>
   static inline void create_split(const vector<Node<S, T>*>& nodes, int f, size_t s, Random& random, Node<S, T>* n) {
-    Node<S, T>* p = (Node<S, T>*)malloc(s); // TODO: avoid
-    Node<S, T>* q = (Node<S, T>*)malloc(s); // TODO: avoid
+    Node<S, T>* p = (Node<S, T>*)alloca(s);
+    Node<S, T>* q = (Node<S, T>*)alloca(s);
     two_means<T, Random, Manhattan, Node<S, T> >(nodes, f, random, false, p, q);
 
     for (int z = 0; z < f; z++)
@@ -773,8 +769,6 @@ struct Manhattan : Minkowski {
     n->a = 0.0;
     for (int z = 0; z < f; z++)
       n->a += -n->v[z] * (p->v[z] + q->v[z]) / 2;
-    free(p);
-    free(q);
   }
   template<typename T>
   static inline T normalized_distance(T distance) {
@@ -836,11 +830,13 @@ protected:
   bool _verbose;
   int _fd;
   bool _on_disk;
+  bool _built;
 public:
 
-  AnnoyIndex(int f) : _f(f), _random() {
+   AnnoyIndex(int f) : _f(f), _random() {
     _s = offsetof(Node, v) + _f * sizeof(T); // Size of each node
     _verbose = false;
+    _built = false;
     _K = (S) (((size_t) (_s - offsetof(Node, children))) / sizeof(S)); // Max number of descendants to fit into node
     reinitialize(); // Reset everything
   }
@@ -913,6 +909,12 @@ public:
       return false;
     }
 
+    if (_built) {
+      showUpdate("You can't build a built index\n");
+      if (error) *error = (char *)"You can't build a built index";
+      return false;
+    }
+
     D::template preprocess<T, S, Node>(_nodes, _s, _n_items, _f);
 
     _n_nodes = _n_items;
@@ -951,6 +953,7 @@ public:
       }
       _nodes_size = _n_nodes;
     }
+    _built = true;
     return true;
   }
 
@@ -963,16 +966,24 @@ public:
 
     _roots.clear();
     _n_nodes = _n_items;
+    _built = false;
 
     return true;
   }
 
   bool save(const char* filename, bool prefault=false, char** error=NULL) {
+    if (!_built) {
+      showUpdate("You can't save an index that hasn't been built\n");
+      if (error) *error = (char *)"You can't save an index that hasn't been built";
+      return false;
+    }
     if (_on_disk) {
       return true;
     } else {
       // Delete file if it already exists (See issue #335)
       unlink(filename);
+
+      //printf("path: %s\n", filename);
 
       FILE *f = fopen(filename, "wb");
       if (f == NULL) {
@@ -1036,9 +1047,21 @@ public:
       return false;
     }
     off_t size = lseek(_fd, 0, SEEK_END);
-    if (size <= 0) {
-      showUpdate("Warning: index size %zu\n", (size_t)size);
+    if (size == -1) {
+      showUpdate("lseek returned -1\n");
+      if (error) *error = strerror(errno);
+      return false;
+    } else if (size == 0) {
+      showUpdate("Size of file is zero\n");
+      if (error) *error = (char *)"Size of file is zero";
+      return false;
+    } else if (size % _s) {
+      // Something is fishy with this index!
+      showUpdate("Error: index size %zu is not a multiple of vector size %zu\n", (size_t)size, _s);
+      if (error) *error = (char *)"Index size is not a multiple of vector size";
+      return false;
     }
+
     int flags = MAP_SHARED;
     if (prefault) {
 #ifdef MAP_POPULATE
@@ -1048,12 +1071,6 @@ public:
 #endif
     }
     _nodes = (Node*)mmap(0, size, PROT_READ, flags, _fd, 0);
-    if (size % _s) {
-      // Something is fishy with this index!
-      showUpdate("Error: index size %zu is not a multiple of vector size %zu\n", (size_t)size, _s);
-      if (error) *error = (char *)"Index size is not a multiple of vector size";
-      return false;
-    }
     _n_nodes = (S)(size / _s);
 
     // Find the roots by scanning the end of the file and taking the nodes with most descendants
@@ -1072,6 +1089,7 @@ public:
     if (_roots.size() > 1 && _get(_roots.front())->children[0] == _get(_roots.back())->children[0])
       _roots.pop_back();
     _loaded = true;
+    _built = true;
     _n_items = m;
     if (_verbose) showUpdate("found %lu roots with degree %d\n", _roots.size(), m);
     return true;
@@ -1171,7 +1189,7 @@ protected:
     }
 
     vector<S> children_indices[2];
-    Node* m = (Node*)malloc(_s); // TODO: avoid
+    Node* m = (Node*)alloca(_s);
     D::create_split(children, _f, _s, _random, m);
 
     for (size_t i = 0; i < indices.size(); i++) {
@@ -1218,13 +1236,12 @@ protected:
     _allocate_size(_n_nodes + 1);
     S item = _n_nodes++;
     memcpy(_get(item), m, _s);
-    free(m);
 
     return item;
   }
 
   void _get_all_nns(const T* v, size_t n, size_t search_k, vector<S>* result, vector<T>* distances) const {
-    Node* v_node = (Node *)malloc(_s); // TODO: avoid
+    Node* v_node = (Node *)alloca(_s);
     D::template zero_value<Node>(v_node);
     memcpy(v_node->v, v, sizeof(T) * _f);
     D::init_node(v_node, _f);
@@ -1280,7 +1297,6 @@ protected:
         distances->push_back(D::normalized_distance(nns_dist[i].first));
       result->push_back(nns_dist[i].second);
     }
-    free(v_node);
   }
 };
 
