@@ -133,7 +133,7 @@ a <- new(AnnoyEuclidean, vector_size)
 a$setSeed(42)
 
 # Turn on verbose status messages (0 to turn off)
-a$setSeed(1)
+a$setVerbose(1)
 
 # Load 100 random vectors into index
 for (i in 1:100) a$addItem(i - 1, runif(vector_size)) # Annoy uses zero indexing
