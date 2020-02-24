@@ -1,5 +1,7 @@
 2020-02-24  Dirk Eddelbuettel  <edd@debian.org>
 
+	* DESCRIPTION (Version, Date): Roll minor version
+
 	* inst/include/annoylib.h: Updated upstream master post PR455
 	* inst/include/mmap.h: Idem
 
