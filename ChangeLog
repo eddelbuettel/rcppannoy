@@ -1,3 +1,8 @@
+2020-02-24  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/annoylib.h: Updated upstream master post PR455
+	* inst/include/mmap.h: Idem
+
 2019-11-12  Dirk Eddelbuettel  <edd@debian.org>
 
 	* R/annoy.R: Small help page correction thanks to Bill Venables
