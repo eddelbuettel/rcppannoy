@@ -31,11 +31,16 @@
 typedef unsigned char     uint8_t;
 typedef signed __int32    int32_t;
 typedef unsigned __int64  uint64_t;
+typedef signed __int64    int64_t;
 #else
 #include <stdint.h>
 #endif
 
+
 #if defined(_MSC_VER) || defined(__MINGW32__)
+ // a bit hacky, but override some definitions to support 64 bit
+ #define off_t int64_t
+ #define lseek_getsize(fd) _lseeki64(fd, 0, SEEK_END)
  #ifndef NOMINMAX
   #define NOMINMAX
  #endif
@@ -43,6 +48,7 @@ typedef unsigned __int64  uint64_t;
  #include <windows.h>
 #else
  #include <sys/mman.h>
+ #define lseek_getsize(fd) lseek(fd, 0, SEEK_END)
 #endif
 
 #include <cerrno>
@@ -66,6 +72,25 @@ typedef unsigned __int64  uint64_t;
   #define showUpdate(...) { __ERROR_PRINTER_OVERRIDE__( __VA_ARGS__ ); }
 #endif
 
+void set_error_from_errno(char **error, const char* msg) {
+  showUpdate("%s: %s (%d)\n", msg, strerror(errno), errno);
+  if (error) {
+    *error = (char *)malloc(256);  // TODO: win doesn't support snprintf
+    sprintf(*error, "%s: %s (%d)", msg, strerror(errno), errno);
+  }
+}
+
+void set_error_from_string(char **error, const char* msg) {
+  showUpdate("%s\n", msg);
+  if (error) {
+    *error = (char *)malloc(strlen(msg) + 1);
+    strcpy(*error, msg);
+  }
+}
+
+// We let the v array in the Node struct take whatever space is needed, so this is a mostly insignificant number.
+// Compilers need *some* size defined for the v array, and some memory checking tools will flag for buffer overruns if this is set too low.
+#define V_ARRAY_SIZE 65536
 
 #ifndef _MSC_VER
 #define popcount __builtin_popcountll
@@ -75,13 +100,13 @@ typedef unsigned __int64  uint64_t;
 #endif
 
 #if !defined(NO_MANUAL_VECTORIZATION) && defined(__GNUC__) && (__GNUC__ >6) && defined(__AVX512F__)  // See #402
-#pragma message "Using 512-bit AVX instructions"
+#pragma message "Just for your information: using 512-bit AVX instructions"
 #define USE_AVX512
 #elif !defined(NO_MANUAL_VECTORIZATION) && defined(__AVX__) && defined (__SSE__) && defined(__SSE2__) && defined(__SSE3__)
-#pragma message "Using 128-bit AVX instructions"
+#pragma message "Just for your information: using 128-bit AVX instructions"
 #define USE_AVX
 #else
-#pragma message "Using no AVX instructions"
+#pragma message "Just for your information: using no AVX instructions"
 #endif
 
 #if defined(USE_AVX) || defined(USE_AVX512)
@@ -317,7 +342,7 @@ inline float euclidean_distance<float>(const float* x, const float* y, int f) {
 
 #endif
 
-
+ 
 template<typename T>
 inline T get_norm(T* v, int f) {
   return sqrt(dot(v, v, f));
@@ -329,7 +354,7 @@ inline void two_means(const vector<Node*>& nodes, int f, Random& random, bool co
     This algorithm is a huge heuristic. Empirically it works really well, but I
     can't motivate it well. The basic idea is to keep two centroids and assign
     points to either one of them. We weight each centroid by the number of points
-    assigned to it, so to balance it.
+    assigned to it, so to balance it. 
   */
   static int iteration_steps = 200;
   size_t count = nodes.size();
@@ -350,7 +375,7 @@ inline void two_means(const vector<Node*>& nodes, int f, Random& random, bool co
     size_t k = random.index(count);
     T di = ic * Distance::distance(p, nodes[k], f),
       dj = jc * Distance::distance(q, nodes[k], f);
-    T norm = cosine ? get_norm(nodes[k]->v, f) : 1.0;
+    T norm = cosine ? get_norm(nodes[k]->v, f) : 1;
     if (!(norm > T(0))) {
       continue;
     }
@@ -418,7 +443,7 @@ struct Angular : Base {
       S children[2]; // Will possibly store more than 2
       T norm;
     };
-    T v[1]; // We let this one overflow intentionally. Need to allocate at least 1 to make GCC happy
+    T v[V_ARRAY_SIZE];
   };
   template<typename S, typename T>
   static inline T distance(const Node<S, T>* x, const Node<S, T>* y, int f) {
@@ -442,7 +467,7 @@ struct Angular : Base {
     if (dot != 0)
       return (dot > 0);
     else
-      return random.flip();
+      return (bool)random.flip();
   }
   template<typename S, typename T, typename Random>
   static inline void create_split(const vector<Node<S, T>*>& nodes, int f, size_t s, Random& random, Node<S, T>* n) {
@@ -489,7 +514,7 @@ struct DotProduct : Angular {
     S n_descendants;
     S children[2]; // Will possibly store more than 2
     T dot_factor;
-    T v[1]; // We let this one overflow intentionally. Need to allocate at least 1 to make GCC happy
+    T v[V_ARRAY_SIZE];
   };
 
   static const char* name() {
@@ -519,7 +544,7 @@ struct DotProduct : Angular {
   static inline void create_split(const vector<Node<S, T>*>& nodes, int f, size_t s, Random& random, Node<S, T>* n) {
     Node<S, T>* p = (Node<S, T>*)alloca(s);
     Node<S, T>* q = (Node<S, T>*)alloca(s);
-    DotProduct::zero_value(p);
+    DotProduct::zero_value(p); 
     DotProduct::zero_value(q);
     two_means<T, Random, DotProduct, Node<S, T> >(nodes, f, random, true, p, q);
     for (int z = 0; z < f; z++)
@@ -549,7 +574,7 @@ struct DotProduct : Angular {
     if (dot != 0)
       return (dot > 0);
     else
-      return random.flip();
+      return (bool)random.flip();
   }
 
   template<typename T>
@@ -597,7 +622,7 @@ struct Hamming : Base {
   struct ANNOY_NODE_ATTRIBUTE Node {
     S n_descendants;
     S children[2];
-    T v[1];
+    T v[V_ARRAY_SIZE];
   };
 
   static const size_t max_iterations = 20;
@@ -694,7 +719,7 @@ struct Minkowski : Base {
     S n_descendants;
     T a; // need an extra constant term to determine the offset of the plane
     S children[2];
-    T v[1];
+    T v[V_ARRAY_SIZE];
   };
   template<typename S, typename T>
   static inline T margin(const Node<S, T>* n, const T* y, int f) {
@@ -706,7 +731,7 @@ struct Minkowski : Base {
     if (dot != 0)
       return (dot > 0);
     else
-      return random.flip();
+      return (bool)random.flip();
   }
   template<typename T>
   static inline T pq_distance(T distance, T margin, int child_nr) {
@@ -724,7 +749,7 @@ struct Minkowski : Base {
 struct Euclidean : Minkowski {
   template<typename S, typename T>
   static inline T distance(const Node<S, T>* x, const Node<S, T>* y, int f) {
-    return euclidean_distance(x->v, y->v, f);
+    return euclidean_distance(x->v, y->v, f);    
   }
   template<typename S, typename T, typename Random>
   static inline void create_split(const vector<Node<S, T>*>& nodes, int f, size_t s, Random& random, Node<S, T>* n) {
@@ -785,6 +810,7 @@ struct Manhattan : Minkowski {
 template<typename S, typename T>
 class AnnoyIndexInterface {
  public:
+  // Note that the methods with an **error argument will allocate memory and write the pointer to that string if error is non-NULL
   virtual ~AnnoyIndexInterface() {};
   virtual bool add_item(S item, const T* w, char** error=NULL) = 0;
   virtual bool build(int q, char** error=NULL) = 0;
@@ -855,8 +881,7 @@ public:
   template<typename W>
   bool add_item_impl(S item, const W& w, char** error=NULL) {
     if (_loaded) {
-      showUpdate("You can't add an item to a loaded index\n");
-      if (error) *error = (char *)"You can't add an item to a loaded index";
+      set_error_from_string(error, "You can't add an item to a loaded index");
       return false;
     }
     _allocate_size(item + 1);
@@ -878,20 +903,18 @@ public:
 
     return true;
   }
-
+    
   bool on_disk_build(const char* file, char** error=NULL) {
     _on_disk = true;
     _fd = open(file, O_RDWR | O_CREAT | O_TRUNC, (int) 0600);
     if (_fd == -1) {
-      showUpdate("Error: file descriptor is -1\n");
-      if (error) *error = strerror(errno);
+      set_error_from_errno(error, "Unable to open");
       _fd = 0;
       return false;
     }
     _nodes_size = 1;
     if (ftruncate(_fd, _s * _nodes_size) == -1) {
-      showUpdate("Error truncating file: %s\n", strerror(errno));
-      if (error) *error = strerror(errno);
+      set_error_from_errno(error, "Unable to truncate");
       return false;
     }
 #ifdef MAP_POPULATE
@@ -901,17 +924,15 @@ public:
 #endif
     return true;
   }
-
+    
   bool build(int q, char** error=NULL) {
     if (_loaded) {
-      showUpdate("You can't build a loaded index\n");
-      if (error) *error = (char *)"You can't build a loaded index";
+      set_error_from_string(error, "You can't build a loaded index");
       return false;
     }
 
     if (_built) {
-      showUpdate("You can't build a built index\n");
-      if (error) *error = (char *)"You can't build a built index";
+      set_error_from_string(error, "You can't build a built index");
       return false;
     }
 
@@ -942,25 +963,23 @@ public:
     _n_nodes += _roots.size();
 
     if (_verbose) showUpdate("has %d nodes\n", _n_nodes);
-
+    
     if (_on_disk) {
       _nodes = remap_memory(_nodes, _fd, _s * _nodes_size, _s * _n_nodes);
       if (ftruncate(_fd, _s * _n_nodes)) {
-	// TODO: this probably creates an index in a corrupt state... not sure what to do
-	showUpdate("Error truncating file: %s\n", strerror(errno));
-	if (error) *error = strerror(errno);
-	return false;
+        // TODO: this probably creates an index in a corrupt state... not sure what to do
+        set_error_from_errno(error, "Unable to truncate");
+        return false;
       }
       _nodes_size = _n_nodes;
     }
     _built = true;
     return true;
   }
-
+  
   bool unbuild(char** error=NULL) {
     if (_loaded) {
-      showUpdate("You can't unbuild a loaded index\n");
-      if (error) *error = (char *)"You can't unbuild a loaded index";
+      set_error_from_string(error, "You can't unbuild a loaded index");
       return false;
     }
 
@@ -973,8 +992,7 @@ public:
 
   bool save(const char* filename, bool prefault=false, char** error=NULL) {
     if (!_built) {
-      showUpdate("You can't save an index that hasn't been built\n");
-      if (error) *error = (char *)"You can't save an index that hasn't been built";
+      set_error_from_string(error, "You can't save an index that hasn't been built");
       return false;
     }
     if (_on_disk) {
@@ -983,24 +1001,19 @@ public:
       // Delete file if it already exists (See issue #335)
       unlink(filename);
 
-      //printf("path: %s\n", filename);
-
       FILE *f = fopen(filename, "wb");
       if (f == NULL) {
-        showUpdate("Unable to open: %s\n", strerror(errno));
-        if (error) *error = strerror(errno);
+        set_error_from_errno(error, "Unable to open");
         return false;
       }
 
       if (fwrite(_nodes, _s, _n_nodes, f) != (size_t) _n_nodes) {
-        showUpdate("Unable to write: %s\n", strerror(errno));
-        if (error) *error = strerror(errno);
+        set_error_from_errno(error, "Unable to write");
         return false;
       }
 
       if (fclose(f) == EOF) {
-        showUpdate("Unable to close: %s\n", strerror(errno));
-        if (error) *error = strerror(errno);
+        set_error_from_errno(error, "Unable to close");
         return false;
       }
 
@@ -1041,24 +1054,20 @@ public:
   bool load(const char* filename, bool prefault=false, char** error=NULL) {
     _fd = open(filename, O_RDONLY, (int)0400);
     if (_fd == -1) {
-      showUpdate("Error: file descriptor is -1\n");
-      if (error) *error = strerror(errno);
+      set_error_from_errno(error, "Unable to open");
       _fd = 0;
       return false;
     }
-    off_t size = lseek(_fd, 0, SEEK_END);
+    off_t size = lseek_getsize(_fd);
     if (size == -1) {
-      showUpdate("lseek returned -1\n");
-      if (error) *error = strerror(errno);
+      set_error_from_errno(error, "Unable to get size");
       return false;
     } else if (size == 0) {
-      showUpdate("Size of file is zero\n");
-      if (error) *error = (char *)"Size of file is zero";
+      set_error_from_errno(error, "Size of file is zero");
       return false;
     } else if (size % _s) {
       // Something is fishy with this index!
-      showUpdate("Error: index size %zu is not a multiple of vector size %zu\n", (size_t)size, _s);
-      if (error) *error = (char *)"Index size is not a multiple of vector size";
+      set_error_from_errno(error, "Index size is not a multiple of vector size");
       return false;
     }
 
@@ -1114,7 +1123,7 @@ public:
   }
 
   S get_n_trees() const {
-    return _roots.size();
+    return (S)_roots.size();
   }
 
   void verbose(bool v) {
@@ -1137,7 +1146,7 @@ protected:
       const double reallocation_factor = 1.3;
       S new_nodes_size = std::max(n, (S) ((_nodes_size + 1) * reallocation_factor));
       void *old = _nodes;
-
+      
       if (_on_disk) {
         int rc = ftruncate(_fd, _s * new_nodes_size);
         if (_verbose && rc) showUpdate("File truncation error\n");
@@ -1146,7 +1155,7 @@ protected:
         _nodes = realloc(_nodes, _s * new_nodes_size);
         memset((char *) _nodes + (_nodes_size * _s) / sizeof(char), 0, (new_nodes_size - _nodes_size) * _s);
       }
-
+      
       _nodes_size = new_nodes_size;
       if (_verbose) showUpdate("Reallocating to %d nodes: old_address=%p, new_address=%p\n", new_nodes_size, old, _nodes);
     }
@@ -1216,7 +1225,7 @@ protected:
 
       // Set the vector to 0.0
       for (int z = 0; z < _f; z++)
-        m->v[z] = 0.0;
+        m->v[z] = 0;
 
       for (size_t i = 0; i < indices.size(); i++) {
         S j = indices[i];
