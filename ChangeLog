@@ -1,3 +1,13 @@
+2020-03-01  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll minor version
+
+	* inst/include/annoylib.h: Updated upstream master post #460, #461
+
+2020-02-27  Aaron Lun  <aaron.lun@cruk.cam.ac.uk>
+
+	* inst/include/annoylib.h: Replace two size_t interfaces with int
+
 2020-02-25  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION (Version, Date): Release 0.0.15
