@@ -74,8 +74,7 @@ public:
         return result;
     }
 
-    Rcpp::List getNNsByItemList(S item, size_t n,
-                                size_t search_k, bool include_distances) {
+    Rcpp::List getNNsByItemList(S item, size_t n, int search_k, bool include_distances) {
         if (include_distances) {
             std::vector<S> result;
             std::vector<T> distances;
@@ -97,8 +96,7 @@ public:
         return result;
     }
 
-    Rcpp::List getNNsByVectorList(std::vector<T> fv, size_t n,
-                                  size_t search_k, bool include_distances) {
+    Rcpp::List getNNsByVectorList(std::vector<T> fv, size_t n, int search_k, bool include_distances) {
         if (fv.size() != vectorsz) {
             Rcpp::stop("fv.size() != vector_size");
         }
