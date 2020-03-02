@@ -1,8 +1,12 @@
-2020-03-01  Dirk Eddelbuettel  <edd@debian.org>
+2020-03-02  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION (Version, Date): Roll minor version
 
-	* inst/include/annoylib.h: Updated upstream master post #460, #461
+	* inst/include/annoylib.h: Updated upstream master w/ PR #462
+
+2020-03-01  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/annoylib.h: Updated upstream master w/ PRs #460, #461
 
 2020-02-27  Aaron Lun  <aaron.lun@cruk.cam.ac.uk>
 
