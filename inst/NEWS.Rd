@@ -3,12 +3,13 @@
 \newcommand{\ghpr}{\href{https://github.com/eddelbuettel/rcppannoy/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/eddelbuettel/rcppannoy/issues/#1}{##1}}
 
-\section{Changes in version 0.0.16 (2020-03-xx)}{
+\section{Changes in version 0.0.16 (2020-03-06)}{
   \itemize{
     \item Use \code{int} in two interfaces (Dirk in \ghpr{59} for upstream
-    PR 460).
+    PR 460 and closing \ghit{56}).
     \item Use \code{inline} for two helper functions (Dirk in \ghpr{59}
-    for upstream PR 461; also Aaron in \ghpr{58} after earlier discussion). 
+    for upstream PR 461 and closing \ghit{57}; also Aaron in \ghpr{58}
+    after earlier discussion).  
     \item Removed a noisy \code{pragma} (Dirk in \ghpr{60} for upstream
     PR 462).
     \item Add a simple helper function displaying compiler status.

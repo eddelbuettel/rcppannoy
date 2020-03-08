@@ -1,3 +1,7 @@
+2020-03-06  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Release 0.0.16
+
 2020-03-03  Dirk Eddelbuettel  <edd@debian.org>
 
 	* src/arch.cpp (getArchictectureStatus): Add simple helper function
@@ -7,11 +11,13 @@
 
 	* DESCRIPTION (Version, Date): Roll minor version
 
-	* inst/include/annoylib.h: Updated upstream master w/ PR #462
+	* inst/include/annoylib.h: Updated to upstream PR #462 which removes
+	the (optional and no longer needed) packing and one set of warnings
 
 2020-03-01  Dirk Eddelbuettel  <edd@debian.org>
 
-	* inst/include/annoylib.h: Updated upstream master w/ PRs #460, #461
+	* inst/include/annoylib.h: Updated upstream PRs PRs #460 (which uses
+	int not size_t in one interface) and #461 (which inlines two helpers)
 
 2020-02-27  Aaron Lun  <aaron.lun@cruk.cam.ac.uk>
 
