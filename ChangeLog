@@ -2,6 +2,8 @@
 
 	* README.md: Add 'last commit' badge
 
+	* .travis.yml: Switch to bionic and R 4.0.0
+
 2020-03-12  Dirk Eddelbuettel  <edd@debian.org>
 
 	* README.md: Standardize header and badges

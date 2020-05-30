@@ -2,8 +2,14 @@
 
 language: c
 sudo: required
-dist: trusty
-group: edge
+dist: bionic
+
+jobs:
+  include:
+    #- name: r-3.5
+    #  env: R_VERSION="3.5"
+    - name: r-4.0
+      env: R_VERSION="4.0"
 
 env:
   global:
