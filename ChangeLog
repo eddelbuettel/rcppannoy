@@ -1,3 +1,7 @@
+2020-05-30  Dirk Eddelbuettel  <edd@debian.org>
+
+	* README.md: Add 'last commit' badge
+
 2020-03-12  Dirk Eddelbuettel  <edd@debian.org>
 
 	* README.md: Standardize header and badges
