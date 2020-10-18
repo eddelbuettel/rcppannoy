@@ -1,6 +1,5 @@
 
-## We want C++11 as it gets us 'long long' as well
-## If we uncomment this we fall back to C++98 and it is all tears
-CXX_STD = CXX11
+## We want C++14 for std::shared_timed_mutex
+CXX_STD = CXX14
 
 PKG_CPPFLAGS = -I../inst/include/

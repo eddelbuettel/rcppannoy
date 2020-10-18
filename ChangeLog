@@ -1,3 +1,13 @@
+2020-10-18  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll minor version
+
+	* inst/include/annoylib.h: Update to Annoy 1.17
+	* inst/include/mman.h: Idem
+
+	* src/annoy.cpp: Idem, also enable multithreaded build
+	* src/Makevars: Switch to C++14 for shared_timed_mutex
+
 2020-05-30  Dirk Eddelbuettel  <edd@debian.org>
 
 	* README.md: Add 'last commit' badge
