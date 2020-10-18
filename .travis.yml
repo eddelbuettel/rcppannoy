@@ -2,7 +2,7 @@
 
 language: c
 sudo: required
-dist: bionic
+dist: focal
 
 jobs:
   include:
@@ -14,15 +14,14 @@ jobs:
 env:
   global:
     - RunAllRcppAnnoyTests="yes"
+    - USE_BSPM="true"
 
 before_install:
   - curl -OLs https://eddelbuettel.github.io/r-travis/run.sh && chmod 0755 run.sh
-  # add our launchpad repo which has (inter alia) r-cran-pinp
-  #- sudo add-apt-repository -y ppa:edd/r-3.5
   - ./run.sh bootstrap
 
 install:
-  - ./run.sh install_aptget r-cran-rcpp r-cran-tinytest
+  - ./run.sh install_deps
 
 script:
   - ./run.sh run_tests

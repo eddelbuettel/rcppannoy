@@ -1,4 +1,5 @@
 
+exit_file("Skip this test under multi-threaded use")
 ## if this is set (eg .travis.yml) then run the test
 if (Sys.getenv("RunAllRcppAnnoyTests") != "yes") exit_file("Skip this test")
 

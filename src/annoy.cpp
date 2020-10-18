@@ -2,7 +2,7 @@
 //
 //  RcppAnnoy -- Rcpp bindings to Annoy library for Approximate Nearest Neighbours
 //
-//  Copyright (C) 2014 - 2018  Dirk Eddelbuettel
+//  Copyright (C) 2014 - 2020  Dirk Eddelbuettel
 //
 //  This file is part of RcppAnnoy
 //
@@ -36,18 +36,21 @@
 // define R's REprintf as the 'local' error print method for Annoy
 #define __ERROR_PRINTER_OVERRIDE__  REprintf
 
+// use multithreading (Annoy 1.17 or later)
+#define ANNOYLIB_MULTITHREADED_BUILD
+
 #include "annoylib.h"
 #include "kissrandom.h"
 
-template< typename S, typename T, typename Distance, typename Random >
+template< typename S, typename T, typename Distance, typename Random, class ThreadedBuildPolicy >
 class Annoy
 {
 protected:
-    AnnoyIndex<S, T, Distance, Random> *ptr;
+    AnnoyIndex<S, T, Distance, Random, ThreadedBuildPolicy> *ptr;
     unsigned int vectorsz;
 public:
     Annoy(int n) : vectorsz(n) {
-        ptr = new AnnoyIndex<S, T, Distance, Random>(n);
+        ptr = new AnnoyIndex<S, T, Distance, Random, ThreadedBuildPolicy>(n);
     }
     ~Annoy() { if (ptr != NULL) delete ptr; }
     void addItem(S item, Rcpp::NumericVector dv) {
@@ -130,10 +133,16 @@ public:
 
 };
 
-typedef Annoy<int32_t, float,    Angular,   Kiss64Random> AnnoyAngular;
-typedef Annoy<int32_t, float,    Euclidean, Kiss64Random> AnnoyEuclidean;
-typedef Annoy<int32_t, float,    Manhattan, Kiss64Random> AnnoyManhattan;
-typedef Annoy<int32_t, uint64_t, Hamming,   Kiss64Random> AnnoyHamming;
+#ifdef ANNOYLIB_MULTITHREADED_BUILD
+  typedef AnnoyIndexMultiThreadedBuildPolicy AnnoyIndexThreadedBuildPolicy;
+#else
+  typedef AnnoyIndexSingleThreadedBuildPolicy AnnoyIndexThreadedBuildPolicy;
+#endif
+
+typedef Annoy<int32_t, float,    Angular,   Kiss64Random, AnnoyIndexThreadedBuildPolicy> AnnoyAngular;
+typedef Annoy<int32_t, float,    Euclidean, Kiss64Random, AnnoyIndexThreadedBuildPolicy> AnnoyEuclidean;
+typedef Annoy<int32_t, float,    Manhattan, Kiss64Random, AnnoyIndexThreadedBuildPolicy> AnnoyManhattan;
+typedef Annoy<int32_t, uint64_t, Hamming,   Kiss64Random, AnnoyIndexThreadedBuildPolicy> AnnoyHamming;
 
 RCPP_EXPOSED_CLASS_NODECL(AnnoyAngular)
 RCPP_MODULE(AnnoyAngular) {
