@@ -12,6 +12,9 @@
 
 	* README.md: Update two URLs
 
+	* inst/tinytest/testSeeds.R: Disable (already optional) test on
+	seeding does not pass in multi-threaded mode
+
 2020-05-30  Dirk Eddelbuettel  <edd@debian.org>
 
 	* README.md: Add 'last commit' badge
