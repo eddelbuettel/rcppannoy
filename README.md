@@ -4,7 +4,7 @@
 [![License](https://eddelbuettel.github.io/badges/GPL2+.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
 [![CRAN](http://www.r-pkg.org/badges/version/RcppAnnoy)](https://cran.r-project.org/package=RcppAnnoy)
 [![Dependencies](https://tinyverse.netlify.com/badge/RcppAnnoy)](https://cran.r-project.org/package=RcppAnnoy)
-[![Downloads](http://cranlogs.r-pkg.org/badges/RcppAnnoy?color=brightgreen)](http://www.r-pkg.org/pkg/RcppAnnoy)
+[![Downloads](http://cranlogs.r-pkg.org/badges/RcppAnnoy?color=brightgreen)](https://www.r-pkg.org:443/pkg/RcppAnnoy)
 [![Last Commit](https://img.shields.io/github/last-commit/eddelbuettel/rcppannoy)](https://github.com/eddelbuettel/rcppannoy)
 
 ### What is Annoy?
@@ -14,7 +14,7 @@ Approximate Nearest Neighbours with a particular focus on efficient memory use a
 ability to load a pre-saved index.
 
 [Annoy](https://github.com/spotify/annoy) is written by [Erik
-Bernhardsson](http://erikbern.com). See its page for more on features, its (Python) API,
+Bernhardsson](https://erikbern.com/). See its page for more on features, its (Python) API,
 and the other language ports. [Annoy](https://github.com/spotify/annoy) is part of the
 esteemed _let us find other music you may like_ algorithm by
 [Spotify](https://github.com/spotify/). 
