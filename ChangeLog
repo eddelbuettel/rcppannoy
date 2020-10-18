@@ -8,6 +8,8 @@
 	* src/annoy.cpp: Idem, also enable multithreaded build
 	* src/Makevars: Switch to C++14 for shared_timed_mutex
 
+	* .travis.yml: Switch Travis CI to bspm use and focal
+
 2020-05-30  Dirk Eddelbuettel  <edd@debian.org>
 
 	* README.md: Add 'last commit' badge
