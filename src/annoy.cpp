@@ -133,10 +133,16 @@ public:
 
 };
 
-typedef Annoy<int32_t, float,    Angular,   Kiss64Random, AnnoyIndexMultiThreadedBuildPolicy> AnnoyAngular;
-typedef Annoy<int32_t, float,    Euclidean, Kiss64Random, AnnoyIndexMultiThreadedBuildPolicy> AnnoyEuclidean;
-typedef Annoy<int32_t, float,    Manhattan, Kiss64Random, AnnoyIndexMultiThreadedBuildPolicy> AnnoyManhattan;
-typedef Annoy<int32_t, uint64_t, Hamming,   Kiss64Random, AnnoyIndexMultiThreadedBuildPolicy> AnnoyHamming;
+#ifdef ANNOYLIB_MULTITHREADED_BUILD
+  typedef AnnoyIndexMultiThreadedBuildPolicy AnnoyIndexThreadedBuildPolicy;
+#else
+  typedef AnnoyIndexSingleThreadedBuildPolicy AnnoyIndexThreadedBuildPolicy;
+#endif
+
+typedef Annoy<int32_t, float,    Angular,   Kiss64Random, AnnoyIndexThreadedBuildPolicy> AnnoyAngular;
+typedef Annoy<int32_t, float,    Euclidean, Kiss64Random, AnnoyIndexThreadedBuildPolicy> AnnoyEuclidean;
+typedef Annoy<int32_t, float,    Manhattan, Kiss64Random, AnnoyIndexThreadedBuildPolicy> AnnoyManhattan;
+typedef Annoy<int32_t, uint64_t, Hamming,   Kiss64Random, AnnoyIndexThreadedBuildPolicy> AnnoyHamming;
 
 RCPP_EXPOSED_CLASS_NODECL(AnnoyAngular)
 RCPP_MODULE(AnnoyAngular) {
