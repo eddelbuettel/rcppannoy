@@ -1,5 +1,15 @@
 
-## We want C++14 for std::shared_timed_mutex
-CXX_STD = CXX14
+## Multithreaded indexing for Annoy (version 1.17 or later)
+## requires this define to be set
+##   USE_MULTITTHREADING=-DANNOYLIB_MULTITHREADED_BUILD
+## and also requires C++14 for std::shared_timed_mutex
+##   CXX_STD = CXX14
+## So to use multithreaded indexing, comment out the two settings
+## above and make the CXX_STD below a comment. Note that it may
+## alter your result (or their order) slightly due to the use of
+## multithreading
 
-PKG_CPPFLAGS = -I../inst/include/
+## Default builds use no such define and C++11
+CXX_STD = CXX11
+
+PKG_CPPFLAGS = -I../inst/include/ ${USE_MULTITTHREADING}
