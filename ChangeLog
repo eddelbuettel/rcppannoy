@@ -1,5 +1,7 @@
 2020-10-19  Dirk Eddelbuettel  <edd@debian.org>
 
+	* DESCRIPTION (Version, Date): Roll minor version
+
 	* src/Makevars: Default to serial use (and C++11) but add comment to
 	detail how enable multithreaded indexing
 	* src/annoy.cpp: Default to serial use
