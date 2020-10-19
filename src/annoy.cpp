@@ -36,9 +36,6 @@
 // define R's REprintf as the 'local' error print method for Annoy
 #define __ERROR_PRINTER_OVERRIDE__  REprintf
 
-// use multithreading (Annoy 1.17 or later)
-#define ANNOYLIB_MULTITHREADED_BUILD
-
 #include "annoylib.h"
 #include "kissrandom.h"
 
