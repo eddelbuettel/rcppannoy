@@ -16,6 +16,10 @@
 #ifndef ANNOYLIB_H
 #define ANNOYLIB_H
 
+// For the release 0.16.2 with Annoy 1.17.0, a 'temporary' define used by uwot and BiocNeighbors
+// Over time it will be replace by RCPPANNOY_VERSION > RcppAnnoyVersion(a,b,c,d) comparisons
+#define __RcppAnnoy_0_16_2__ 1
+
 #include <stdio.h>
 #include <sys/stat.h>
 #ifndef _MSC_VER

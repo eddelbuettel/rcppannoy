@@ -3,6 +3,14 @@
 \newcommand{\ghpr}{\href{https://github.com/eddelbuettel/rcppannoy/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/eddelbuettel/rcppannoy/issues/#1}{##1}}
 
+\section{Changes in version 0.0.17 (2020-xx-yy)}{
+  \itemize{
+    \item Upgrade to Annoy 1.17 but default to serial use
+    \item Add new header file to regroup includes and defines
+    \item Upgrade CI script to use R with bspm on focal
+  }
+}
+
 \section{Changes in version 0.0.16 (2020-03-06)}{
   \itemize{
     \item Use \code{int} in two interfaces (Dirk in \ghpr{59} for upstream

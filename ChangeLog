@@ -1,3 +1,10 @@
+2020-11-12  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/include/RcppAnnoy.h: New header file for includes and defines
+	* src/annoy.cpp: Use new header file RcppAnnoy.h
+
+	* inst/include/annoylib.h: Add a temporary define to identify version
+
 2020-10-19  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION (Version, Date): Roll minor version

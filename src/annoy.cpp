@@ -25,19 +25,7 @@
 //
 // Dirk Eddelbuettel, Nov 2014
 
-
-#include <Rcpp.h>
-
-#if defined(__MINGW32__)
-#undef Realloc
-#undef Free
-#endif
-
-// define R's REprintf as the 'local' error print method for Annoy
-#define __ERROR_PRINTER_OVERRIDE__  REprintf
-
-#include "annoylib.h"
-#include "kissrandom.h"
+#include "RcppAnnoy.h"
 
 template< typename S, typename T, typename Distance, typename Random, class ThreadedBuildPolicy >
 class Annoy
