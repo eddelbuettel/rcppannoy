@@ -3,11 +3,11 @@
 \newcommand{\ghpr}{\href{https://github.com/eddelbuettel/rcppannoy/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/eddelbuettel/rcppannoy/issues/#1}{##1}}
 
-\section{Changes in version 0.0.17 (2020-xx-yy)}{
+\section{Changes in version 0.0.17 (2020-11-15)}{
   \itemize{
-    \item Upgrade to Annoy 1.17 but default to serial use
-    \item Add new header file to regroup includes and defines
-    \item Upgrade CI script to use R with bspm on focal
+    \item Upgrade to Annoy 1.17, but default to serial use.
+    \item Add new header file to regroup includes and defines.
+    \item Upgrade CI script to use R with bspm on focal.
   }
 }
 
@@ -17,7 +17,7 @@
     PR 460 and closing \ghit{56}).
     \item Use \code{inline} for two helper functions (Dirk in \ghpr{59}
     for upstream PR 461 and closing \ghit{57}; also Aaron in \ghpr{58}
-    after earlier discussion).  
+    after earlier discussion).
     \item Removed a noisy \code{pragma} (Dirk in \ghpr{60} for upstream
     PR 462).
     \item Add a simple helper function displaying compiler status.

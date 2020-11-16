@@ -1,6 +1,5 @@
 
-#include <annoylib.h>
-#include <Rcpp.h>
+#include "RcppAnnoy.h"
 
 #if defined(USE_AVX512)
 #define AVX_INFO "Using 512-bit AVX instructions"

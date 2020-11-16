@@ -7,6 +7,8 @@
 #define RCPPANNOY_H
 
 // -- include Rcpp headers
+#define R_NO_REMAP
+#define STRICT_R_HEADERS
 #include <Rcpp.h>
 
 
