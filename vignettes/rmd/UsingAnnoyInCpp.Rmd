@@ -59,27 +59,20 @@ Note that \pkg{Annoy} is a header-only library so no additional commands are nec
 
 Obviously, the header files need to be `include`d in any \proglang{C++} source file that
 uses \pkg{Annoy}.  A few macros also need to be added to handle Windows-specific behaviour
-and to ensure that error messages are printed through R.  The pre-processor statements in
-your source files should look like:
+and to ensure that error messages are printed through R.  Version number
+comparison macros help in conditioning changes on a particular version.
+Since release 0.0.17 all this is now expressed centrally in a header in the
+package so users can just use this one-liner:
 
 ```cpp
-#if defined(__MINGW32__)
-#undef Realloc
-#undef Free
-#endif
-
-// define R's REprintf as the 'local' error
-// print method for Annoy
-#include "Rcpp.h"
-#define __ERROR_PRINTER_OVERRIDE__  REprintf
-
-#include "annoylib.h"
-#include "kissrandom.h"
+#include "RcppAnnoy.h"
 ```
 
 # Defining the search type 
 
-The `AnnoyIndex` template class can accommodate different data types, distance metrics and random number generators.
+The `AnnoyIndex` template class can accommodate different data types,
+distance metrics, random number generators, and threading policies (where the
+latter are a choice between sequential or multithreaded). 
 Here, we will consider the most common application of a nearest-neighbor search on floating-point data with Euclidean distance.
 We `typedef` the type and realized template for convenience:
 
@@ -87,7 +80,8 @@ We `typedef` the type and realized template for convenience:
 typedef float ANNOYTYPE;
 
 typedef
-AnnoyIndex<int, ANNOYTYPE, Euclidean, Kiss64Random>
+AnnoyIndex<int, ANNOYTYPE, Euclidean, Kiss64Random,
+           AnnoyIndexThreadedBuildPolicy>
 MyAnnoyIndex;
 ```
 
