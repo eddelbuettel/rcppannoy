@@ -1,5 +1,8 @@
 2020-11-19  Dirk Eddelbuettel  <edd@debian.org>
 
+	* DESCRIPTION (Version, Date): Roll minor version
+	* inst/include/RcppAnnoy.h: Idem
+
 	* inst/include/RcppAnnoy.h: Additional typedefs for threading policy
 	* src/annoy.cpp: Threading policy typedef removed
 
