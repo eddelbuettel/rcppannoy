@@ -48,4 +48,15 @@
 #define RcppAnnoyVersion(maj, min, rev, dev)  	(((maj)*1000000) + ((min)*10000) + ((rev)*100) + (dev))
 #define RCPPANNOY_VERSION			RcppAnnoyVersion(RCPPANNOY_VERSION_MAJOR,RCPPANNOY_VERSION_MINOR,RCPPANNOY_VERSION_PATCH,RCPP_ANNOY_VERSION_MICRO)
 
+
+// -- convenience typedefs
+//    prefixed with Rcpp to ensure we are most unlikely to clash with upstream defines
+//    usage of these is entire optional
+
+#ifdef ANNOYLIB_MULTITHREADED_BUILD
+  typedef AnnoyIndexMultiThreadedBuildPolicy RcppAnnoyIndexThreadPolicy;
+#else
+  typedef AnnoyIndexSingleThreadedBuildPolicy RcppAnnoyIndexThreadPolicy;
+#endif
+
 #endif
