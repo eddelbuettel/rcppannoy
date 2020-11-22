@@ -1,3 +1,15 @@
+2020-11-22  Dirk Eddelbuettel  <edd@debian.org>
+
+	* inst/tinytest/testVignette.R: New test file
+
+	* inst/rmd/: Moved from vignettes/rmd
+	* inst/rmd/UsingAnnoyInCpp.Rmd: Allow for index file
+
+2020-11-22  Aaron Lun  <infinite.monkeys.with.keyboards@gmail.com>
+
+	* vignettes/rmd/UsingAnnoyInCpp.Rmd: Allow compilation of vignette
+	without adding more dependencies
+
 2020-11-19  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION (Version, Date): Roll minor version

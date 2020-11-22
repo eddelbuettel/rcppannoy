@@ -4,4 +4,3 @@
 ^LICENSE$
 .*\.tar\.gz$
 ^local
-^vignettes/rmd

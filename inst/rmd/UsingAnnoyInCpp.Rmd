@@ -64,7 +64,7 @@ comparison macros help in conditioning changes on a particular version.
 Since release 0.0.17 all this is now expressed centrally in a header in the
 package so users can just use this one-liner:
 
-```cpp
+```{Rcpp, eval=FALSE}
 #include "RcppAnnoy.h"
 ```
 
@@ -76,12 +76,12 @@ latter are a choice between sequential or multithreaded).
 Here, we will consider the most common application of a nearest-neighbor search on floating-point data with Euclidean distance.
 We `typedef` the type and realized template for convenience:
 
-```cpp
+```{Rcpp, eval=FALSE}
 typedef float ANNOYTYPE;
 
 typedef
 AnnoyIndex<int, ANNOYTYPE, Euclidean, Kiss64Random,
-           AnnoyIndexThreadedBuildPolicy>
+           RcppAnnoyIndexThreadPolicy>
 MyAnnoyIndex;
 ```
 
@@ -98,9 +98,20 @@ to the index.
 
 # Building an index
 
+<!--
+```{Rcpp, eval=FALSE}
+// Filler for compilation.
+
+// [[Rcpp::depends(RcppAnnoy)]]
+// [[Rcpp::export(rng=false)]] 
+int thingy(Rcpp::NumericMatrix mat, int c, int K, Rcpp::NumericVector Q,
+           std::string indexfile = "annoy.index") {
+```
+-->
+
 Let's say we have an `Rcpp::NumericMatrix` named `mat`, where each row corresponds to a sample and each column corresponds to a dimension/variable.
 
-```cpp
+```{Rcpp, eval=FALSE}
 const size_t nsamples=mat.nrow();
 const size_t ndims=mat.ncol();
 ```
@@ -108,7 +119,7 @@ const size_t ndims=mat.ncol();
 It is simple to build a `MyAnnoyIndex` containing the data in this matrix.
 Note the copy from the double-precision matrix into a `float` vector before calling `add_item()`.
 
-```cpp
+```{Rcpp, eval=FALSE}
 MyAnnoyIndex obj(ndims);
 // from <vector>        
 std::vector<ANNOYTYPE> tmp(ndims); 
@@ -127,15 +138,15 @@ greater search accuracy.
 
 The index can also be saved to file via
 
-```cpp
-obj.save("annoy.index");
+```{Rcpp, eval=FALSE}
+obj.save(indexfile.c_str());
 ```
 
 and reloaded in some other context:
 
-```cpp
+```{Rcpp, eval=FALSE}
 MyAnnoyIndex obj2(ndims);
-obj2.load("annoy.index"); // same as 'obj'.
+obj2.load(indexfile.c_str()); // same as 'obj'.
 ```
 
 This is helpful for parallelization across workers running in different \proglang{R}
@@ -147,7 +158,7 @@ data set is to be queried multiple times.
 Let's say that we want to find the `K` (approximate) nearest neighbors of sample `c` in
 the original data set used to construct `obj`.  To do this, we write:
 
-```cpp
+```{Rcpp, eval=FALSE}
 std::vector<int> neighbor_index;
 std::vector<ANNOYTYPE> neighbor_dist;
 obj.get_nns_by_item(c, K + 1, -1, &neighbor_index,
@@ -177,11 +188,27 @@ Another application is to query the index for the neighbors of a new sample give
 coordinates.  Assuming we have a `float*` to an array of coordinates of length `ndims`, we
 do:
 
-```cpp
+<!--
+```{Rcpp, eval=FALSE}
+// Filler for compilation.
+std::vector<ANNOYTYPE> QUERY(Q.begin(), Q.end());
+ANNOYTYPE* query = QUERY.data();
+```
+-->
+
+```{Rcpp, eval=FALSE}
 obj.get_nns_by_vector(query, K+1, -1, 
                       &neighbor_index,
                       &neighbor_dist);                                    
 ```
+
+<!--
+```{Rcpp, eval=FALSE}
+// Closing the function.
+return 1;
+}
+```
+-->
 
 # Further information
 
@@ -193,3 +220,15 @@ repository.  An example of using the Annoy library via \pkg{RcppAnnoy} is availa
 [\pkg{BiocNeighbors}](https://bioconductor.org/packages/BiocNeighbors) package
 \citep{Bioc:BiocNeighbors}.
 
+<!--
+Sanity check for compilable and runnable code.
+
+```{Rcpp, eval=exists("RcppAnnoy.vignette.check"), ref.label=knitr::all_rcpp_labels(), include=FALSE}
+```
+
+```{r, eval=exists("RcppAnnoy.vignette.check")}
+mat <- matrix(runif(1000), 100)
+Q <- matrix(runif(100), 10)
+thingy(mat, 1, 10, Q)
+```
+-->
