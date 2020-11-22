@@ -104,7 +104,8 @@ to the index.
 
 // [[Rcpp::depends(RcppAnnoy)]]
 // [[Rcpp::export(rng=false)]] 
-int thingy(Rcpp::NumericMatrix mat, int c, int K, Rcpp::NumericVector Q) {
+int thingy(Rcpp::NumericMatrix mat, int c, int K, Rcpp::NumericVector Q,
+           std::string indexfile = "annoy.index") {
 ```
 -->
 
@@ -138,14 +139,14 @@ greater search accuracy.
 The index can also be saved to file via
 
 ```{Rcpp, eval=FALSE}
-obj.save("annoy.index");
+obj.save(indexfile.c_str());
 ```
 
 and reloaded in some other context:
 
 ```{Rcpp, eval=FALSE}
 MyAnnoyIndex obj2(ndims);
-obj2.load("annoy.index"); // same as 'obj'.
+obj2.load(indexfile.c_str()); // same as 'obj'.
 ```
 
 This is helpful for parallelization across workers running in different \proglang{R}
