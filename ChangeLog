@@ -3,6 +3,8 @@
 	* DESCRIPTION (Version, Date): Roll minor version
 	* inst/include/RcppAnnoy.h: Idem
 
+	* .travis.yml: Switch to r-ci
+
 2020-11-22  Dirk Eddelbuettel  <edd@debian.org>
 
 	* inst/tinytest/testVignette.R: New test file

@@ -1,4 +1,4 @@
-# Run Travis CI for R using https://eddelbuettel.github.io/r-travis/
+# Run CI for R using https://eddelbuettel.github.io/r-ci/
 
 language: c
 sudo: required
@@ -6,15 +6,15 @@ dist: focal
 
 jobs:
   include:
-    #- name: r-3.5
-    #  env: R_VERSION="3.5"
-    - name: r-4.0
-      env: R_VERSION="4.0"
+    - name: linux
+      os: linux
+    #- name: macOS
+    #  os: osx
 
 env:
   global:
-    - RunAllRcppAnnoyTests="yes"
     - USE_BSPM="true"
+    - RunAllRcppAnnoyTests="yes"
 
 before_install:
   - curl -OLs https://eddelbuettel.github.io/r-travis/run.sh && chmod 0755 run.sh
