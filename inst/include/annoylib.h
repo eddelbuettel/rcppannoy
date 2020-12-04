@@ -16,10 +16,6 @@
 #ifndef ANNOYLIB_H
 #define ANNOYLIB_H
 
-// For the release 0.16.2 with Annoy 1.17.0, a 'temporary' define used by uwot and BiocNeighbors
-// Over time it will be replace by RCPPANNOY_VERSION > RcppAnnoyVersion(a,b,c,d) comparisons
-#define __RcppAnnoy_0_16_2__ 1
-
 #include <stdio.h>
 #include <sys/stat.h>
 #ifndef _MSC_VER
@@ -61,6 +57,10 @@ typedef signed __int64    int64_t;
 #include <algorithm>
 #include <queue>
 #include <limits>
+
+#if __cplusplus >= 201103L
+#include <type_traits>
+#endif
 
 #ifdef ANNOYLIB_MULTITHREADED_BUILD
 #include <thread>
@@ -819,7 +819,7 @@ struct Manhattan : Minkowski {
   }
 };
 
-template<typename S, typename T>
+template<typename S, typename T, typename R = uint64_t>
 class AnnoyIndexInterface {
  public:
   // Note that the methods with an **error argument will allocate memory and write the pointer to that string if error is non-NULL
@@ -837,12 +837,18 @@ class AnnoyIndexInterface {
   virtual S get_n_trees() const = 0;
   virtual void verbose(bool v) = 0;
   virtual void get_item(S item, T* v) const = 0;
-  virtual void set_seed(int q) = 0;
+  virtual void set_seed(R q) = 0;
   virtual bool on_disk_build(const char* filename, char** error=NULL) = 0;
 };
 
 template<typename S, typename T, typename Distance, typename Random, class ThreadedBuildPolicy>
-  class AnnoyIndex : public AnnoyIndexInterface<S, T> {
+  class AnnoyIndex : public AnnoyIndexInterface<S, T, 
+#if __cplusplus >= 201103L
+    typename std::remove_const<decltype(Random::default_seed)>::type
+#else
+    typename Random::seed_type
+#endif
+    > {
   /*
    * We use random projection to build a forest of binary trees of all items.
    * Basically just split the hyperspace into two sides by a hyperplane,
@@ -853,6 +859,11 @@ template<typename S, typename T, typename Distance, typename Random, class Threa
 public:
   typedef Distance D;
   typedef typename D::template Node<S, T> Node;
+#if __cplusplus >= 201103L
+  typedef typename std::remove_const<decltype(Random::default_seed)>::type R;
+#else
+  typedef typename Random::seed_type R;
+#endif
 
 protected:
   const int _f;
@@ -863,8 +874,7 @@ protected:
   S _nodes_size;
   vector<S> _roots;
   S _K;
-  bool _is_seeded;
-  int _seed;
+  R _seed;
   bool _loaded;
   bool _verbose;
   int _fd;
@@ -872,7 +882,7 @@ protected:
   bool _built;
 public:
 
-   AnnoyIndex(int f) : _f(f) {
+   AnnoyIndex(int f) : _f(f), _seed(Random::default_seed) {
     _s = offsetof(Node, v) + _f * sizeof(T); // Size of each node
     _verbose = false;
     _built = false;
@@ -1031,7 +1041,7 @@ public:
     _n_nodes = 0;
     _nodes_size = 0;
     _on_disk = false;
-    _is_seeded = false;
+    _seed = Random::default_seed;
     _roots.clear();
   }
 
@@ -1138,16 +1148,13 @@ public:
     memcpy(v, m->v, (_f) * sizeof(T));
   }
 
-  void set_seed(int seed) {
-    _is_seeded = true;
+  void set_seed(R seed) {
     _seed = seed;
   }
 
   void thread_build(int q, int thread_idx, ThreadedBuildPolicy& threaded_build_policy) {
-    Random _random;
     // Each thread needs its own seed, otherwise each thread would be building the same tree(s)
-    int seed = _is_seeded ? _seed + thread_idx : thread_idx;
-    _random.set_seed(seed);
+    Random _random(_seed + thread_idx);
 
     vector<S> thread_roots;
     while (1) {
