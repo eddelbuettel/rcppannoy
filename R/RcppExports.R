@@ -11,3 +11,7 @@ getArchictectureStatus <- function() {
     .Call(`_RcppAnnoy_getArchictectureStatus`)
 }
 
+annoy_version <- function() {
+    .Call(`_RcppAnnoy_annoy_version`)
+}
+
