@@ -18,4 +18,4 @@ Imports: methods, Rcpp
 LinkingTo: Rcpp
 Suggests: tinytest
 NeedsCompilation: yes
-RoxygenNote: 6.0.1
+RoxygenNote: 7.1.1

@@ -16,12 +16,13 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// version
-Rcpp::IntegerVector version();
-RcppExport SEXP _RcppAnnoy_version() {
+// annoy_version
+Rcpp::IntegerVector annoy_version();
+RcppExport SEXP _RcppAnnoy_annoy_version() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
-    rcpp_result_gen = Rcpp::wrap(version());
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(annoy_version());
     return rcpp_result_gen;
 END_RCPP
 }

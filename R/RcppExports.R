@@ -11,15 +11,7 @@ getArchictectureStatus <- function() {
     .Call(`_RcppAnnoy_getArchictectureStatus`)
 }
 
-#' Get the Annoy library version
-#'
-#' Get the version of the Annoy C++ library that RcppAnnoy was compiled with.
-#'
-#' @return An integer vector containing the major, minor, patch and development version numbers.
-#'
-#' @author Aaron Lun
-#' @export
-version <- function() {
-    .Call(`_RcppAnnoy_version`)
+annoy_version <- function() {
+    .Call(`_RcppAnnoy_annoy_version`)
 }
 
