@@ -1,3 +1,11 @@
+2020-12-04  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll minor version
+	* inst/include/RcppAnnoy.h: Idem
+
+	* inst/include/annoylib.h: Upstream sync post PR #522
+	* inst/include/kissrandom.h (struct Kiss32Random): Idem
+
 2020-11-23  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION (Version, Date): Roll minor version
