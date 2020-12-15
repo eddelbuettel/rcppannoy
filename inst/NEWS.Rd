@@ -3,6 +3,19 @@
 \newcommand{\ghpr}{\href{https://github.com/eddelbuettel/rcppannoy/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/eddelbuettel/rcppannoy/issues/#1}{##1}}
 
+\section{Changes in version 0.0.18 (2020-12-15)}{
+  \itemize{
+    \item Small tweaks to threading policy header defines (Dirk closing
+    \ghit{65})
+    \item Vignette code is again compiled during testing (Aaron Lum and
+    Dirk in \ghpr{66} addressing \ghit{64})
+    \item Upstream code (with Aaron's PR) was synchronized once more
+    (Dirk in \ghpr{67})
+    \item A new helper function was added to report the Annoy version
+    (Aaron in \ghpr{68})
+  }
+}
+
 \section{Changes in version 0.0.17 (2020-11-15)}{
   \itemize{
     \item Upgrade to Annoy 1.17, but default to serial use.
