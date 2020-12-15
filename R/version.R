@@ -9,9 +9,8 @@
 #' or if \code{compact=TRUE}, a \code{\link{package_version}} object.
 #'
 #' @author Aaron Lun
-#' @export
 getAnnoyVersion <- function(compact=FALSE) {
-    v <- annoy_version()
+    v <- .annoy_version()
     if (compact) as.package_version(paste(unname(v), collapse = "."))
     else v
 }

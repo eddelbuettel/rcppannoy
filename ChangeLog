@@ -1,3 +1,7 @@
+2020-12-15  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/version.cpp: Export as .annoy_version as we have an R wrapper
+
 2020-12-06  Aaron Lun  <infinite.monkeys.with.keyboards@gmail.com>
 
 	* src/version.cpp: Helper function to report Annoy version
