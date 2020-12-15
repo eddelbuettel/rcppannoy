@@ -1,6 +1,7 @@
 ## RcppAnnoy: Rcpp bindings for [Annoy](https://github.com/spotify/annoy)
 
 [![Build Status](https://travis-ci.org/eddelbuettel/rcppannoy.png)](https://travis-ci.org/eddelbuettel/rcppannoy)
+[![CI](https://github.com/eddelbuettel/rcppannoy/workflows/ci/badge.svg)](https://github.com/eddelbuettel/rcppannoy/actions?query=workflow%3Aci)
 [![License](https://eddelbuettel.github.io/badges/GPL2+.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
 [![CRAN](http://www.r-pkg.org/badges/version/RcppAnnoy)](https://cran.r-project.org/package=RcppAnnoy)
 [![Dependencies](https://tinyverse.netlify.com/badge/RcppAnnoy)](https://cran.r-project.org/package=RcppAnnoy)

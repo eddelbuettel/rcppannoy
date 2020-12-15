@@ -3,6 +3,7 @@
 	* src/version.cpp: Export as .annoy_version as we have an R wrapper
 
 	* .github/workflows/ci.yaml: Add CI runner using r-ci
+	* README.md: Add new badge
 
 2020-12-06  Aaron Lun  <infinite.monkeys.with.keyboards@gmail.com>
 
