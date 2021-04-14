@@ -1,3 +1,7 @@
+2021-04-13  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (URL, BugRreports): Added to DESCRIPTION file
+
 2020-12-25  Dirk Eddelbuettel  <edd@debian.org>
 
 	* .github/workflows/ci.yaml: Small tweaks to CI YAML file

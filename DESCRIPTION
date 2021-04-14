@@ -17,5 +17,7 @@ Depends: R (>= 3.1)
 Imports: methods, Rcpp
 LinkingTo: Rcpp
 Suggests: tinytest
+URL: https://github.com/eddelbuettel/rcppannoy, https://dirk.eddelbuettel.com/code/rcpp.annoy.html
+BugReports: https://github.com/eddelbuettel/rcppannoy/issues
 NeedsCompilation: yes
 RoxygenNote: 7.1.1
