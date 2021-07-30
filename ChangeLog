@@ -8,6 +8,8 @@
 
 2020-12-15  Dirk Eddelbuettel  <edd@debian.org>
 
+	* DESCRIPTION (Version, Date): Release 0.0.18
+
 	* src/version.cpp: Export as .annoy_version as we have an R wrapper
 
 	* .github/workflows/ci.yaml: Add CI runner using r-ci
