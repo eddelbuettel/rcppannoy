@@ -1,3 +1,9 @@
+2022-10-27  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/init.c: And 'void' to six prototypes to make clang-15 happy
+	* inst/include/annoylib.h (set_error_from_errno): Use snprint to make
+	xcode/macos 14 happy
+
 2021-04-13  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION (URL, BugRreports): Added to DESCRIPTION file
