@@ -3,6 +3,12 @@
 \newcommand{\ghpr}{\href{https://github.com/eddelbuettel/rcppannoy/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/eddelbuettel/rcppannoy/issues/#1}{##1}}
 
+\section{Changes in version 0.0.20 (2022-10-27)}{
+  \itemize{
+    \item Minor tweaks appease \code{clang-15} and \code{Xcode 14}
+  }
+}
+
 \section{Changes in version 0.0.19 (2021-07-30)}{
   \itemize{
     \item Minor tweaks to default CI setup and DESCRIPTION file

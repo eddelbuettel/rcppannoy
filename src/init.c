@@ -8,12 +8,12 @@
 */
 
 /* .Call calls */
-extern SEXP _rcpp_module_boot_AnnoyAngular();
-extern SEXP _rcpp_module_boot_AnnoyEuclidean();
-extern SEXP _rcpp_module_boot_AnnoyManhattan();
-extern SEXP _rcpp_module_boot_AnnoyHamming();
-extern SEXP _RcppAnnoy_getArchictectureStatus();
-extern SEXP _RcppAnnoy_annoy_version();
+extern SEXP _rcpp_module_boot_AnnoyAngular(void);
+extern SEXP _rcpp_module_boot_AnnoyEuclidean(void);
+extern SEXP _rcpp_module_boot_AnnoyManhattan(void);
+extern SEXP _rcpp_module_boot_AnnoyHamming(void);
+extern SEXP _RcppAnnoy_getArchictectureStatus(void);
+extern SEXP _RcppAnnoy_annoy_version(void);
 
 static const R_CallMethodDef CallEntries[] = {
     {"_rcpp_module_boot_AnnoyAngular",   (DL_FUNC) &_rcpp_module_boot_AnnoyAngular,   0},

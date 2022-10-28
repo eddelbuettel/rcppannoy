@@ -1,3 +1,22 @@
+2022-10-27  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Release 0.0.20
+
+	* src/init.c: And 'void' to six prototypes to make clang-15 happy
+	* inst/include/annoylib.h (set_error_from_errno): Use snprint to make
+	xcode/macos 14 happy
+
+	* .github/workflows/ci.yaml (jobs): Update to actions/checkout@v3
+
+2021-11-30  Dirk Eddelbuettel  <edd@debian.org>
+
+	* README.md: Remove depcreated CI badge
+	* .travis/: Removed
+
+2021-07-30  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Release 0.0.19
+
 2021-04-13  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION (URL, BugRreports): Added to DESCRIPTION file
