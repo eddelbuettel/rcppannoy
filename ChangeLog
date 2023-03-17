@@ -1,3 +1,8 @@
+2023-03-17  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/Makevars: No longer restrict build to C++11, also turn on
+	multithreading and switch to C++17 (instead of minimum C++14)
+
 2022-10-27  Dirk Eddelbuettel  <edd@debian.org>
 
 	* DESCRIPTION (Version, Date): Release 0.0.20
