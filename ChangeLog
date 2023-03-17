@@ -1,5 +1,8 @@
 2023-03-17  Dirk Eddelbuettel  <edd@debian.org>
 
+	* DESCRIPTION (Version, Date): Roll minor version
+	* inst/include/RcppAnnoy.h: Idem
+
 	* src/Makevars: No longer restrict build to C++11, also turn on
 	multithreading and switch to C++17 (instead of minimum C++14)
 
