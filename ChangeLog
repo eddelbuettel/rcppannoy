@@ -1,5 +1,8 @@
 2023-06-15  Dirk Eddelbuettel  <edd@debian.org>
 
+	* DESCRIPTION (Version, Date): Roll micro version
+	* inst/include/RcppAnnoy.h: Idem
+
 	* inst/include/annoylib.h: Sync with upstream 1.17.3
 	* src/annoy.cpp: Accomodate updated upstream changes
 	* inst/include/RcppAnnoy.h: Idem
