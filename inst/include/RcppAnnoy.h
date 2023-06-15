@@ -29,7 +29,7 @@
 
 #define ANNOY_VERSION_MAJOR 1
 #define ANNOY_VERSION_MINOR 17
-#define ANNOY_VERSION_PATCH 0
+#define ANNOY_VERSION_PATCH 3
 
 // create a single 'comparable' number out of version, minor and patch
 #define Annoy_Version(v,m,p)   (((v) * 65536) + ((m) * 256) + (p))
@@ -43,7 +43,7 @@
 #define RCPPANNOY_VERSION_MAJOR 0
 #define RCPPANNOY_VERSION_MINOR 0
 #define RCPPANNOY_VERSION_PATCH 20
-#define RCPPANNOY_VERSION_MICRO 1
+#define RCPPANNOY_VERSION_MICRO 2
 
 #define RcppAnnoyVersion(maj, min, rev, dev)  	(((maj)*1000000) + ((min)*10000) + ((rev)*100) + (dev))
 #define RCPPANNOY_VERSION			RcppAnnoyVersion(RCPPANNOY_VERSION_MAJOR,RCPPANNOY_VERSION_MINOR,RCPPANNOY_VERSION_PATCH,RCPP_ANNOY_VERSION_MICRO)
@@ -54,9 +54,9 @@
 //    usage of these is entire optional
 
 #ifdef ANNOYLIB_MULTITHREADED_BUILD
-  typedef AnnoyIndexMultiThreadedBuildPolicy RcppAnnoyIndexThreadPolicy;
+  typedef Annoy::AnnoyIndexMultiThreadedBuildPolicy RcppAnnoyIndexThreadPolicy;
 #else
-  typedef AnnoyIndexSingleThreadedBuildPolicy RcppAnnoyIndexThreadPolicy;
+  typedef Annoy::AnnoyIndexSingleThreadedBuildPolicy RcppAnnoyIndexThreadPolicy;
 #endif
 
 #endif

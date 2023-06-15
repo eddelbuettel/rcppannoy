@@ -1,8 +1,7 @@
-// -*- mode: C++; c-indent-level: 4; c-basic-offset: 4; indent-tabs-mode: nil; -*-
-//
+
 //  RcppAnnoy -- Rcpp bindings to Annoy library for Approximate Nearest Neighbours
 //
-//  Copyright (C) 2014 - 2020  Dirk Eddelbuettel
+//  Copyright (C) 2014 - 2023  Dirk Eddelbuettel
 //
 //  This file is part of RcppAnnoy
 //
@@ -19,13 +18,15 @@
 //  You should have received a copy of the GNU General Public License
 //  along with RcppAnnoy.  If not, see <http://www.gnu.org/licenses/>.
 
-// simple C++ modules to wrap to two templated classes from Annoy
+// simple C++ modules to wrap to templated classes from Annoy
 //
 // uses annoylib.h (from Annoy) and provides R access via Rcpp
 //
 // Dirk Eddelbuettel, Nov 2014
 
 #include "RcppAnnoy.h"
+
+namespace Annoy {
 
 template< typename S, typename T, typename Distance, typename Random, class ThreadedBuildPolicy >
 class Annoy
@@ -118,10 +119,12 @@ public:
 
 };
 
-typedef Annoy<int32_t, float,    Angular,   Kiss64Random, RcppAnnoyIndexThreadPolicy> AnnoyAngular;
-typedef Annoy<int32_t, float,    Euclidean, Kiss64Random, RcppAnnoyIndexThreadPolicy> AnnoyEuclidean;
-typedef Annoy<int32_t, float,    Manhattan, Kiss64Random, RcppAnnoyIndexThreadPolicy> AnnoyManhattan;
-typedef Annoy<int32_t, uint64_t, Hamming,   Kiss64Random, RcppAnnoyIndexThreadPolicy> AnnoyHamming;
+}
+
+typedef Annoy::Annoy<int32_t, float,    Annoy::Angular,   Kiss64Random, RcppAnnoyIndexThreadPolicy> AnnoyAngular;
+typedef Annoy::Annoy<int32_t, float,    Annoy::Euclidean, Kiss64Random, RcppAnnoyIndexThreadPolicy> AnnoyEuclidean;
+typedef Annoy::Annoy<int32_t, float,    Annoy::Manhattan, Kiss64Random, RcppAnnoyIndexThreadPolicy> AnnoyManhattan;
+typedef Annoy::Annoy<int32_t, uint64_t, Annoy::Hamming,   Kiss64Random, RcppAnnoyIndexThreadPolicy> AnnoyHamming;
 
 RCPP_EXPOSED_CLASS_NODECL(AnnoyAngular)
 RCPP_MODULE(AnnoyAngular) {
