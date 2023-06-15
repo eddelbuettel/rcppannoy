@@ -54,9 +54,9 @@
 //    usage of these is entire optional
 
 #ifdef ANNOYLIB_MULTITHREADED_BUILD
-  typedef AnnoyIndexMultiThreadedBuildPolicy RcppAnnoyIndexThreadPolicy;
+  typedef Annoy::AnnoyIndexMultiThreadedBuildPolicy RcppAnnoyIndexThreadPolicy;
 #else
-  typedef AnnoyIndexSingleThreadedBuildPolicy RcppAnnoyIndexThreadPolicy;
+  typedef Annoy::AnnoyIndexSingleThreadedBuildPolicy RcppAnnoyIndexThreadPolicy;
 #endif
 
 #endif
