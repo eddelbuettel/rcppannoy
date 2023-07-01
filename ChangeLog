@@ -1,3 +1,8 @@
+2023-07-01  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/Makevars (USE_MULTITTHREADING): Revert back to not enabling
+	multithreading by default to remain consistent with prior behaviour
+
 2023-06-30  Dirk Eddelbuettel  <edd@debian.org>
 
 	* README.md: Add r-universe badge
