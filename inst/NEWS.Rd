@@ -3,6 +3,15 @@
 \newcommand{\ghpr}{\href{https://github.com/eddelbuettel/rcppannoy/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/eddelbuettel/rcppannoy/issues/#1}{##1}}
 
+\section{Changes in version 0.0.21 (2023-07-02)}{
+  \itemize{
+    \item The build setup switched from C++11 to C++17 which offers threading
+    support (which remains off by default to ensure consistent results)
+    \item Upstream code was update to Annoy 1.17.3, the switch to an explicit
+    C++ namespace has been accomodated  (Dirk in \ghpr{75})
+  }
+}
+
 \section{Changes in version 0.0.20 (2022-10-27)}{
   \itemize{
     \item Minor tweaks appease \code{clang-15} and \code{Xcode 14}

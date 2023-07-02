@@ -1,3 +1,8 @@
+2023-07-02  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Release 0.0.21
+	* inst/include/RcppAnnoy.h: Idem
+
 2023-07-01  Dirk Eddelbuettel  <edd@debian.org>
 
 	* src/Makevars (USE_MULTITTHREADING): Revert back to not enabling
