@@ -42,7 +42,7 @@
 
 #define RCPPANNOY_VERSION_MAJOR 0
 #define RCPPANNOY_VERSION_MINOR 0
-#define RCPPANNOY_VERSION_PATCH 21
+#define RCPPANNOY_VERSION_PATCH 22
 #define RCPPANNOY_VERSION_MICRO 0
 
 #define RcppAnnoyVersion(maj, min, rev, dev)  	(((maj)*1000000) + ((min)*10000) + ((rev)*100) + (dev))

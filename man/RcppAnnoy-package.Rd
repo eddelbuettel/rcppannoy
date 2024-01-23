@@ -23,6 +23,3 @@
   \url{https://github.com/spotify/annoy}
 }
 \keyword{package}
-\examples{
-  # Optional simple examples of the most important functions
-}

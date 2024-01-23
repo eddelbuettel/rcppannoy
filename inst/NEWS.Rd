@@ -3,6 +3,12 @@
 \newcommand{\ghpr}{\href{https://github.com/eddelbuettel/rcppannoy/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/eddelbuettel/rcppannoy/issues/#1}{##1}}
 
+\section{Changes in version 0.0.22 (2024-01-23)}{
+  \itemize{
+    \item Replace empty examples macros to satisfy CRAN request.
+  }
+}
+
 \section{Changes in version 0.0.21 (2023-07-02)}{
   \itemize{
     \item The build setup switched from C++11 to C++17 which offers threading
