@@ -5,7 +5,7 @@
 
 \section{Changes in version 0.0.22 (2024-01-23)}{
   \itemize{
-    \item Replace empty examples macros to satisfy CRAN request.
+    \item Replace empty examples macro to satisfy CRAN request.
   }
 }
 
@@ -20,7 +20,7 @@
 
 \section{Changes in version 0.0.20 (2022-10-27)}{
   \itemize{
-    \item Minor tweaks appease \code{clang-15} and \code{Xcode 14}
+    \item Minor tweaks to appease \code{clang-15} and \code{Xcode 14}
   }
 }
 
