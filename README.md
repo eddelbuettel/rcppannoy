@@ -4,7 +4,7 @@
 [![License](https://eddelbuettel.github.io/badges/GPL2+.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
 [![CRAN](http://www.r-pkg.org/badges/version/RcppAnnoy)](https://cran.r-project.org/package=RcppAnnoy)
 [![r-universe](https://eddelbuettel.r-universe.dev/badges/RcppAnnoy)](https://eddelbuettel.r-universe.dev/RcppAnnoy)
-[![Dependencies](https://tinyverse.netlify.com/badge/RcppAnnoy)](https://cran.r-project.org/package=RcppAnnoy)
+[![Dependencies](https://tinyverse.netlify.app/badge/RcppAnnoy)](https://cran.r-project.org/package=RcppAnnoy)
 [![Downloads](http://cranlogs.r-pkg.org/badges/RcppAnnoy?color=brightgreen)](https://www.r-pkg.org:443/pkg/RcppAnnoy)
 [![Last Commit](https://img.shields.io/github/last-commit/eddelbuettel/rcppannoy)](https://github.com/eddelbuettel/rcppannoy)
 
