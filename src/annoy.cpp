@@ -121,10 +121,41 @@ public:
 
 }
 
+typedef Annoy::Annoy<int32_t, float,    Annoy::DotProduct,Kiss64Random, RcppAnnoyIndexThreadPolicy> AnnoyDotProduct;
 typedef Annoy::Annoy<int32_t, float,    Annoy::Angular,   Kiss64Random, RcppAnnoyIndexThreadPolicy> AnnoyAngular;
 typedef Annoy::Annoy<int32_t, float,    Annoy::Euclidean, Kiss64Random, RcppAnnoyIndexThreadPolicy> AnnoyEuclidean;
 typedef Annoy::Annoy<int32_t, float,    Annoy::Manhattan, Kiss64Random, RcppAnnoyIndexThreadPolicy> AnnoyManhattan;
 typedef Annoy::Annoy<int32_t, uint64_t, Annoy::Hamming,   Kiss64Random, RcppAnnoyIndexThreadPolicy> AnnoyHamming;
+
+RCPP_EXPOSED_CLASS_NODECL(AnnoyDotProduct)
+RCPP_MODULE(AnnoyDotProduct) {
+    Rcpp::class_<AnnoyDotProduct>("AnnoyDotProduct")
+
+        .constructor<int32_t>("constructor with integer count")
+
+        .method("addItem",        &AnnoyDotProduct::addItem,         "add item")
+        .method("build",          &AnnoyDotProduct::callBuild,       "build an index")
+        .method("unbuild",        &AnnoyDotProduct::callUnbuild,     "unbuild an index")
+        .method("save",           &AnnoyDotProduct::callSave,        "save index to file")
+        .method("load",           &AnnoyDotProduct::callLoad,        "load index from file")
+        .method("unload",         &AnnoyDotProduct::callUnload,      "unload index")
+        .method("getDistance",    &AnnoyDotProduct::getDistance,     "get distance between i and j")
+        .method("getNNsByItem",   &AnnoyDotProduct::getNNsByItem,
+                "retrieve Nearest Neigbours given item")
+        .method("getNNsByItemList",  &AnnoyDotProduct::getNNsByItemList,
+                "retrieve Nearest Neigbours given item")
+        .method("getNNsByVector", &AnnoyDotProduct::getNNsByVector,
+                "retrieve Nearest Neigbours given vector")
+        .method("getNNsByVectorList",  &AnnoyDotProduct::getNNsByVectorList,
+                "retrieve Nearest Neigbours given vector")
+        .method("getItemsVector", &AnnoyDotProduct::getItemsVector,  "retrieve item vector")
+        .method("getNItems",      &AnnoyDotProduct::getNItems,       "get number of items")
+        .method("getNTrees",      &AnnoyDotProduct::getNTrees,       "get number of trees")
+        .method("setVerbose",     &AnnoyDotProduct::verbose,         "set verbose")
+        .method("setSeed",        &AnnoyDotProduct::setSeed,         "set seed")
+        .method("onDiskBuild",    &AnnoyDotProduct::onDiskBuild,     "build in given file")
+        ;
+}
 
 RCPP_EXPOSED_CLASS_NODECL(AnnoyAngular)
 RCPP_MODULE(AnnoyAngular) {
