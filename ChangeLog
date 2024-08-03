@@ -1,3 +1,11 @@
+2024-08-03  Benjamin James <benjames@mit.edu>
+
+        * R/annoy.R: Add AnnoyDotProduct to namespace
+	* inst/tinytest/testDotProduct.R: Unit tests for 'AnnoyDotProduct'
+
+	* src/init.c: Added new dot product distance measure (via template)
+	* src/annoy.cpp: Added template and module for AnnoyDotProduct
+
 2024-05-20  Dirk Eddelbuettel  <edd@debian.org>
 
 	* README.md: Use tinyverse.netlify.app for dependency badge
