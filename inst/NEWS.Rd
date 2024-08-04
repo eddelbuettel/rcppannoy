@@ -3,6 +3,12 @@
 \newcommand{\ghpr}{\href{https://github.com/eddelbuettel/rcppannoy/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/eddelbuettel/rcppannoy/issues/#1}{##1}}
 
+\section{Changes in version 0.0.23 (2024-xx-yy)}{
+  \itemize{
+    \item Add dot product distance metrics (Benjamin James in \ghpr{78})
+  }
+}
+
 \section{Changes in version 0.0.22 (2024-01-23)}{
   \itemize{
     \item Replace empty examples macro to satisfy CRAN request.
@@ -13,7 +19,7 @@
   \itemize{
     \item The build setup switched from C++11 to C++17 which offers threading
     support (which remains off by default to ensure consistent results)
-    \item Upstream code was update to Annoy 1.17.3, the switch to an explicit
+    \item Upstream code was updated to Annoy 1.17.3, the switch to an explicit
     C++ namespace has been accomodated  (Dirk in \ghpr{75})
   }
 }
