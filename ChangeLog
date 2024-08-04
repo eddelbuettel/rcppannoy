@@ -1,4 +1,9 @@
-2024-08-03  Benjamin James <benjames@mit.edu>
+2024-08-04  Dirk Eddelbuettel  <edd@debian.org>
+
+	* R/annoy.R: Add alias for AnnoyDotProduct
+	* man/AnnoyIndex.Rd: Re-rendered
+
+2024-08-03  Benjamin James  <benjames@mit.edu>
 
         * R/annoy.R: Add AnnoyDotProduct to namespace
 	* inst/tinytest/testDotProduct.R: Unit tests for 'AnnoyDotProduct'

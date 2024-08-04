@@ -14,6 +14,9 @@
 \alias{AnnoyHamming}
 \alias{Rcpp_AnnoyHamming-class}
 \alias{Rcpp_AnnoyHamming}
+\alias{AnnoyDotProduct}
+\alias{Rcpp_AnnoyDotProduct-class}
+\alias{Rcpp_AnnoyDotProduct}
 \title{Approximate Nearest Neighbors with Annoy}
 \description{
 Annoy is a small library written to provide fast and memory-efficient

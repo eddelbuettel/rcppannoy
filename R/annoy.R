@@ -1,10 +1,11 @@
 #' @name AnnoyIndex
 #'
 #' @aliases
-#' AnnoyEuclidean Rcpp_AnnoyEuclidean-class Rcpp_AnnoyEuclidean
-#' AnnoyAngular   Rcpp_AnnoyAngular-class   Rcpp_AnnoyAngular
-#' AnnoyManhattan Rcpp_AnnoyManhattan-class Rcpp_AnnoyManhattan
-#' AnnoyHamming   Rcpp_AnnoyHamming-class   Rcpp_AnnoyHamming
+#' AnnoyEuclidean  Rcpp_AnnoyEuclidean-class  Rcpp_AnnoyEuclidean
+#' AnnoyAngular    Rcpp_AnnoyAngular-class    Rcpp_AnnoyAngular
+#' AnnoyManhattan  Rcpp_AnnoyManhattan-class  Rcpp_AnnoyManhattan
+#' AnnoyHamming    Rcpp_AnnoyHamming-class    Rcpp_AnnoyHamming
+#' AnnoyDotProduct Rcpp_AnnoyDotProduct-class Rcpp_AnnoyDotProduct
 #'
 #' @title Approximate Nearest Neighbors with Annoy
 #'
