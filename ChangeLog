@@ -1,7 +1,12 @@
 2024-08-04  Dirk Eddelbuettel  <edd@debian.org>
 
+	* DESCRIPTION (Version, Date): Roll micro version
+	* inst/include/RcppAnnoy.h: Idem
+
 	* R/annoy.R: Add alias for AnnoyDotProduct
 	* man/AnnoyIndex.Rd: Re-rendered
+
+	* README.md: Switch two more http:// URLs to https://
 
 2024-08-03  Benjamin James  <benjames@mit.edu>
 
