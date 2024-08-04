@@ -8,6 +8,7 @@
 */
 
 /* .Call calls */
+extern SEXP _rcpp_module_boot_AnnoyDotProduct(void);
 extern SEXP _rcpp_module_boot_AnnoyAngular(void);
 extern SEXP _rcpp_module_boot_AnnoyEuclidean(void);
 extern SEXP _rcpp_module_boot_AnnoyManhattan(void);
@@ -16,6 +17,7 @@ extern SEXP _RcppAnnoy_getArchictectureStatus(void);
 extern SEXP _RcppAnnoy_annoy_version(void);
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_rcpp_module_boot_AnnoyDotProduct",(DL_FUNC) &_rcpp_module_boot_AnnoyDotProduct,0},
     {"_rcpp_module_boot_AnnoyAngular",   (DL_FUNC) &_rcpp_module_boot_AnnoyAngular,   0},
     {"_rcpp_module_boot_AnnoyEuclidean", (DL_FUNC) &_rcpp_module_boot_AnnoyEuclidean, 0},
     {"_rcpp_module_boot_AnnoyManhattan", (DL_FUNC) &_rcpp_module_boot_AnnoyManhattan, 0},
