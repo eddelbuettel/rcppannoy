@@ -3,8 +3,10 @@ Type: Package
 Title: 'Rcpp' Bindings for 'Annoy', a Library for Approximate Nearest Neighbors
 Version: 0.0.22.1
 Date: 2024-08-04
-Author: Dirk Eddelbuettel
-Maintainer: Dirk Eddelbuettel <edd@debian.org>
+Authors@R: c(person("Dirk", "Eddelbuettel", role = c("aut", "cre"), email = "edd@debian.org",
+                    comment = c(ORCID = "0000-0001-6419-907X")),
+             person("Erik", "Bernhardsson", role = c("aut"),
+                    comment = "Principal author of Annoy"))
 Description: 'Annoy' is a small C++ library for Approximate Nearest Neighbors 
  written for efficient memory usage as well an ability to load from / save to
  disk. This package provides an R interface by relying on the 'Rcpp' package,
