@@ -190,7 +190,7 @@ a$getNNsByVectorList(v, 5, -1, TRUE)
 # SAVING/LOADING ANNOY INDEX ---------------------------------------------------
 
 # Create a tempfile, replace with a local file to keep
-treefile <- tempfile(pattern="annoy", fileext="tree")
+treefile <- tempfile(pattern="annoy", fileext=".tree")
 
 # Save annoy tree to disk
 a$save(treefile)
