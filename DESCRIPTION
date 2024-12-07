@@ -23,3 +23,4 @@ URL: https://github.com/eddelbuettel/rcppannoy, https://dirk.eddelbuettel.com/co
 BugReports: https://github.com/eddelbuettel/rcppannoy/issues
 NeedsCompilation: yes
 RoxygenNote: 7.3.2
+Encoding: UTF-8
