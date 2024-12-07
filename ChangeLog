@@ -1,3 +1,8 @@
+2024-12-07  Dirk Eddelbuettel  <edd@debian.org>
+
+	* R/annoy.R: Remove duplicate example
+	* man/AnnoyIndex.Rd: Regenerated to update example
+
 2024-12-04  Dirk Eddelbuettel  <edd@debian.org>
 
 	* R/annoy.R: Add missing dot to fileext argument in Rd part

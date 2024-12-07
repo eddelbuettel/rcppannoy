@@ -6,6 +6,7 @@
 \section{Changes in version 0.0.23 (2024-xx-yy)}{
   \itemize{
     \item Add dot product distance metrics (Benjamin James in \ghpr{78})
+    \item Apply small polish to the documentation (Dirk closing \ghit{79})
   }
 }
 

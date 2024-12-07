@@ -181,12 +181,6 @@ a$getNNsByVector(v, 5)
 # Return results as list with an element for distance
 a$getNNsByVectorList(v, 5, -1, TRUE)
 
-# Retrieve 5 nearest neighbors to vector v
-# search_k = -1 will invoke default search_k value of n_trees * n
-# Return results as list with an element for distance
-a$getNNsByVectorList(v, 5, -1, TRUE)
-
-
 # SAVING/LOADING ANNOY INDEX ---------------------------------------------------
 
 # Create a tempfile, replace with a local file to keep
