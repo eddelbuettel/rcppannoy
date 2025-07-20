@@ -1,3 +1,12 @@
+2025-07-20  Dirk Eddelbuettel  <edd@debian.org>
+
+	* vignettes/UsingAnnoyInCpp.pdf.asis: Switch to 'asis' vignette builder
+	* DESCRIPTION (VignetteBuilder): Add 'VignetteBuilder: Rcpp' along
+	with versioned Imports: on version 1.1.0.1 or newer
+
+	* .github/workflows/ci.yaml: (Temporary) installation of Rcpp 1.1.0.1
+	in order to access the 'asis' vignette builder provided by it
+
 2025-05-04  Dirk Eddelbuettel  <edd@debian.org>
 
 	* demo/00Index: Add missing newline
