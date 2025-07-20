@@ -4,8 +4,11 @@
 	* DESCRIPTION (VignetteBuilder): Add 'VignetteBuilder: Rcpp' along
 	with versioned Imports: on version 1.1.0.1 or newer
 
-	* .github/workflows/ci.yaml: (Temporary) installation of Rcpp 1.1.0.1
-	in order to access the 'asis' vignette builder provided by it
+	* tests/tinytest.R: Small refresh and edit
+
+	[ while waiting for Rcpp 1.1.0.1 changes to hit CRAN in Rcpp 1.1.0 ]
+	* DESCRIPTION (VignetteBuilder, Suggests): Temporarily switch to R.rsp
+	* vignettes/UsingAnnoyInCpp.pdf.asis: Temporarily switch to 'R.rsp::asis'
 
 2025-05-04  Dirk Eddelbuettel  <edd@debian.org>
 
