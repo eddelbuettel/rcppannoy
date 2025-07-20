@@ -29,6 +29,9 @@ jobs:
       - name: Dependencies
         run: ./run.sh install_all
 
+      - name: Temporary Rcpp 'rc' install from r-universe to get VignetteBuilder
+        run: Rscript -e 'bspm::disable(); install.packages("Rcpp", repos=c("https://rcppcore.r-universe.dev/bin/linux/noble-x86_64/4.5/", getOption("repos")))'
+
       - name: Test
         run: ./run.sh run_tests
 
