@@ -2,4 +2,4 @@
 %\VignetteKeywords{Rcpp, Annoy, R, Cpp, Approximate Nearest Neighbours}
 %\VignettePackage{RcppAnnoy}
 %\VignetteEncoding{UTF-8}
-%\VignetteEngine{R.rsp::asis}
+%\VignetteEngine{Rcpp::asis}
