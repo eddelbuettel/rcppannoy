@@ -25,3 +25,4 @@ NeedsCompilation: yes
 RoxygenNote: 7.3.2
 Encoding: UTF-8
 VignetteBuilder: Rcpp
+Additional_repositories: https://rcppcore.r-universe.dev

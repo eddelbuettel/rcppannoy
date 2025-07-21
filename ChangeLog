@@ -12,6 +12,8 @@
 
 	* .github/workflows/ci.yaml: (Temporary) installation of Rcpp 1.1.0.1
 	in order to access the 'asis' vignette builder provided by it
+	* DESCRIPTION: (Temporary) addition of Additional_repositories to
+	ensure updated Rcpp is used during r-universe processing
 
 	* tests/tinytest.R: Small refresh and edit
 
