@@ -80,7 +80,8 @@ We `typedef` the type and realized template for convenience:
 typedef float ANNOYTYPE;
 
 typedef
-Annoy::AnnoyIndex<int, ANNOYTYPE, Annoy::Euclidean, Kiss64Random,
+Annoy::AnnoyIndex<int, ANNOYTYPE, Annoy::Euclidean, 
+                  Kiss64Random,
                   RcppAnnoyIndexThreadPolicy>
 MyAnnoyIndex;
 ```

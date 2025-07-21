@@ -1,3 +1,9 @@
+2025-07-21  Dirk Eddelbuettel  <edd@debian.org>
+
+	* vignettes/UsingAnnoyInCpp.pdf: Regenerated
+	* inst/rmd/UsingAnnoyInCpp.Rmd: One linebreak-avoidance edit
+	* inst/rmd/rcppannoy.bib: Update references, add DOIs fields
+
 2025-07-20  Dirk Eddelbuettel  <edd@debian.org>
 
 	* vignettes/UsingAnnoyInCpp.pdf.asis: Switch to 'asis' vignette builder
@@ -8,10 +14,6 @@
 	in order to access the 'asis' vignette builder provided by it
 
 	* tests/tinytest.R: Small refresh and edit
-
-	[ while waiting for Rcpp 1.1.0.1 changes to hit CRAN in Rcpp 1.1.0 ]
-	* DESCRIPTION (VignetteBuilder, Suggests): Temporarily switch to R.rsp
-	* vignettes/UsingAnnoyInCpp.pdf.asis: Temporarily switch to 'R.rsp::asis'
 
 2025-05-04  Dirk Eddelbuettel  <edd@debian.org>
 
