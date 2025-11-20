@@ -19,6 +19,7 @@
 #endif
 
 // define a typesafe function to wrap annoylib.h's debug output
+#include <cstdarg>
 inline void rcpp_annoy_printer(const char* fmt, ...) {
   char buffer[1024];
   va_list args;
