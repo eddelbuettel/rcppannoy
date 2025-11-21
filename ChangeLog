@@ -1,7 +1,7 @@
 2025-11-21  Dirk Eddelbuettel  <edd@debian.org>
 
-	* inst/include/annoylib.h: Cast node count (or index) to 'uint64_t'
-	and use	'%ud' in verbose printing to allow for non-int32_t indices
+	* inst/include/annoylib.h: Cast node count (or index) to 'size_t'
+	and use	'%lud' in verbose printing to allow for non-int32_t indices
 
 2025-07-21  Dirk Eddelbuettel  <edd@debian.org>
 
