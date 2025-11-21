@@ -979,7 +979,7 @@ public:
       memcpy(_get(_n_nodes + (S)i), _get(_roots[i]), _s);
     _n_nodes += _roots.size();
 
-    if (_verbose) annoylib_showUpdate("has %d nodes\n", _n_nodes);
+    if (_verbose) annoylib_showUpdate("has %ud nodes\n", (uint64_t) _n_nodes);
     
     if (_on_disk) {
       if (!remap_memory_and_truncate(&_nodes, _fd,
@@ -1231,7 +1231,7 @@ protected:
     }
     
     _nodes_size = new_nodes_size;
-    if (_verbose) annoylib_showUpdate("Reallocating to %d nodes: old_address=%p, new_address=%p\n", new_nodes_size, old, _nodes);
+    if (_verbose) annoylib_showUpdate("Reallocating to %ud nodes: old_address=%p, new_address=%p\n", (uint64_t) new_nodes_size, old, _nodes);
   }
 
   void _allocate_size(S n, ThreadedBuildPolicy& threaded_build_policy) {
@@ -1313,7 +1313,7 @@ protected:
           bool side = D::side(m, n->v, _f, _random);
           children_indices[side].push_back(j);
         } else {
-          annoylib_showUpdate("No node for index %d?\n", j);
+          annoylib_showUpdate("No node for index %ud?\n", (uint64_t) j);
         }
       }
 
