@@ -1,3 +1,7 @@
+2025-11-23  Dirk Eddelbuettel  <edd@debian.org>
+
+	* DESCRIPTION (Version, Date): Roll micro version and date
+
 2025-11-22  Amos Elberg <amos.elberg@gmail.com>
 
  	* inst/include/RcppAnnoy.h: Turn __ERROR_PRINTER_OVERRIDE__ into
