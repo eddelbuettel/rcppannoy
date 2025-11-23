@@ -1,3 +1,8 @@
+2025-11-22  Amos Elberg <amos.elberg@gmail.com>
+
+ 	* inst/include/RcppAnnoy.h: Turn __ERROR_PRINTER_OVERRIDE__ into
+	function to quash a warning emitted from 64-bit integer vertex
+
 2025-07-21  Dirk Eddelbuettel  <edd@debian.org>
 
 	* vignettes/UsingAnnoyInCpp.pdf: Regenerated
@@ -341,7 +346,7 @@
 	the hat to Mark van der Loo for his January 2019 blog post
 	* vignettes/rmd/UsingAnnoyInCpp.Rmd (vignette): Moved
 	* vignettes/rmd/rcppannoy.bib: Idem
-	
+
 	* DESCRIPTION (Suggests): Remove three packages needed for vignette
 	* .travis.yml (install): Idem
 

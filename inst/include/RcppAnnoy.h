@@ -18,8 +18,17 @@
 #undef Free
 #endif
 
-// define R's REprintf as the 'local' error print method for Annoy
-#define __ERROR_PRINTER_OVERRIDE__  REprintf
+// define a typesafe function to wrap annoylib.h's debug output
+#include <cstdarg>
+inline void rcpp_annoy_printer(const char* fmt, ...) {
+  char buffer[1024];
+  va_list args;
+  va_start(args, fmt);
+  vsnprintf(buffer, sizeof(buffer), fmt, args);
+  va_end(args);
+  REprintf("%s", buffer);
+}
+#define __ERROR_PRINTER_OVERRIDE__  rcpp_annoy_printer
 
 #include "annoylib.h"
 #include "kissrandom.h"
