@@ -1,3 +1,7 @@
+2025-11-22  Amos Elberg <amos.elberg@gmail.com>
+  * Wrap __ERROR_PRINTER_OVERRIDE__ in a function to quash a spurious warning
+  emitted when the the vertex index is a 64-bit integer.
+
 2025-07-21  Dirk Eddelbuettel  <edd@debian.org>
 
 	* vignettes/UsingAnnoyInCpp.pdf: Regenerated
@@ -341,7 +345,7 @@
 	the hat to Mark van der Loo for his January 2019 blog post
 	* vignettes/rmd/UsingAnnoyInCpp.Rmd (vignette): Moved
 	* vignettes/rmd/rcppannoy.bib: Idem
-	
+
 	* DESCRIPTION (Suggests): Remove three packages needed for vignette
 	* .travis.yml (install): Idem
 
