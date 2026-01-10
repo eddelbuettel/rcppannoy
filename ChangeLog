@@ -1,5 +1,9 @@
 2026-01-10  Dirk Eddelbuettel  <edd@debian.org>
 
+	* inst/rmd/rcppannoy.bib: Updated references
+	* vignettes/UsingAnnoyInCpp.pdf: Regenerated under updated pinp
+	package to get improved DOI links
+
 	* DESCRIPTION (Description): No longer require
 	Additional_repositories as Rcpp 1.1.1 is on CRAN
 
