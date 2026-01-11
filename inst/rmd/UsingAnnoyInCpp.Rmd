@@ -31,7 +31,7 @@ vignette: >
   %\VignetteIndexEntry{Using Annoy in C++}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteKeywords{Rcpp, Annoy, R, Cpp, Approximate Nearest Neighbours}
-  %\VignettePackage{Rcpp}
+  %\VignettePackage{RcppAnnoy}
   %\usepackage[utf8]{inputenc}
 ---
 
