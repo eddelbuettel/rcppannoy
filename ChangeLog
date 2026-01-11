@@ -1,3 +1,7 @@
+2026-01-11  Dirk Eddelbuettel  <edd@debian.org>
+
+	* src/Makevars: No longer need to (explicitly) request C++17 
+
 2026-01-10  Dirk Eddelbuettel  <edd@debian.org>
 
 	* inst/rmd/rcppannoy.bib: Updated references

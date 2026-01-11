@@ -2,8 +2,6 @@
 ## Multithreaded indexing for Annoy (version 1.17 or later)
 ## requires this define to be set
 # USE_MULTITTHREADING=-DANNOYLIB_MULTITHREADED_BUILD
-## and also requires C++14 for std::shared_timed_mutex
-CXX_STD = CXX17
 ## So to use multithreaded indexing, comment out the setting above
 ## Note that it may alter your result (or their order) slightly due
 ## to the use of multithreading which alters the sequence of RNG draws
