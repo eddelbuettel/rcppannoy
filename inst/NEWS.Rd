@@ -3,11 +3,18 @@
 \newcommand{\ghpr}{\href{https://github.com/eddelbuettel/rcppannoy/pull/#1}{##1}}
 \newcommand{\ghit}{\href{https://github.com/eddelbuettel/rcppannoy/issues/#1}{##1}}
 
-\section{Changes in version 0.0.23 (2024-xx-yy)}{
+\section{Changes in version 0.0.23 (2026-01-12)}{
   \itemize{
     \item Add dot product distance metrics (Benjamin James in \ghpr{78})
     \item Apply small polish to the documentation (Dirk closing \ghit{79})
     \item A new \code{demo()} has been added (Samuel Granjeaud in \ghit{79})
+    \item Switch to Authors@R in DESCRIPTION 
+    \item Several updates to continuous integration and README.md
+    \item Small enhancements to package help files
+    \item Updates to vignettes and references
+    \item Vignette now uses \code{Rcpp::asis} builder (Dirk in \ghpr{80})
+    \item Switch one macro to a function to avoid a compiler nag (Amos Elberg
+    in \ghpr{81})
   }
 }
 
